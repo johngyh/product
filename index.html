@@ -9,66 +9,86 @@
             --primary-blue: #0056b3;
             --secondary-blue: #003d80;
             --accent-gold: #ffd700;
-            --light-bg: #f8f9fa;
-            --text-dark: #333;
+            --bg-gray: #f4f7f6;
+            --text-dark: #2d3436;
         }
 
         body {
-            font-family: "Microsoft JhengHei", Arial, sans-serif;
-            line-height: 1.6;
+            font-family: "Microsoft JhengHei", sans-serif;
+            line-height: 1.8;
             color: var(--text-dark);
             margin: 0;
-            padding: 0;
-            background-color: #f4f7f6;
+            background-color: var(--bg-gray);
         }
 
         header {
-            background: linear-gradient(rgba(0, 86, 179, 0.9), rgba(0, 61, 128, 0.9));
+            background: linear-gradient(135deg, var(--secondary-blue), var(--primary-blue));
             color: white;
-            padding: 3rem 1rem;
+            padding: 4rem 1rem;
             text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
-        .container { max-width: 900px; margin: -20px auto 2rem; padding: 0 1.5rem; }
+        header h1 { margin: 0; font-size: 2.5rem; letter-spacing: 2px; }
+        header p { opacity: 0.9; margin-top: 10px; font-size: 1.1rem; }
 
-        .section-card {
+        .container { max-width: 1000px; margin: -40px auto 3rem; padding: 0 1.5rem; }
+
+        /* 卡片設計 */
+        .card {
             background: white;
-            border-radius: 12px;
-            padding: 2rem;
+            border-radius: 15px;
+            padding: 2.5rem;
             margin-bottom: 2rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
 
         h2 {
             color: var(--primary-blue);
-            border-left: 5px solid var(--accent-gold);
+            border-left: 6px solid var(--accent-gold);
             padding-left: 15px;
             margin-bottom: 1.5rem;
+            font-size: 1.6rem;
         }
 
-        .grid {
+        /* 成果區塊 */
+        .feature-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 1.5rem;
         }
 
-        .item-card {
-            background: var(--light-bg);
+        .feature-item {
+            background: #f9f9f9;
             padding: 1.5rem;
-            border-radius: 8px;
-            border: 1px solid #eee;
-            text-align: center;
-            transition: 0.3s;
-            position: relative;
+            border-radius: 10px;
+            border-top: 4px solid var(--primary-blue);
         }
 
-        .item-card:hover { transform: translateY(-5px); border-color: var(--primary-blue); }
+        /* 下載專區 */
+        .download-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.2rem;
+            margin-top: 1rem;
+        }
+
+        .download-box {
+            background: white;
+            border: 1px solid #eee;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .download-box:hover { transform: translateY(-5px); border-color: var(--primary-blue); }
 
         .btn-download {
             display: inline-block;
-            background-color: var(--primary-blue);
+            background: var(--primary-blue);
             color: white;
-            padding: 0.6rem 1.5rem;
+            padding: 0.7rem 1.5rem;
             border-radius: 25px;
             text-decoration: none;
             font-weight: bold;
@@ -76,71 +96,101 @@
             font-size: 0.9rem;
         }
 
-        .btn-download:hover { background-color: var(--secondary-blue); }
+        .btn-download:hover { background: var(--secondary-blue); }
 
-        .coming-soon { background: #fdfdfd; border: 2px dashed #ccc; opacity: 0.7; }
-        .status-badge {
-            position: absolute; top: 10px; right: 10px;
-            background: #ff4757; color: white; font-size: 0.7rem;
-            padding: 2px 8px; border-radius: 10px;
+        /* 未來計畫 */
+        .future-badge {
+            background: #fff3cd;
+            color: #856404;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
         }
 
+        /* 團員照片 */
+        .team-section { text-align: center; }
         .team-img {
             width: 100%;
-            max-width: 800px;
-            border-radius: 12px;
+            max-width: 850px;
+            border-radius: 15px;
             margin-top: 1rem;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
         }
 
-        footer { text-align: center; padding: 2rem; color: #888; font-size: 0.8rem; }
+        footer { text-align: center; padding: 3rem; color: #888; font-size: 0.9rem; }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>2026 Q1 商品委員會報告</h1>
-    <p>順可通訊處 | 商品主委 吳約翰 (John Goh)</p>
+    <h1>2026 Q1 商品委員會成果報告</h1>
+    <p>順可通訊處 | 商品主委 吳約翰 (John Wu)</p>
 </header>
 
 <div class="container">
     
-    <section class="section-card">
-        <h2>Q1 實戰推銷夾下載</h2>
-        <p>點擊按鈕即可下載本季開發之銷售輔助工具：</p>
-        <div class="grid">
-            <div class="item-card">
-                <span style="font-size: 2rem;">🏥</span>
-                <h3>長照推銷夾</h3>
-                <a href="long_term_care.pdf" class="btn-download">立即下載</a>
+    <section class="card">
+        <h2>Q1 核心亮點：財商賦能</h2>
+        <div class="feature-grid">
+            <div class="feature-item">
+                <h3>💡 財商課專案</h3>
+                <p>將保險轉化為「財商邏輯」，強調<b>「收入 - 儲蓄 = 支出」</b>的富人思維，協助夥伴跳脫單純賣保單的框架，轉向資產配置顧問。</p>
             </div>
-            <div class="item-card">
-                <span style="font-size: 2rem;">⚖️</span>
-                <h3>複雜稅務簡單說</h3>
-                <a href="tax_guide.pdf" class="btn-download">立即下載</a>
-            </div>
-            <div class="item-card">
-                <span style="font-size: 2rem;">💰</span>
-                <h3>儲蓄推銷夾</h3>
-                <a href="savings_plan.pdf" class="btn-download">立即下載</a>
-            </div>
-            <div class="item-card coming-soon">
-                <span class="status-badge">即將推出</span>
-                <span style="font-size: 2rem; filter: grayscale(100%);">🛡️</span>
-                <h3 style="color: #888;">重大傷病推銷夾</h3>
-                <span class="btn-download" style="background: #ccc;">製作中</span>
+            <div class="feature-item">
+                <h3>🏫 晨會小學堂</h3>
+                <p>落實知識碎片化學習，針對稅務新制、特定商品優勢進行高頻率宣導，確保第一線夥伴掌握最即時的銷售話術。</p>
             </div>
         </div>
     </section>
 
-    <section class="section-card" style="text-align: center;">
+    <section class="card">
+        <h2>資源中心：實戰推銷夾</h2>
+        <p>所有工具皆已就緒，歡迎夥伴下載使用於客戶訪談：</p>
+        <div class="download-grid">
+            <div class="download-box">
+                <span style="font-size: 2.5rem;">🏥</span>
+                <h3>長照推銷夾</h3>
+                <a href="long_term_care.pdf" class="btn-download">立即下載</a>
+            </div>
+            <div class="download-box">
+                <span style="font-size: 2.5rem;">⚖️</span>
+                <h3>複雜稅務簡單說</h3>
+                <a href="tax_guide.pdf" class="btn-download">立即下載</a>
+            </div>
+            <div class="download-box">
+                <span style="font-size: 2.5rem;">💰</span>
+                <h3>儲蓄推銷夾</h3>
+                <a href="savings_plan.pdf" class="btn-download">立即下載</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>下季計畫：持續進化</h2>
+        <div class="feature-item" style="border-top: 4px solid var(--accent-gold); margin-bottom: 1rem;">
+            <span class="future-badge">Coming Soon</span>
+            <h3>🛡️ 重大傷病險推銷夾</h3>
+            <p>針對醫療缺口與重大傷病險種設計專屬銷售輔助工具，預計 Q2 上旬發布。</p>
+        </div>
+        <div class="feature-item" style="border-top: 4px solid var(--accent-gold);">
+            <span class="future-badge">Optimization</span>
+            <h3>🔄 推銷夾 2.0 迭代</h3>
+            <p>根據同仁實戰回饋，優化現有工具的內容流暢度與視覺呈現。</p>
+        </div>
+    </section>
+
+    <section class="card team-section">
         <h2>商品委員會：黃金陣容</h2>
         <p>專業引領 · 實戰賦能 · 成為你最強的銷售後盾</p>
-        <img src="member_list.png" alt="商品委員會成員" class="team-img">
+        <img src="member_list.png" alt="商品委員會成員合照" class="team-img">
+        <p style="margin-top: 1.5rem; font-style: italic; color: #666;">「專業是我們的基石，服務是我們的承諾。」</p>
     </section>
 
     <footer>
-        <p>&copy; 2026 順可通訊處 商品委員會</p>
+        <p>&copy; 2026 順可通訊處 商品委員會 | 吳約翰 John Wu</p>
     </footer>
 </div>
 
