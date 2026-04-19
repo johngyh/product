@@ -23,7 +23,6 @@
             color: var(--text);
             margin: 0;
             line-height: 1.5;
-            word-break: break-all;
         }
 
         header {
@@ -34,10 +33,10 @@
         }
 
         header h1 {
-            font-size: 1.6rem; /* 手機適配字體 */
+            font-size: 1.6rem;
             margin: 0;
             letter-spacing: 1px;
-            white-space: nowrap; /* 強制不換行 */
+            white-space: nowrap;
         }
 
         header p {
@@ -79,7 +78,7 @@
             border-radius: 2px;
         }
 
-        h3 { font-size: 1.1rem; margin-top: 0; color: var(--secondary); }
+        h3 { font-size: 1.1rem; margin-top: 0; color: var(--secondary); white-space: nowrap; }
 
         .feature-item {
             background: #f9f9f9;
@@ -91,10 +90,9 @@
 
         .feature-item p { margin: 0; font-size: 0.95rem; text-align: justify; }
 
-        /* 下載專區手機優化 */
         .download-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr; /* 手機兩列排版 */
+            grid-template-columns: 1fr 1fr;
             gap: 10px;
         }
 
@@ -122,7 +120,6 @@
             white-space: nowrap;
         }
 
-        /* 團隊照片 */
         .team-section { text-align: center; }
         .team-img {
             width: 100%;
@@ -130,15 +127,6 @@
             display: block;
             margin-top: 0.5rem;
         }
-
-        .future-box {
-            background: #fff3cd;
-            padding: 1rem;
-            border-radius: 10px;
-            margin-top: 1rem;
-        }
-
-        .future-box h3 { color: #856404; margin-bottom: 5px; font-size: 1rem; }
 
         footer {
             text-align: center;
@@ -160,12 +148,7 @@
     <section class="card">
         <h2>Q1 工作亮點：財商賦能</h2>
         <div class="feature-item">
-            <h3>💡 財商課專案</h3>
-            <p>重新架構客戶算式，強調「收入-儲蓄=支出」的富人思維，助夥伴轉型資產顧問。</p>
-        </div>
-        <div class="feature-item">
-            <h3>🏫 晨會小學堂</h3>
-            <p>知識碎片化宣導，針對稅務新制、特定商品優勢進行高頻宣導，掌握銷售話術。</p>
+            <p>製作專業商品推銷夾，提供業務夥伴在市場上擁有專業武器，透過賦能強化成交力。</p>
         </div>
     </section>
 
@@ -187,10 +170,10 @@
                 <h3>儲蓄推銷夾</h3>
                 <a href="savings_plan.pdf" class="btn-download">立即下載</a>
             </div>
-            <div class="download-box" style="opacity: 0.6; border-style: dashed;">
+            <div class="download-box" style="border: 1px dashed #ff4757;">
                 <span style="font-size: 1.5rem;">🛡️</span>
-                <h3>重大傷病</h3>
-                <span class="btn-download" style="background:#bbb;">製作中</span>
+                <h3 style="color: #ff4757;">重大傷病夾</h3>
+                <span class="btn-download" style="background:#ff4757;">即將上市</span>
             </div>
         </div>
     </section>
@@ -198,16 +181,18 @@
     <section class="card">
         <h2>下季展望：持續迭代</h2>
         <div class="feature-item" style="border-left-color: var(--accent);">
-            <p><b>1. 工具優化：</b>蒐集實戰回饋進行版本更新。</p>
+            <h3>🏫 晨會小學堂</h3>
+            <p>啟動碎片化知識宣導，針對稅務新制、特定商品優勢進行高頻教育，內化銷售話術。</p>
         </div>
         <div class="feature-item" style="border-left-color: var(--accent);">
-            <p><b>2. 商品炒作：</b>配合競賽製作專屬銷售對照表。</p>
+            <h3>🔄 工具 2.0 優化</h3>
+            <p>蒐集實戰回饋，優化現有推銷夾的邏輯流暢度與視覺化呈现。</p>
         </div>
     </section>
 
     <section class="card team-section">
         <h2>商品委員會：黃金陣容</h2>
-        <p style="font-size: 0.9rem; margin-top: -10px;">專業引領 · 實戰賦能</p>
+        <p style="font-size: 0.9rem; margin-top: -10px; white-space: nowrap;">專業引領 · 實戰賦能</p>
         <img src="member_list.png" alt="團隊照片" class="team-img">
     </section>
 
