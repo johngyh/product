@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>2026 Q1 商品委員會 | 吳約翰主任</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -21,417 +20,314 @@
     --text-muted: #6B6B6B;
   }
 
-- { margin: 0; padding: 0; box-sizing: border-box; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-body {
-background: var(–navy);
-color: var(–white);
-font-family: ‘Noto Sans TC’, sans-serif;
-font-weight: 300;
-overflow-x: hidden;
-}
+  body {
+    background: var(--navy);
+    color: var(--white);
+    font-family: 'Noto Sans TC', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
 
-/* ─── HERO ─── */
-.hero {
-position: relative;
-min-height: 100vh;
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-text-align: center;
-padding: 80px 24px 60px;
-overflow: hidden;
-}
+  /* ─── HERO ─── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 80px 24px 60px;
+    overflow: hidden;
+  }
 
-.hero::before {
-content: ‘’;
-position: absolute;
-inset: 0;
-background:
-radial-gradient(ellipse 70% 60% at 50% 30%, rgba(184,146,42,0.18) 0%, transparent 70%),
-radial-gradient(ellipse 40% 40% at 80% 80%, rgba(44,69,96,0.6) 0%, transparent 60%);
-pointer-events: none;
-}
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse 70% 60% at 50% 30%, rgba(184,146,42,0.18) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 80% 80%, rgba(44,69,96,0.6) 0%, transparent 60%);
+    pointer-events: none;
+  }
 
-.hero-badge {
-display: inline-block;
-border: 1px solid rgba(184,146,42,0.5);
-color: var(–gold-light);
-font-size: 11px;
-letter-spacing: 0.25em;
-text-transform: uppercase;
-padding: 6px 18px;
-border-radius: 2px;
-margin-bottom: 28px;
-animation: fadeUp 0.8s ease both;
-}
+  .hero-badge {
+    display: inline-block;
+    border: 1px solid rgba(184,146,42,0.5);
+    color: var(--gold-light);
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    padding: 6px 18px;
+    border-radius: 2px;
+    margin-bottom: 28px;
+    animation: fadeUp 0.8s ease both;
+  }
 
-.hero h1 {
-font-family: ‘Noto Serif TC’, serif;
-font-size: clamp(32px, 6vw, 64px);
-font-weight: 700;
-line-height: 1.2;
-letter-spacing: 0.04em;
-margin-bottom: 16px;
-animation: fadeUp 0.8s 0.1s ease both;
-}
+  .hero h1 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(32px, 6vw, 64px);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: 0.04em;
+    margin-bottom: 16px;
+    animation: fadeUp 0.8s 0.1s ease both;
+  }
 
-.hero h1 span {
-display: block;
-background: linear-gradient(135deg, var(–gold-light), var(–gold));
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-background-clip: text;
-}
+  .hero h1 span {
+    display: block;
+    background: linear-gradient(135deg, var(--gold-light), var(--gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
 
-.hero-sub {
-font-size: 14px;
-color: rgba(255,255,255,0.55);
-letter-spacing: 0.12em;
-margin-bottom: 48px;
-animation: fadeUp 0.8s 0.2s ease both;
-}
+  .hero-sub {
+    font-size: 14px;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 0.12em;
+    margin-bottom: 48px;
+    animation: fadeUp 0.8s 0.2s ease both;
+  }
 
-.hero-divider {
-width: 60px;
-height: 1px;
-background: linear-gradient(90deg, transparent, var(–gold), transparent);
-margin: 0 auto 48px;
-animation: fadeUp 0.8s 0.3s ease both;
-}
+  .hero-divider {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 0 auto 48px;
+    animation: fadeUp 0.8s 0.3s ease both;
+  }
 
-/* ─── SECTION WRAPPER ─── */
-.section {
-max-width: 900px;
-margin: 0 auto;
-padding: 64px 24px;
-}
+  /* ─── SECTION WRAPPER ─── */
+  .section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 64px 24px;
+  }
 
-.section-label {
-font-size: 10px;
-letter-spacing: 0.3em;
-color: var(–gold);
-text-transform: uppercase;
-margin-bottom: 12px;
-}
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
 
-.section-title {
-font-family: ‘Noto Serif TC’, serif;
-font-size: clamp(22px, 3vw, 32px);
-font-weight: 600;
-margin-bottom: 32px;
-position: relative;
-padding-bottom: 20px;
-}
+  .section-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(22px, 3vw, 32px);
+    font-weight: 600;
+    margin-bottom: 32px;
+    position: relative;
+    padding-bottom: 20px;
+  }
 
-.section-title::after {
-content: ‘’;
-position: absolute;
-bottom: 0; left: 0;
-width: 40px; height: 2px;
-background: var(–gold);
-}
+  .section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 40px; height: 2px;
+    background: var(--gold);
+  }
 
-/* ─── STRATEGY BLOCK ─── */
-.strategy-grid {
-display: grid;
-grid-template-columns: 1fr 1fr;
-gap: 2px;
-background: rgba(255,255,255,0.06);
-border-radius: 4px;
-overflow: hidden;
-}
+  /* ─── STRATEGY BLOCK ─── */
+  .strategy-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 4px;
+    overflow: hidden;
+  }
 
-.strategy-card {
-background: rgba(13,27,42,0.9);
-padding: 32px 28px;
-transition: background 0.3s;
-}
+  .strategy-card {
+    background: rgba(13,27,42,0.9);
+    padding: 32px 28px;
+    transition: background 0.3s;
+  }
 
-.strategy-card:hover { background: var(–navy-mid); }
+  .strategy-card:hover { background: var(--navy-mid); }
 
-.strategy-card .tag {
-font-size: 10px;
-letter-spacing: 0.2em;
-color: var(–gold);
-margin-bottom: 12px;
-text-transform: uppercase;
-}
+  .strategy-card .tag {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
 
-.strategy-card p {
-font-size: 15px;
-color: rgba(255,255,255,0.75);
-line-height: 1.7;
-}
+  .strategy-card p {
+    font-size: 15px;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.7;
+  }
 
-/* ─── DOWNLOAD CARDS ─── */
-.resource-grid {
-display: grid;
-grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-gap: 16px;
-margin-bottom: 48px;
-}
+  /* ─── DOWNLOAD CARDS ─── */
+  .resource-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 48px;
+  }
 
-.resource-card {
-position: relative;
-background: linear-gradient(135deg, var(–navy-mid) 0%, var(–navy-soft) 100%);
-border: 1px solid rgba(184,146,42,0.2);
-border-radius: 6px;
-padding: 32px 24px;
-text-align: center;
-transition: all 0.3s ease;
-overflow: hidden;
-}
+  .resource-card {
+    position: relative;
+    background: linear-gradient(135deg, var(--navy-mid) 0%, var(--navy-soft) 100%);
+    border: 1px solid rgba(184,146,42,0.2);
+    border-radius: 6px;
+    padding: 32px 24px;
+    text-align: center;
+    transition: all 0.3s ease;
+    overflow: hidden;
+  }
 
-.resource-card::before {
-content: ‘’;
-position: absolute;
-top: 0; left: 0; right: 0;
-height: 2px;
-background: linear-gradient(90deg, transparent, var(–gold), transparent);
-opacity: 0;
-transition: opacity 0.3s;
-}
+  .resource-card:hover {
+    border-color: rgba(184,146,42,0.5);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+  }
 
-.resource-card:hover {
-border-color: rgba(184,146,42,0.5);
-transform: translateY(-4px);
-box-shadow: 0 12px 40px rgba(0,0,0,0.4);
-}
+  .resource-icon {
+    font-size: 36px;
+    margin-bottom: 16px;
+    display: block;
+  }
 
-.resource-card:hover::before { opacity: 1; }
+  .resource-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 20px;
+    line-height: 1.4;
+    white-space: nowrap;
+  }
 
-.resource-card.coming-soon {
-opacity: 0.5;
-cursor: default;
-}
+  .btn-download {
+    display: inline-block;
+    padding: 10px 22px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: var(--navy);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
 
-.resource-card.coming-soon:hover {
-transform: none;
-box-shadow: none;
-}
+  /* ─── QUOTES ─── */
+  .quotes-block {
+    background: linear-gradient(135deg, rgba(184,146,42,0.08), rgba(184,146,42,0.03));
+    border-left: 3px solid var(--gold);
+    border-radius: 0 6px 6px 0;
+    padding: 32px 36px;
+  }
 
-.resource-icon {
-font-size: 36px;
-margin-bottom: 16px;
-display: block;
-}
+  .quote-num {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--gold);
+    opacity: 0.5;
+    min-width: 28px;
+    line-height: 1;
+  }
 
-.resource-title {
-font-family: ‘Noto Serif TC’, serif;
-font-size: 16px;
-font-weight: 600;
-color: var(–white);
-margin-bottom: 20px;
-line-height: 1.4;
-}
+  .quote-text {
+    font-size: 15px;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.7;
+    text-align: justify;
+  }
 
-.btn-download {
-display: inline-block;
-padding: 10px 22px;
-background: linear-gradient(135deg, var(–gold), var(–gold-light));
-color: var(–navy);
-font-size: 12px;
-font-weight: 700;
-letter-spacing: 0.12em;
-text-decoration: none;
-border-radius: 2px;
-transition: all 0.2s;
-}
+  /* ─── OUTLOOK ─── */
+  .outlook-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
 
-.btn-download:hover {
-box-shadow: 0 4px 20px rgba(184,146,42,0.5);
-filter: brightness(1.1);
-}
+  .outlook-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 6px;
+    padding: 28px 24px;
+    transition: all 0.3s;
+  }
 
-.badge-soon {
-display: inline-block;
-padding: 8px 18px;
-border: 1px solid rgba(184,146,42,0.4);
-color: var(–gold-light);
-font-size: 11px;
-letter-spacing: 0.15em;
-border-radius: 2px;
-}
+  .outlook-card h3 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--white);
+  }
 
-/* ─── QUOTES ─── */
-.quotes-block {
-background: linear-gradient(135deg, rgba(184,146,42,0.08), rgba(184,146,42,0.03));
-border-left: 3px solid var(–gold);
-border-radius: 0 6px 6px 0;
-padding: 32px 36px;
-}
+  /* ─── TEAM ─── */
+  .team-section {
+    background: var(--navy-mid);
+    padding: 80px 24px;
+    text-align: center;
+  }
 
-.quotes-label {
-font-size: 11px;
-letter-spacing: 0.25em;
-color: var(–gold-light);
-text-transform: uppercase;
-margin-bottom: 20px;
-}
+  .team-img-wrapper {
+    max-width: 720px;
+    margin: 0 auto;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(184,146,42,0.25);
+    box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+  }
 
-.quote-item {
-display: flex;
-align-items: flex-start;
-gap: 16px;
-margin-bottom: 18px;
-}
+  .team-img-wrapper img {
+    width: 100%;
+    display: block;
+  }
 
-.quote-item:last-child { margin-bottom: 0; }
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--navy);
+    border-top: 1px solid rgba(255,255,255,0.06);
+    text-align: center;
+    padding: 28px 24px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 0.1em;
+  }
 
-.quote-num {
-font-family: ‘Noto Serif TC’, serif;
-font-size: 20px;
-font-weight: 700;
-color: var(–gold);
-opacity: 0.5;
-min-width: 28px;
-line-height: 1;
-margin-top: 2px;
-}
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
 
-.quote-text {
-font-size: 15px;
-color: rgba(255,255,255,0.85);
-line-height: 1.7;
-}
+  .fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
 
-.quote-text strong {
-color: var(–gold-light);
-font-weight: 500;
-}
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
 
-/* ─── OUTLOOK ─── */
-.outlook-grid {
-display: grid;
-grid-template-columns: 1fr 1fr;
-gap: 16px;
-}
-
-.outlook-card {
-background: rgba(255,255,255,0.03);
-border: 1px solid rgba(255,255,255,0.08);
-border-radius: 6px;
-padding: 28px 24px;
-transition: all 0.3s;
-}
-
-.outlook-card:hover {
-background: rgba(184,146,42,0.06);
-border-color: rgba(184,146,42,0.3);
-}
-
-.outlook-icon {
-font-size: 24px;
-margin-bottom: 14px;
-display: block;
-}
-
-.outlook-card h3 {
-font-family: ‘Noto Serif TC’, serif;
-font-size: 16px;
-font-weight: 600;
-margin-bottom: 10px;
-color: var(–white);
-}
-
-.outlook-card p {
-font-size: 14px;
-color: rgba(255,255,255,0.6);
-line-height: 1.7;
-}
-
-/* ─── TEAM ─── */
-.team-section {
-background: var(–navy-mid);
-padding: 80px 24px;
-text-align: center;
-}
-
-.team-section .section-title::after {
-left: 50%; transform: translateX(-50%);
-}
-
-.team-img-wrapper {
-max-width: 720px;
-margin: 0 auto;
-border-radius: 8px;
-overflow: hidden;
-border: 1px solid rgba(184,146,42,0.25);
-box-shadow: 0 24px 80px rgba(0,0,0,0.5);
-}
-
-.team-img-wrapper img {
-width: 100%;
-display: block;
-}
-
-.team-tagline {
-margin-top: 28px;
-font-size: 13px;
-letter-spacing: 0.2em;
-color: rgba(255,255,255,0.45);
-}
-
-.team-tagline span {
-color: var(–gold);
-margin: 0 10px;
-}
-
-/* ─── FOOTER ─── */
-footer {
-background: var(–navy);
-border-top: 1px solid rgba(255,255,255,0.06);
-text-align: center;
-padding: 28px 24px;
-font-size: 12px;
-color: rgba(255,255,255,0.3);
-letter-spacing: 0.1em;
-}
-
-/* ─── DIVIDER ─── */
-.gold-rule {
-border: none;
-height: 1px;
-background: linear-gradient(90deg, transparent, rgba(184,146,42,0.3), transparent);
-margin: 0;
-}
-
-/* ─── ANIMATIONS ─── */
-@keyframes fadeUp {
-from { opacity: 0; transform: translateY(24px); }
-to   { opacity: 1; transform: translateY(0); }
-}
-
-.fade-up {
-opacity: 0;
-transform: translateY(30px);
-transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-.fade-up.visible {
-opacity: 1;
-transform: translateY(0);
-}
-
-/* ─── RESPONSIVE ─── */
-@media (max-width: 640px) {
-.strategy-grid { grid-template-columns: 1fr; }
-.outlook-grid  { grid-template-columns: 1fr; }
-.resource-grid { grid-template-columns: 1fr 1fr; }
-.quotes-block  { padding: 24px 20px; }
-}
-
-@media (max-width: 400px) {
-.resource-grid { grid-template-columns: 1fr; }
-}
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 640px) {
+    .strategy-grid { grid-template-columns: 1fr; }
+    .outlook-grid  { grid-template-columns: 1fr; }
+    .resource-grid { grid-template-columns: 1fr 1fr; }
+    .resource-title { white-space: normal; }
+  }
 </style>
 
 </head>
 <body>
-
-<!-- ══════════ HERO ══════════ -->
 
 <section class="hero">
   <div class="hero-badge">南山人壽 · 順可通訊處</div>
@@ -443,116 +339,91 @@ transform: translateY(0);
   <div class="hero-divider"></div>
 </section>
 
-<hr class="gold-rule">
-
-<!-- ══════════ 戰略 ══════════ -->
-
 <div class="section fade-up">
   <p class="section-label">Strategy</p>
   <h2 class="section-title">Q1 戰略：專業工具賦能</h2>
-
   <div class="strategy-grid">
     <div class="strategy-card">
       <div class="tag">市場痛點</div>
-      <p>客戶對利率敏感、稅務邏輯門檻高，專業溝通存在落差。</p>
+      <p>夥伴在市場上遇到客戶嫌儲蓄險利率低、稅務問題太複雜不敢碰，專業溝通存在落差。</p>
     </div>
     <div class="strategy-card">
       <div class="tag">解決方案</div>
-      <p>推銷夾「可視化」數據，將專業知識化為業務武器，降低客戶理解門檻。</p>
+      <p>製作專業商品推銷夾，將複雜數據「可視化」，讓專業成為業務夥伴在市場上的最強武器。</p>
     </div>
   </div>
 </div>
-
-<hr class="gold-rule">
-
-<!-- ══════════ 資源中心 ══════════ -->
 
 <div class="section fade-up">
   <p class="section-label">Resources</p>
   <h2 class="section-title">實戰武器庫</h2>
-
   <div class="resource-grid">
     <div class="resource-card">
       <span class="resource-icon">🏥</span>
       <div class="resource-title">長照險推銷夾</div>
-      <a class="btn-download" href="https://johngyh.github.io/product/long_term_care.pdf" target="_blank">↓ 立即下載</a>
+      <a class="btn-download" href="https://johngyh.github.io/product/long_term_care.pdf" target="_blank">立即下載</a>
     </div>
     <div class="resource-card">
       <span class="resource-icon">⚖️</span>
       <div class="resource-title">稅務簡單說</div>
-      <a class="btn-download" href="https://johngyh.github.io/product/tax_guide.pdf" target="_blank">↓ 立即下載</a>
+      <a class="btn-download" href="https://johngyh.github.io/product/tax_guide.pdf" target="_blank">立即下載</a>
     </div>
     <div class="resource-card">
       <span class="resource-icon">💰</span>
       <div class="resource-title">儲蓄險推銷夾</div>
-      <a class="btn-download" href="https://johngyh.github.io/product/savings_plan.pdf" target="_blank">↓ 立即下載</a>
+      <a class="btn-download" href="https://johngyh.github.io/product/savings_plan.pdf" target="_blank">立即下載</a>
     </div>
-    <div class="resource-card coming-soon">
+    <div class="resource-card" style="opacity:0.6">
       <span class="resource-icon">🛡️</span>
-      <div class="resource-title">重大傷病推銷夾</div>
-      <span class="badge-soon">即將上市</span>
+      <div class="resource-title">重大傷病夾</div>
+      <span style="border:1px solid rgba(184,146,42,0.4); padding:8px 16px; font-size:11px; color:var(--gold-light)">即將上市</span>
     </div>
   </div>
 
-  <!-- 金句 -->
-
-  <div class="quotes-block fade-up">
-    <div class="quotes-label">💡 主委金句話術</div>
-    <div class="quote-item">
+  <div class="quotes-block">
+    <div style="font-size:11px; color:var(--gold-light); margin-bottom:20px; letter-spacing:0.2em">💡 主委貼心話術</div>
+    <div style="display:flex; gap:16px; margin-bottom:15px">
       <span class="quote-num">01</span>
-      <p class="quote-text"><strong>長照：</strong>預留未來的尊嚴。</p>
+      <p class="quote-text"><strong>長照：</strong>不是在買保險，是在預留未來的尊嚴。</p>
     </div>
-    <div class="quote-item">
+    <div style="display:flex; gap:16px; margin-bottom:15px">
       <span class="quote-num">02</span>
-      <p class="quote-text"><strong>稅務：</strong>保險是遺產外的現金，立即撥付。</p>
+      <p class="quote-text"><strong>稅務：</strong>人壽保險是遺產外的現金，受益人可以立即獲得的一筆資產。</p>
     </div>
-    <div class="quote-item">
+    <div style="display:flex; gap:16px">
       <span class="quote-num">03</span>
-      <p class="quote-text"><strong>儲蓄：</strong>提早預約財富自由。</p>
+      <p class="quote-text"><strong>儲蓄：</strong>強迫儲蓄不是減少消費，是提早預約財富自由。</p>
     </div>
   </div>
 </div>
-
-<hr class="gold-rule">
-
-<!-- ══════════ 下季展望 ══════════ -->
 
 <div class="section fade-up">
   <p class="section-label">Outlook</p>
   <h2 class="section-title">下季展望：專業進化</h2>
-
   <div class="outlook-grid">
     <div class="outlook-card">
-      <span class="outlook-icon">🏫</span>
+      <span style="font-size:24px; margin-bottom:14px; display:block">🏫</span>
       <h3>晨會小學堂</h3>
-      <p>啟動高頻率碎片化教育，持續內化銷售話術，讓專業成為本能。</p>
+      <p>啟動高頻率碎片化教育，針對稅務新制、特定商品優勢進行宣導，內化銷售話術。</p>
     </div>
     <div class="outlook-card">
-      <span class="outlook-icon">🔄</span>
+      <span style="font-size:24px; margin-bottom:14px; display:block">🔄</span>
       <h3>工具 2.0 迭代</h3>
-      <p>優化推銷夾實戰邏輯，視覺全面再升級，讓工具更貼近一線需求。</p>
+      <p>蒐集實戰回饋，持續優化推銷夾的邏輯流暢度與視覺呈現，貼近一線需求。</p>
     </div>
   </div>
 </div>
 
-<hr class="gold-rule">
-
-<!-- ══════════ 團隊 ══════════ -->
-
 <div class="team-section fade-up">
-  <p class="section-label" style="text-align:center">Our Team</p>
-  <h2 class="section-title" style="text-align:center">商品委員會：黃金陣容</h2>
-
+  <p class="section-label">Our Team</p>
+  <h2 class="section-title">商品委員會：黃金陣容</h2>
   <div class="team-img-wrapper">
-    <img src="https://johngyh.github.io/product/member_list.png" alt="商品委員會團隊合照">
+    <img src="member_list.png" alt="團隊合照">
   </div>
-
-  <p class="team-tagline">
-    專業引領<span>·</span>實戰賦能<span>·</span>最強後盾
+  <p style="margin-top:28px; font-size:13px; letter-spacing:0.2em; color:rgba(255,255,255,0.45)">
+    專業引領 <span style="color:var(--gold); margin:0 8px">·</span> 實戰賦能 <span style="color:var(--gold); margin:0 8px">·</span> 最強後盾
   </p>
 </div>
-
-<!-- ══════════ FOOTER ══════════ -->
 
 <footer>
   © 2026 南山人壽｜順可通訊處 · 商品委員會
@@ -563,11 +434,9 @@ transform: translateY(0);
     entries.forEach(e => {
       if (e.isIntersecting) {
         e.target.classList.add('visible');
-        observer.unobserve(e.target);
       }
     });
-  }, { threshold: 0.12 });
-
+  }, { threshold: 0.1 });
   document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 </script>
 
