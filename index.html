@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>2026 Q1 商品委員會 | John Goh</title>
+    <title>2026 Q1 南山人壽｜順可通訊處 |商品委員會報告 | 吳約翰 主任</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap');
         
@@ -13,6 +13,8 @@
             --accent: #ffd700;
             --bg: #f4f7f6;
             --text: #2d3436;
+            --danger: #ff4757;
+            --success: #2ecc71;
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -28,29 +30,14 @@
         header {
             background: linear-gradient(135deg, #001f54 0%, #0056b3 100%);
             color: white;
-            padding: 3rem 1rem;
+            padding: 3rem 1rem 4rem;
             text-align: center;
         }
 
-        header h1 {
-            font-size: 1.6rem;
-            margin: 0;
-            white-space: nowrap;
-            letter-spacing: 1px;
-        }
+        header h1 { font-size: 1.6rem; margin: 0; white-space: nowrap; letter-spacing: 1px; }
+        header p { font-size: 1rem; opacity: 0.9; margin: 10px 0 0; white-space: nowrap; }
 
-        header p {
-            font-size: 1rem;
-            opacity: 0.9;
-            margin: 8px 0 0;
-            white-space: nowrap;
-        }
-
-        .container {
-            max-width: 100%;
-            margin: -25px auto 2rem;
-            padding: 0 12px;
-        }
+        .container { max-width: 100%; margin: -30px auto 2rem; padding: 0 12px; }
 
         .card {
             background: #ffffff;
@@ -58,12 +45,14 @@
             padding: 1.5rem;
             margin-bottom: 1.2rem;
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            position: relative;
+            overflow: hidden;
         }
 
         h2 {
             font-size: 1.3rem;
             color: var(--primary);
-            margin: 0 0 1rem;
+            margin: 0 0 1.2rem;
             display: flex;
             align-items: center;
             white-space: nowrap;
@@ -78,100 +67,63 @@
             border-radius: 2px;
         }
 
-        /* 價值主張區 */
-        .vision-box {
-            font-size: 0.9rem;
-            color: #555;
-            background: #f0f4f8;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            border-left: 4px solid var(--secondary);
-        }
+        /* 策略邏輯區 */
+        .logic-box { background: #fdf2f2; border-radius: 10px; padding: 12px; margin-bottom: 10px; border-left: 4px solid var(--danger); }
+        .logic-box span { font-weight: bold; color: var(--danger); font-size: 0.85rem; }
+        
+        .solution-box { background: #f0f9f4; border-radius: 10px; padding: 12px; border-left: 4px solid var(--success); }
+        .solution-box span { font-weight: bold; color: var(--success); font-size: 0.85rem; }
+        .logic-text { font-size: 0.9rem; margin-top: 4px; display: block; }
 
-        /* 下載區排版 */
-        .download-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-
-        .download-box {
-            background: white;
-            border: 1px solid #eee;
-            padding: 1.2rem 0.5rem;
-            border-radius: 10px;
-            text-align: center;
-        }
-
-        .download-box h3 {
-            font-size: 0.95rem;
-            margin: 8px 0 4px;
-            white-space: nowrap;
-            color: var(--primary);
-        }
-
-        .download-box p {
-            font-size: 0.75rem;
-            color: #888;
-            margin: 0 0 10px;
-            white-space: nowrap;
-        }
-
+        /* 下載與金句區 */
+        .download-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1rem; }
+        .download-box { background: #fff; border: 1px solid #eee; padding: 1rem 0.5rem; border-radius: 12px; text-align: center; }
+        .download-box h3 { font-size: 0.95rem; margin: 5px 0; color: var(--primary); white-space: nowrap; }
+        
         .btn-download {
-            display: block;
-            background: var(--primary);
-            color: white;
-            padding: 8px 0;
-            border-radius: 20px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 0.85rem;
-            width: 90%;
-            margin: 0 auto;
-            white-space: nowrap;
+            display: block; background: var(--primary); color: white; padding: 8px 0; border-radius: 20px;
+            text-decoration: none; font-weight: bold; font-size: 0.8rem; width: 90%; margin: 8px auto 0; white-space: nowrap;
         }
 
-        /* 展望區 */
+        .gold-sentence {
+            background: #fff9db; border-radius: 8px; padding: 10px; font-size: 0.85rem;
+            border-left: 3px solid var(--accent); margin-top: 15px;
+        }
+        .gold-sentence b { color: #856404; display: block; font-size: 0.75rem; margin-bottom: 2px; }
+
+        /* 下季展望動畫感 */
         .future-item {
-            background: #f9f9f9;
-            padding: 1rem;
-            border-radius: 10px;
-            margin-bottom: 10px;
-            border-left: 4px solid var(--accent);
+            background: linear-gradient(to right, #ffffff, #f0f4f8);
+            padding: 1.2rem; border-radius: 10px; margin-bottom: 10px;
+            border-left: 4px solid var(--secondary);
+            transition: 0.3s;
         }
+        .future-item:active { transform: scale(0.98); }
+        .future-item h4 { margin: 0 0 5px; color: var(--secondary); font-size: 1.05rem; display: flex; align-items: center; }
+        .future-item h4::after { content: "➜"; margin-left: 8px; font-size: 0.8rem; opacity: 0.5; }
 
-        .future-item h4 { margin: 0 0 5px; color: var(--secondary); font-size: 1rem; }
-        .future-item p { margin: 0; font-size: 0.85rem; color: #666; text-align: justify; }
-
-        .team-section { text-align: center; }
-        .team-img {
-            width: 100%;
-            border-radius: 10px;
-            margin-top: 10px;
-        }
-
-        footer {
-            text-align: center;
-            padding: 2rem 0;
-            color: #999;
-            font-size: 0.8rem;
-        }
+        .team-img { width: 100%; border-radius: 10px; margin-top: 10px; }
+        footer { text-align: center; padding: 2rem 0; color: #999; font-size: 0.8rem; }
     </style>
 </head>
 <body>
 
 <header>
     <h1>2026 Q1 商品委員會成果報告</h1>
-    <p>南山人壽｜順可通訊處 | 商品主委 吳約翰 主任</p>
+    <p>順可通訊處 | 商品主委 John Goh</p>
 </header>
 
 <div class="container">
     
     <section class="card">
-        <h2>Q1 工作亮點：財商賦能</h2>
-        <div class="vision-box">
-            製作專業商品推銷夾，提供業務夥伴在市場上擁有專業工具，將複雜法規轉化為成交利器。
+        <h2>Q1 工作亮點：武器賦能</h2>
+        <div class="logic-box">
+            <span>● 市場痛點 (Pain Point)</span>
+            <span class="logic-text">客戶嫌儲蓄險利率低、稅務問題太複雜不敢碰。</span>
+        </div>
+        <div class="solution-box">
+            <span>● 解決方案 (Solution)</span>
+            <span class="logic-text">透過「推銷夾」將數據圖表化，讓專業變得「可視化」。</span>
         </div>
     </section>
 
@@ -181,13 +133,11 @@
             <div class="download-box">
                 <span style="font-size: 1.5rem;">🏥</span>
                 <h3>長照推銷夾</h3>
-                <p>轉化照護風險</p>
                 <a href="long_term_care.pdf" class="btn-download">立即下載</a>
             </div>
             <div class="download-box">
                 <span style="font-size: 1.5rem;">⚖️</span>
                 <h3>稅務簡單說</h3>
-                <p>拆解資產傳承</p>
                 <a href="tax_guide.pdf" class="btn-download">立即下載</a>
             </div>
             <div class="download-box">
@@ -195,12 +145,18 @@
                 <h3>儲蓄推銷夾</h3>
                 <a href="savings_plan.pdf" class="btn-download">立即下載</a>
             </div>
-            <div class="download-box" style="border: 1px dashed #ff4757;">
+            <div class="download-box" style="border: 1px dashed var(--danger);">
                 <span style="font-size: 1.5rem;">🛡️</span>
-                <h3 style="color: #ff4757;">重大傷病夾</h3>
-                <p>Q2 重點開發</p>
-                <span class="btn-download" style="background:#ff4757;">即將上市</span>
+                <h3 style="color: var(--danger);">重大傷病夾</h3>
+                <span class="btn-download" style="background: var(--danger);">即將上市</span>
             </div>
+        </div>
+
+        <div class="gold-sentence">
+            <b>💡 主委貼心話術 (成交金句)：</b>
+            1. 長照：不是在買保險，是在預留未來的尊嚴。<br>
+            2. 稅務：讓資產傳承「省」下來，而不是「剩」下來。<br>
+            3. 儲蓄：強迫儲蓄不是減少消費，是提早預約財富自由。
         </div>
     </section>
 
@@ -208,15 +164,15 @@
         <h2>下季展望：專業進化</h2>
         <div class="future-item">
             <h4>🏫 晨會小學堂</h4>
-            <p>啟動碎片化知識宣導，針對稅務新制、特定商品優勢進行高頻教育，強化銷售話術。</p>
+            <p style="font-size: 0.85rem; color: #666; margin: 0;">啟動碎片化知識宣導，內化最新稅務與理賠實務話術。</p>
         </div>
         <div class="future-item">
             <h4>🔄 工具 2.0 迭代</h4>
-            <p>蒐集第一線夥伴實戰回饋，優化推銷夾的邏輯流暢度與視覺化呈現。</p>
+            <p style="font-size: 0.85rem; color: #666; margin: 0;">根據實戰回饋，優化推銷夾的邏輯流暢度與視覺呈現。</p>
         </div>
     </section>
 
-    <section class="card team-section">
+    <section class="card" style="text-align: center;">
         <h2>商品委員會：黃金陣容</h2>
         <p style="font-size: 0.85rem; color: #888; margin-top: -10px; white-space: nowrap;">專業引領 · 實戰賦能 · 最強後盾</p>
         <img src="member_list.png" alt="團隊照片" class="team-img">
