@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>2026 Q1 商品委員會 | 吳約翰主任</title>
+<title>2026 Q1 商品委員會報告 | 吳約翰主任</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -168,7 +168,7 @@
   /* ─── DOWNLOAD CARDS ─── */
   .resource-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 16px;
     margin-bottom: 48px;
   }
@@ -178,7 +178,7 @@
     background: linear-gradient(135deg, var(--navy-mid) 0%, var(--navy-soft) 100%);
     border: 1px solid rgba(184,146,42,0.2);
     border-radius: 6px;
-    padding: 32px 24px;
+    padding: 32px 12px;
     text-align: center;
     transition: all 0.3s ease;
     overflow: hidden;
@@ -225,7 +225,7 @@
     background: linear-gradient(135deg, rgba(184,146,42,0.08), rgba(184,146,42,0.03));
     border-left: 3px solid var(--gold);
     border-radius: 0 6px 6px 0;
-    padding: 32px 36px;
+    padding: 32px 24px;
   }
 
   .quote-num {
@@ -258,14 +258,6 @@
     border-radius: 6px;
     padding: 28px 24px;
     transition: all 0.3s;
-  }
-
-  .outlook-card h3 {
-    font-family: 'Noto Serif TC', serif;
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 10px;
-    color: var(--white);
   }
 
   /* ─── TEAM ─── */
@@ -317,7 +309,6 @@
     transform: translateY(0);
   }
 
-  /* ─── RESPONSIVE ─── */
   @media (max-width: 640px) {
     .strategy-grid { grid-template-columns: 1fr; }
     .outlook-grid  { grid-template-columns: 1fr; }
@@ -373,10 +364,10 @@
       <div class="resource-title">儲蓄險推銷夾</div>
       <a class="btn-download" href="https://johngyh.github.io/product/savings_plan.pdf" target="_blank">立即下載</a>
     </div>
-    <div class="resource-card" style="opacity:0.6">
+    <div class="resource-card">
       <span class="resource-icon">🛡️</span>
-      <div class="resource-title">重大傷病險推銷夾</div>
-      <span style="border:1px solid rgba(184,146,42,0.4); padding:8px 16px; font-size:11px; color:var(--gold-light)">即將上市</span>
+      <div class="resource-title">重大傷病夾</div>
+      <a class="btn-download" href="https://johngyh.github.io/product/critical_illness.pdf" target="_blank">立即下載</a>
     </div>
   </div>
 
@@ -390,9 +381,13 @@
       <span class="quote-num">02</span>
       <p class="quote-text"><strong>稅務：</strong>人壽保險是遺產外的現金，受益人可以立即獲得的一筆資產。</p>
     </div>
-    <div style="display:flex; gap:16px">
+    <div style="display:flex; gap:16px; margin-bottom:15px">
       <span class="quote-num">03</span>
       <p class="quote-text"><strong>儲蓄：</strong>強迫儲蓄不是減少消費，是提早預約財富自由。</p>
+    </div>
+    <div style="display:flex; gap:16px">
+      <span class="quote-num">04</span>
+      <p class="quote-text"><strong>重大傷病：</strong>人生最貴的不是醫療費，而是失去收入時依然要支付的生活費。</p>
     </div>
   </div>
 </div>
@@ -403,13 +398,13 @@
   <div class="outlook-grid">
     <div class="outlook-card">
       <span style="font-size:24px; margin-bottom:14px; display:block">🏫</span>
-      <h3>晨會小學堂</h3>
-      <p>啟動高頻率碎片化教育，針對稅務新制、特定商品優勢進行宣導，內化銷售話術。</p>
+      <h3 style="font-family:'Noto Serif TC', serif; font-size:16px; margin-bottom:10px">晨會小學堂</h3>
+      <p style="font-size:14px; color:rgba(255,255,255,0.6); line-height:1.7">啟動高頻率碎片化教育，針對稅務新制、特定商品優勢進行宣導，內化銷售話術。</p>
     </div>
     <div class="outlook-card">
       <span style="font-size:24px; margin-bottom:14px; display:block">🔄</span>
-      <h3>工具 2.0 迭代</h3>
-      <p>蒐集實戰回饋，持續優化推銷夾的邏輯流暢度與視覺呈現，貼近一線需求。</p>
+      <h3 style="font-family:'Noto Serif TC', serif; font-size:16px; margin-bottom:10px">工具 2.0 迭代</h3>
+      <p style="font-size:14px; color:rgba(255,255,255,0.6); line-height:1.7">蒐集實戰回饋，持續優化推銷夾的邏輯流暢度與視覺呈現，貼近一線需求。</p>
     </div>
   </div>
 </div>
