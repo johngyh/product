@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>實健溢百 保費與保障比較表 | 南山人壽</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;600;700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* 南山人壽 CI：藍為主色，黃(溫暖)、綠(活力)為輔助色 */
+    --ns-blue-900:#0b2e5c;
+    --ns-blue-700:#134a8c;
+    --ns-blue-500:#1c63b3;
+    --ns-blue-100:#e7f0fb;
+    --ns-gold-600:#c9860f;
+    --ns-gold-400:#e3a635;
+    --ns-gold-100:#fdf1dc;
+    --ns-green-600:#1f7a4d;
+    --ns-green-400:#3f9e6d;
+    --ns-green-100:#e6f6ee;
+    --ink-900:#101826;
+    --ink-600:#3d4a5f;
+    --ink-400:#71809a;
+    --line:#d8e0ec;
+    --bg:#f3f6fb;
+    --card:#ffffff;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink-900);
+    font-family:'Noto Sans TC',sans-serif;
+    min-height:100vh;
+    padding:0 0 60px;
+  }
+  .wrap{max-width:960px;margin:0 auto;padding:32px 20px 0;}
+
+  header{
+    text-align:center;margin-bottom:26px;background:linear-gradient(135deg,var(--ns-blue-900),var(--ns-blue-700));
+    border-radius:18px;padding:30px 22px;position:relative;overflow:hidden;
+  }
+  header::after{
+    content:'';position:absolute;right:-40px;top:-40px;width:180px;height:180px;border-radius:50%;
+    background:radial-gradient(circle,rgba(227,166,53,.35),transparent 70%);
+  }
+  header::before{
+    content:'';position:absolute;left:-30px;bottom:-50px;width:160px;height:160px;border-radius:50%;
+    background:radial-gradient(circle,rgba(63,158,109,.3),transparent 70%);
+  }
+  .eyebrow{
+    font-family:'DM Mono',monospace;letter-spacing:.22em;font-size:11px;
+    color:var(--ns-gold-400);text-transform:uppercase;margin-bottom:10px;position:relative;
+  }
+  h1{
+    font-family:'Noto Serif TC',serif;font-weight:700;font-size:clamp(22px,4vw,30px);
+    margin:0 0 8px;color:#fff;letter-spacing:.02em;position:relative;
+  }
+  .sub{color:#c9d9ef;font-size:13.5px;letter-spacing:.02em;position:relative;}
+
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:16px;
+    padding:24px 22px;margin-bottom:20px;box-shadow:0 12px 30px -18px rgba(11,46,92,.25);
+  }
+
+  .field-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+  @media(max-width:520px){.field-grid{grid-template-columns:1fr;}}
+
+  .field label{
+    display:block;font-size:12px;color:var(--ns-blue-700);
+    letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;
+    font-family:'DM Mono',monospace;font-weight:500;
+  }
+  .seg{display:flex;background:var(--ns-blue-100);border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+  .seg button{
+    flex:1;padding:10px 4px;border:none;background:none;color:var(--ink-600);
+    font-family:'Noto Sans TC';font-size:14px;font-weight:500;cursor:pointer;transition:.15s;
+  }
+  .seg button.on{background:var(--ns-blue-700);color:#fff;font-weight:700;}
+
+  .multi{display:flex;gap:8px;flex-wrap:wrap;}
+  .multi button{
+    padding:9px 16px;border-radius:20px;border:1.5px solid var(--line);
+    background:#fff;color:var(--ink-400);font-family:'Noto Sans TC';font-size:13.5px;font-weight:500;cursor:pointer;transition:.15s;
+  }
+  .multi button.on{background:var(--ns-blue-100);border-color:var(--ns-blue-500);color:var(--ns-blue-700);font-weight:700;}
+  .multi button.on::before{content:'✓ ';color:var(--ns-blue-500);}
+
+  .age-row{display:flex;align-items:center;gap:14px;background:var(--ns-blue-100);border:1px solid var(--line);border-radius:10px;padding:8px 14px;}
+  .age-row input[type=range]{flex:1;accent-color:var(--ns-blue-500);}
+  .age-row input[type=number]{
+    width:56px;background:none;border:none;color:var(--ns-blue-900);
+    font-family:'DM Mono',monospace;font-size:17px;font-weight:700;text-align:right;
+  }
+  .age-row input[type=number]:focus{outline:none;}
+  .age-row span.unit{color:var(--ink-400);font-size:13px;}
+
+  .cmp-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px;}
+  .cmp-head h3{font-family:'Noto Serif TC',serif;font-size:16px;margin:0;color:var(--ns-blue-900);}
+  .badge{
+    display:inline-block;background:var(--ns-blue-900);color:var(--ns-gold-400);
+    font-size:11.5px;padding:4px 12px;border-radius:20px;font-family:'DM Mono',monospace;letter-spacing:.05em;
+  }
+
+  table.cmp{width:100%;border-collapse:collapse;font-size:13.5px;}
+  table.cmp th{
+    font-family:'DM Mono',monospace;font-weight:700;color:#fff;
+    text-align:right;padding:10px 8px;font-size:12px;letter-spacing:.03em;
+    background:var(--ns-blue-700);
+  }
+  table.cmp th:first-child{text-align:left;border-radius:8px 0 0 0;}
+  table.cmp th:last-child{border-radius:0 8px 0 0;}
+  table.cmp td{padding:9px 8px;text-align:right;border-bottom:1px solid var(--line);font-family:'DM Mono',monospace;}
+  table.cmp td:first-child{text-align:left;font-family:'Noto Sans TC';color:var(--ink-600);}
+  table.cmp tbody tr:nth-child(odd){background:#fbfcfe;}
+  table.cmp tr.total-row td{font-weight:700;background:var(--ns-gold-100)!important;color:var(--ns-blue-900);}
+  table.cmp tr:hover td{background:var(--ns-blue-100);}
+
+  /* per-plan column tint for premium comparison */
+  td.plan-10{background:rgba(28,99,179,.06);}
+  td.plan-20{background:rgba(227,166,53,.10);}
+  td.plan-30{background:rgba(63,158,109,.08);}
+  th.plan-10{background:var(--ns-blue-700)!important;}
+  th.plan-20{background:var(--ns-gold-600)!important;}
+  th.plan-30{background:var(--ns-green-600)!important;}
+
+  .bar{height:6px;border-radius:3px;background:#e5eaf3;margin-top:5px;overflow:hidden;}
+  .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--ns-blue-500),var(--ns-blue-700));}
+
+  .trophy{margin-left:4px;}
+  .best-val{color:var(--ns-green-600);font-weight:700;}
+  .cheapest-val{color:var(--ns-blue-700);font-weight:700;}
+
+  .stage-tag{
+    font-family:'DM Mono',monospace;font-size:11px;color:var(--ns-blue-700);letter-spacing:.1em;
+    margin:22px 0 8px;padding:4px 10px;background:var(--ns-blue-100);display:inline-block;border-radius:6px;
+  }
+
+  .note{font-size:11.5px;color:var(--ink-400);text-align:center;margin-top:22px;line-height:1.7;}
+  .note b{color:var(--ink-600);}
+  .note.left{text-align:left;}
+
+  ::selection{background:var(--ns-gold-400);color:var(--ink-900);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Nan Shan Life · 順可通訊處</div>
+    <h1>實健溢百住院醫療終身保險</h1>
+    <div class="sub" style="margin-top:6px;color:var(--ns-gold-400);font-weight:700;">⚠ 同一被保險人以一張為限（不得重複投保）</div>
+  </header>
+
+  <div class="card">
+    <div class="field-grid">
+      <div class="field">
+        <label>性別</label>
+        <div class="seg" id="gender-seg-c">
+          <button data-v="male" class="on">男性</button>
+          <button data-v="female">女性</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>投保年齡</label>
+        <div class="age-row">
+          <input type="range" id="age-slider-c" min="0" max="70" value="35" style="flex:1;">
+          <input type="number" id="age-input-c" min="0" max="70" value="35">
+          <span class="unit">歲</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="field-grid" style="margin-top:16px;">
+      <div class="field">
+        <label>選擇繳費期間(可複選)</label>
+        <div class="multi" id="period-multi">
+          <button data-v="10" class="on">十年期</button>
+          <button data-v="20" class="on">二十年期</button>
+          <button data-v="30" class="on">三十年期</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>選擇投保計劃(可複選)</label>
+        <div class="multi" id="plan-multi">
+          <button data-v="10" class="on">計劃10</button>
+          <button data-v="20" class="on">計劃20</button>
+          <button data-v="30" class="on">計劃30</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="cmp-head" style="margin-top:26px;">
+      <h3 id="cmp-title">同齡・保費比較</h3>
+      <span class="badge" id="cmp-badge">—</span>
+    </div>
+    <table class="cmp">
+      <thead>
+        <tr><th>繳費期間</th><th>投保計劃</th><th>年繳保費</th><th>總繳保費估算</th></tr>
+      </thead>
+      <tbody id="cmp-body"></tbody>
+    </table>
+    <div class="note left" style="margin-top:14px;">
+      <span class="cheapest-val">■</span> 年繳保費最低。同一投保計劃下，期別愈短年繳愈高、但總繳愈低。至少選擇一個期別與一個計劃。
+    </div>
+
+    <div class="cmp-head" style="margin-top:32px;">
+      <h3>保障內容比較（依投保計劃，與年齡／期別無關）</h3>
+    </div>
+    <div class="stage-tag">保險年齡達74歲（不含）前 · 定額給付</div>
+    <table class="cmp" id="benefit-pre74"></table>
+    <div class="note left" style="margin-top:6px;margin-bottom:0;">
+      <b>特殊醫材補助保險金（5項）指定醫材類別</b>：心臟血管支架置放、心律調節器植入、主動脈瓣／二尖瓣／三尖瓣置換、心室輔助裝置植入、腦室腹腔分流手術。實際認定項目與理賠條件以保單條款為準。
+    </div>
+
+    <div class="stage-tag">保險年齡達74歲（含）以後 · 實支實付型／日額給付型 擇一</div>
+    <table class="cmp" id="benefit-post74"></table>
+
+    <div class="note left" style="margin-top:14px;">
+      🏆 所選計劃中<b>最高總給付限額</b>最高者。該排整列以粗體＋淺金底色標示。
+      <br>身故／祝壽保險金：年繳保險費總和 × 1.06 × 健康促進係數－累計已領醫療給付（各計劃公式相同）。
+      <br>＊ 標示項目：官方商品簡介僅明確列出計劃20之數值（500元），計劃10／30是否相同未於簡介中單獨列示，建議以保單條款附表一核對後再向客戶說明。
+    </div>
+  </div>
+
+  <div class="note">
+    資料來源：南山人壽實健溢百住院醫療終身保險費率表（一般繳費件）與商品簡介。<b>集體投保彙繳</b>與<b>金融機構自動轉帳／信用卡</b>件另有調整費率，未包含於本工具。試算結果僅供參考，實際保費以南山人壽核保及要保書為準。
+    <br>本比較表由 <b>吳約翰</b> 業務主任製作 · 順可通訊處
+  </div>
+
+</div>
+
+<script>
+const WEHS_DATA = {"10_10":{"male":{"0":33930,"1":34640,"2":35350,"3":36060,"4":36770,"5":37480,"6":38190,"7":38900,"8":39610,"9":40320,"10":40990,"11":42120,"12":43250,"13":44380,"14":45510,"15":46640,"16":47770,"17":48900,"18":50030,"19":51160,"20":52300,"21":53520,"22":54740,"23":55960,"24":57180,"25":58400,"26":59620,"27":60840,"28":62060,"29":63280,"30":64470,"31":65980,"32":67490,"33":69000,"34":70510,"35":72020,"36":73530,"37":75040,"38":76550,"39":78060,"40":79590,"41":81680,"42":83770,"43":85860,"44":87950,"45":90020,"46":92540,"47":95060,"48":97580,"49":100100,"50":102600,"51":105460,"52":108320,"53":111180,"54":114040,"55":116920,"56":120390,"57":123860,"58":127330,"59":130800,"60":134260,"61":137300,"62":140340,"63":143380,"64":146420,"65":149450,"66":152670,"67":155890,"68":159110,"69":162330,"70":165550},"female":{"0":34170,"1":34870,"2":35570,"3":36270,"4":36970,"5":37670,"6":38370,"7":39070,"8":39770,"9":40470,"10":41170,"11":42230,"12":43290,"13":44350,"14":45410,"15":46470,"16":47530,"17":48590,"18":49650,"19":50710,"20":51770,"21":52870,"22":53970,"23":55070,"24":56170,"25":57270,"26":58370,"27":59470,"28":60570,"29":61670,"30":62760,"31":63760,"32":64760,"33":65760,"34":66760,"35":67760,"36":68760,"37":69760,"38":70760,"39":71760,"40":72710,"41":74290,"42":75870,"43":77450,"44":79030,"45":80630,"46":82140,"47":83650,"48":85160,"49":86670,"50":88160,"51":90010,"52":91860,"53":93710,"54":95560,"55":97420,"56":99560,"57":101700,"58":103840,"59":105980,"60":108140,"61":109990,"62":111840,"63":113690,"64":115540,"65":117400,"66":120360,"67":123320,"68":126280,"69":129240,"70":132200},"max_age":70},"10_20":{"male":{"0":59500,"1":60650,"2":61800,"3":62950,"4":64100,"5":65250,"6":66400,"7":67550,"8":68700,"9":69850,"10":70950,"11":72820,"12":74690,"13":76560,"14":78430,"15":80300,"16":82170,"17":84040,"18":85910,"19":87780,"20":89630,"21":91570,"22":93510,"23":95450,"24":97390,"25":99330,"26":101270,"27":103210,"28":105150,"29":107090,"30":109030,"31":111340,"32":113650,"33":115960,"34":118270,"35":120580,"36":122890,"37":125200,"38":127510,"39":129820,"40":132130,"41":134940,"42":137750,"43":140560,"44":143370,"45":146200,"46":149430,"47":152660,"48":155890,"49":159120,"50":162360,"51":166190,"52":170020,"53":173850,"54":177680,"55":181530,"56":186240,"57":190950,"58":195660,"59":200370,"60":205060,"61":209850,"62":214640,"63":219430,"64":224220,"65":228990,"66":234160,"67":239330,"68":244500,"69":249670,"70":254820},"female":{"0":59550,"1":60690,"2":61830,"3":62970,"4":64110,"5":65250,"6":66390,"7":67530,"8":68670,"9":69810,"10":70990,"11":72700,"12":74410,"13":76120,"14":77830,"15":79540,"16":81250,"17":82960,"18":84670,"19":86380,"20":88050,"21":89790,"22":91530,"23":93270,"24":95010,"25":96750,"26":98490,"27":100230,"28":101970,"29":103710,"30":105400,"31":106600,"32":107800,"33":109000,"34":110200,"35":111400,"36":112600,"37":113800,"38":115000,"39":116200,"40":117430,"41":119800,"42":122170,"43":124540,"44":126910,"45":129270,"46":131780,"47":134290,"48":136800,"49":139310,"50":141800,"51":144700,"52":147600,"53":150500,"54":153400,"55":156290,"56":159800,"57":163310,"58":166820,"59":170330,"60":173820,"61":176410,"62":179000,"63":181590,"64":184180,"65":186790,"66":190120,"67":193450,"68":196780,"69":200110,"70":203450},"max_age":70},"10_30":{"male":{"0":85230,"1":86910,"2":88590,"3":90270,"4":91950,"5":93630,"6":95310,"7":96990,"8":98670,"9":100350,"10":101990,"11":104630,"12":107270,"13":109910,"14":112550,"15":115190,"16":117830,"17":120470,"18":123110,"19":125750,"20":128380,"21":130990,"22":133600,"23":136210,"24":138820,"25":141430,"26":144040,"27":146650,"28":149260,"29":151870,"30":154480,"31":157620,"32":160760,"33":163900,"34":167040,"35":170180,"36":173320,"37":176460,"38":179600,"39":182740,"40":185920,"41":189920,"42":193920,"43":197920,"44":201920,"45":205920,"46":210180,"47":214440,"48":218700,"49":222960,"50":227210,"51":232520,"52":237830,"53":243140,"54":248450,"55":253770,"56":260330,"57":266890,"58":273450,"59":280010,"60":286580,"61":293080,"62":299580,"63":306080,"64":312580,"65":319080,"66":325920,"67":332760,"68":339600,"69":346440,"70":353300},"female":{"0":85600,"1":87240,"2":88880,"3":90520,"4":92160,"5":93800,"6":95440,"7":97080,"8":98720,"9":100360,"10":102020,"11":104150,"12":106280,"13":108410,"14":110540,"15":112670,"16":114800,"17":116930,"18":119060,"19":121190,"20":123340,"21":125440,"22":127540,"23":129640,"24":131740,"25":133840,"26":135940,"27":138040,"28":140140,"29":142240,"30":144340,"31":146540,"32":148740,"33":150940,"34":153140,"35":155340,"36":157540,"37":159740,"38":161940,"39":164140,"40":166380,"41":169500,"42":172620,"43":175740,"44":178860,"45":182000,"46":185170,"47":188340,"48":191510,"49":194680,"50":197830,"51":201970,"52":206110,"53":210250,"54":214390,"55":218510,"56":223540,"57":228570,"58":233600,"59":238630,"60":243660,"61":248260,"62":252860,"63":257460,"64":262060,"65":266660,"66":271530,"67":276400,"68":281270,"69":286140,"70":290990},"max_age":70},"20_10":{"male":{"0":18750,"1":19140,"2":19530,"3":19920,"4":20310,"5":20700,"6":21090,"7":21480,"8":21870,"9":22260,"10":22650,"11":23280,"12":23910,"13":24540,"14":25170,"15":25800,"16":26430,"17":27060,"18":27690,"19":28320,"20":28900,"21":29720,"22":30540,"23":31360,"24":32180,"25":33000,"26":33820,"27":34640,"28":35460,"29":36280,"30":37050,"31":37620,"32":38190,"33":38760,"34":39330,"35":39900,"36":40470,"37":41040,"38":41610,"39":42180,"40":42790,"41":43930,"42":45070,"43":46210,"44":47350,"45":48500,"46":49820,"47":51140,"48":52460,"49":53780,"50":55100,"51":56720,"52":58340,"53":59960,"54":61580,"55":63200,"56":66270,"57":69340,"58":72410,"59":75480,"60":78560},"female":{"0":18880,"1":19270,"2":19660,"3":20050,"4":20440,"5":20830,"6":21220,"7":21610,"8":22000,"9":22390,"10":22750,"11":23340,"12":23930,"13":24520,"14":25110,"15":25700,"16":26290,"17":26880,"18":27470,"19":28060,"20":28610,"21":29340,"22":30070,"23":30800,"24":31530,"25":32260,"26":32990,"27":33720,"28":34450,"29":35180,"30":35860,"31":36220,"32":36580,"33":36940,"34":37300,"35":37660,"36":38020,"37":38380,"38":38740,"39":39100,"40":39500,"41":40360,"42":41220,"43":42080,"44":42940,"45":43800,"46":44730,"47":45660,"48":46590,"49":47520,"50":48440,"51":49580,"52":50720,"53":51860,"54":53000,"55":54120,"56":55730,"57":57340,"58":58950,"59":60560,"60":62150},"max_age":60},"20_20":{"male":{"0":32880,"1":33510,"2":34140,"3":34770,"4":35400,"5":36030,"6":36660,"7":37290,"8":37920,"9":38550,"10":39210,"11":40240,"12":41270,"13":42300,"14":43330,"15":44360,"16":45390,"17":46420,"18":47450,"19":48480,"20":49530,"21":50840,"22":52150,"23":53460,"24":54770,"25":56080,"26":57390,"27":58700,"28":60010,"29":61320,"30":62660,"31":63500,"32":64340,"33":65180,"34":66020,"35":66860,"36":67700,"37":68540,"38":69380,"39":70220,"40":71040,"41":72590,"42":74140,"43":75690,"44":77240,"45":78770,"46":80570,"47":82370,"48":84170,"49":85970,"50":87760,"51":89940,"52":92120,"53":94300,"54":96480,"55":98660,"56":102930,"57":107200,"58":111470,"59":115740,"60":119990},"female":{"0":32910,"1":33540,"2":34170,"3":34800,"4":35430,"5":36060,"6":36690,"7":37320,"8":37950,"9":38580,"10":39230,"11":40100,"12":40970,"13":41840,"14":42710,"15":43580,"16":44450,"17":45320,"18":46190,"19":47060,"20":47960,"21":48890,"22":49820,"23":50750,"24":51680,"25":52610,"26":53540,"27":54470,"28":55400,"29":56330,"30":57280,"31":57670,"32":58060,"33":58450,"34":58840,"35":59230,"36":59620,"37":60010,"38":60400,"39":60790,"40":61160,"41":62390,"42":63620,"43":64850,"44":66080,"45":67330,"46":68790,"47":70250,"48":71710,"49":73170,"50":74630,"51":76160,"52":77690,"53":79220,"54":80750,"55":82260,"56":84700,"57":87140,"58":89580,"59":92020,"60":94470},"max_age":60},"20_30":{"male":{"0":47350,"1":48280,"2":49210,"3":50140,"4":51070,"5":52000,"6":52930,"7":53860,"8":54790,"9":55720,"10":56660,"11":58130,"12":59600,"13":61070,"14":62540,"15":64010,"16":65480,"17":66950,"18":68420,"19":69890,"20":71320,"21":72970,"22":74620,"23":76270,"24":77920,"25":79570,"26":81220,"27":82870,"28":84520,"29":86170,"30":87770,"31":88780,"32":89790,"33":90800,"34":91810,"35":92820,"36":93830,"37":94840,"38":95850,"39":96860,"40":97850,"41":100260,"42":102670,"43":105080,"44":107490,"45":109880,"46":112520,"47":115160,"48":117800,"49":120440,"50":123080,"51":126140,"52":129200,"53":132260,"54":135320,"55":138370,"56":144890,"57":151410,"58":157930,"59":164450,"60":170990},"female":{"0":47820,"1":48710,"2":49600,"3":50490,"4":51380,"5":52270,"6":53160,"7":54050,"8":54940,"9":55830,"10":56680,"11":57920,"12":59160,"13":60400,"14":61640,"15":62880,"16":64120,"17":65360,"18":66600,"19":67840,"20":69060,"21":70170,"22":71280,"23":72390,"24":73500,"25":74610,"26":75720,"27":76830,"28":77940,"29":79050,"30":80190,"31":81060,"32":81930,"33":82800,"34":83670,"35":84540,"36":85410,"37":86280,"38":87150,"39":88020,"40":88880,"41":90590,"42":92300,"43":94010,"44":95720,"45":97430,"46":98880,"47":100330,"48":101780,"49":103230,"50":104670,"51":106810,"52":108950,"53":111090,"54":113230,"55":115370,"56":119220,"57":123070,"58":126920,"59":130770,"60":134620},"max_age":60},"30_10":{"male":{"0":13630,"1":13910,"2":14190,"3":14470,"4":14750,"5":15030,"6":15310,"7":15590,"8":15870,"9":16150,"10":16460,"11":16820,"12":17180,"13":17540,"14":17900,"15":18260,"16":18620,"17":18980,"18":19340,"19":19700,"20":20080,"21":20670,"22":21260,"23":21850,"24":22440,"25":23030,"26":23620,"27":24210,"28":24800,"29":25390,"30":25940,"31":26680,"32":27420,"33":28160,"34":28900,"35":29640,"36":30380,"37":31120,"38":31860,"39":32600,"40":33380,"41":34330,"42":35280,"43":36230,"44":37180,"45":38150,"46":39340,"47":40530,"48":41720,"49":42910,"50":44080},"female":{"0":13720,"1":14000,"2":14280,"3":14560,"4":14840,"5":15120,"6":15400,"7":15680,"8":15960,"9":16240,"10":16530,"11":16870,"12":17210,"13":17550,"14":17890,"15":18230,"16":18570,"17":18910,"18":19250,"19":19590,"20":19880,"21":20400,"22":20920,"23":21440,"24":21960,"25":22480,"26":23000,"27":23520,"28":24040,"29":24560,"30":25100,"31":25510,"32":25920,"33":26330,"34":26740,"35":27150,"36":27560,"37":27970,"38":28380,"39":28790,"40":29230,"41":29920,"42":30610,"43":31300,"44":31990,"45":32700,"46":33620,"47":34540,"48":35460,"49":36380,"50":37300},"max_age":50},"30_20":{"male":{"0":23890,"1":24350,"2":24810,"3":25270,"4":25730,"5":26190,"6":26650,"7":27110,"8":27570,"9":28030,"10":28490,"11":29140,"12":29790,"13":30440,"14":31090,"15":31740,"16":32390,"17":33040,"18":33690,"19":34340,"20":35000,"21":35930,"22":36860,"23":37790,"24":38720,"25":39650,"26":40580,"27":41510,"28":42440,"29":43370,"30":44320,"31":45450,"32":46580,"33":47710,"34":48840,"35":49970,"36":51100,"37":52230,"38":53360,"39":54490,"40":55650,"41":56910,"42":58170,"43":59430,"44":60690,"45":61970,"46":63620,"47":65270,"48":66920,"49":68570,"50":70210},"female":{"0":23910,"1":24370,"2":24830,"3":25290,"4":25750,"5":26210,"6":26670,"7":27130,"8":27590,"9":28050,"10":28510,"11":29040,"12":29570,"13":30100,"14":30630,"15":31160,"16":31690,"17":32220,"18":32750,"19":33280,"20":33800,"21":34460,"22":35120,"23":35780,"24":36440,"25":37100,"26":37760,"27":38420,"28":39080,"29":39740,"30":40400,"31":41130,"32":41860,"33":42590,"34":43320,"35":44050,"36":44780,"37":45510,"38":46240,"39":46970,"40":47700,"41":48620,"42":49540,"43":50460,"44":51380,"45":52290,"46":53420,"47":54550,"48":55680,"49":56810,"50":57960},"max_age":50},"30_30":{"male":{"0":34090,"1":34740,"2":35390,"3":36040,"4":36690,"5":37340,"6":37990,"7":38640,"8":39290,"9":39940,"10":40610,"11":41540,"12":42470,"13":43400,"14":44330,"15":45260,"16":46190,"17":47120,"18":48050,"19":48980,"20":49920,"21":51180,"22":52440,"23":53700,"24":54960,"25":56220,"26":57480,"27":58740,"28":60000,"29":61260,"30":62550,"31":63470,"32":64390,"33":65310,"34":66230,"35":67150,"36":68070,"37":68990,"38":69910,"39":70830,"40":71760,"41":73520,"42":75280,"43":77040,"44":78800,"45":80580,"46":83990,"47":87400,"48":90810,"49":94220,"50":97640},"female":{"0":34270,"1":34910,"2":35550,"3":36190,"4":36830,"5":37470,"6":38110,"7":38750,"8":39390,"9":40030,"10":40620,"11":41390,"12":42160,"13":42930,"14":43700,"15":44470,"16":45240,"17":46010,"18":46780,"19":47550,"20":48340,"21":49200,"22":50060,"23":50920,"24":51780,"25":52640,"26":53500,"27":54360,"28":55220,"29":56080,"30":56930,"31":57990,"32":59050,"33":60110,"34":61170,"35":62230,"36":63290,"37":64350,"38":65410,"39":66470,"40":67550,"41":68850,"42":70150,"43":71450,"44":72750,"45":74050,"46":75710,"47":77370,"48":79030,"49":80690,"50":82340},"max_age":50}};
+
+function fmt(n){ return n.toLocaleString('en-US'); }
+function maxAgeFor(period){ return period==='10' ? 70 : (period==='20' ? 60 : 50); }
+const periodLabel = {10:'十年期',20:'二十年期',30:'三十年期'};
+
+// 保障內容（資料來源：南山人壽 WEHS 商品簡介 PA-01-474）。「另給付」項目已改為與基本日額合計後的總金額，直接呈現實際可領總額。
+// ＊標示：官方簡介僅明確列出計劃20之數值，計劃10/30比照列示，建議以保單條款附表一核對。
+const BENEFITS = {
+  "10": {
+    pre74: [
+      ["住院日額保險金 / 日", 1000, false],
+      ["癌症住院日額保險金 / 日（合計，含基本日額）", 1300, false],
+      ["加護病房暨燒燙傷中心醫療保險金 / 日（合計，含基本日額）", 2000, false],
+      ["住院前後門診保險金 / 次", 500, true],
+      ["住院手術醫療保險金 / 次", 2000, false],
+      ["門診手術醫療保險金 / 次", 1000, false],
+      ["特殊醫材補助保險金 / 次（5項，10次為限）", 5000, false],
+      ["最高總給付金額", 2500000, false],
+    ],
+    post74: [
+      ["每日病房費用保險金 － 僅入住一般病房", 1000, false],
+      ["每日病房費用保險金 － 曾入住加護病房/燒燙傷中心", 2000, false],
+      ["醫院各項雜費及手術費保險金 － 僅入住一般病房", 100000, false],
+      ["醫院各項雜費及手術費保險金 － 曾入住加護病房/燒燙傷中心", 200000, false],
+      ["醫院各項雜費及手術費保險金 － 一般病房接受癌症治療", 130000, false],
+      ["住院前後門診費用保險金 / 次", 500, true],
+      ["門診手術費用保險金 － 一般門診手術", 20000, false],
+      ["門診手術費用保險金 － 門診方式接受癌症治療", 26000, false],
+      ["住院費用補償保險金（日額給付型，定額/次）", 1000, false],
+      ["最高總給付限額", 2500000, false],
+    ]
+  },
+  "20": {
+    pre74: [
+      ["住院日額保險金 / 日", 2000, false],
+      ["癌症住院日額保險金 / 日（合計，含基本日額）", 2600, false],
+      ["加護病房暨燒燙傷中心醫療保險金 / 日（合計，含基本日額）", 4000, false],
+      ["住院前後門診保險金 / 次", 500, false],
+      ["住院手術醫療保險金 / 次", 4000, false],
+      ["門診手術醫療保險金 / 次", 2000, false],
+      ["特殊醫材補助保險金 / 次（5項，10次為限）", 10000, false],
+      ["最高總給付金額", 5000000, false],
+    ],
+    post74: [
+      ["每日病房費用保險金 － 僅入住一般病房", 2000, false],
+      ["每日病房費用保險金 － 曾入住加護病房/燒燙傷中心", 4000, false],
+      ["醫院各項雜費及手術費保險金 － 僅入住一般病房", 200000, false],
+      ["醫院各項雜費及手術費保險金 － 曾入住加護病房/燒燙傷中心", 400000, false],
+      ["醫院各項雜費及手術費保險金 － 一般病房接受癌症治療", 260000, false],
+      ["住院前後門診費用保險金 / 次", 500, false],
+      ["門診手術費用保險金 － 一般門診手術", 40000, false],
+      ["門診手術費用保險金 － 門診方式接受癌症治療", 52000, false],
+      ["住院費用補償保險金（日額給付型，定額/次）", 2000, false],
+      ["最高總給付限額", 5000000, false],
+    ]
+  },
+  "30": {
+    pre74: [
+      ["住院日額保險金 / 日", 3000, false],
+      ["癌症住院日額保險金 / 日（合計，含基本日額）", 3900, false],
+      ["加護病房暨燒燙傷中心醫療保險金 / 日（合計，含基本日額）", 6000, false],
+      ["住院前後門診保險金 / 次", 500, true],
+      ["住院手術醫療保險金 / 次", 6000, false],
+      ["門診手術醫療保險金 / 次", 3000, false],
+      ["特殊醫材補助保險金 / 次（5項，10次為限）", 15000, false],
+      ["最高總給付金額", 7500000, false],
+    ],
+    post74: [
+      ["每日病房費用保險金 － 僅入住一般病房", 3000, false],
+      ["每日病房費用保險金 － 曾入住加護病房/燒燙傷中心", 6000, false],
+      ["醫院各項雜費及手術費保險金 － 僅入住一般病房", 300000, false],
+      ["醫院各項雜費及手術費保險金 － 曾入住加護病房/燒燙傷中心", 600000, false],
+      ["醫院各項雜費及手術費保險金 － 一般病房接受癌症治療", 390000, false],
+      ["住院前後門診費用保險金 / 次", 500, true],
+      ["門診手術費用保險金 － 一般門診手術", 60000, false],
+      ["門診手術費用保險金 － 門診方式接受癌症治療", 78000, false],
+      ["住院費用補償保險金（日額給付型，定額/次）", 3000, false],
+      ["最高總給付限額", 7500000, false],
+    ]
+  }
+};
+
+// ---------- STATE ----------
+let cstate = { gender:'male', age:35, periods:['10','20','30'], plans:['10','20','30'] };
+
+document.querySelectorAll('#gender-seg-c button').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('#gender-seg-c button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+    cstate.gender=b.dataset.v;
+    renderCompare();
+  });
+});
+document.getElementById('age-slider-c').addEventListener('input', e=>{
+  cstate.age=parseInt(e.target.value);
+  document.getElementById('age-input-c').value=cstate.age;
+  renderCompare();
+});
+document.getElementById('age-input-c').addEventListener('input', e=>{
+  let v=parseInt(e.target.value||0);
+  if(isNaN(v)) v=0;
+  v=Math.max(0,Math.min(70,v));
+  cstate.age=v;
+  document.getElementById('age-slider-c').value=v;
+  renderCompare();
+});
+
+function multiSetup(id, arrKey){
+  document.querySelectorAll('#'+id+' button').forEach(b=>{
+    b.addEventListener('click',()=>{
+      const v = b.dataset.v;
+      const arr = cstate[arrKey];
+      const idx = arr.indexOf(v);
+      if(idx>-1){
+        if(arr.length===1) return;
+        arr.splice(idx,1);
+        b.classList.remove('on');
+      } else {
+        arr.push(v);
+        b.classList.add('on');
+      }
+      renderCompare();
+    });
+  });
+}
+multiSetup('period-multi','periods');
+multiSetup('plan-multi','plans');
+
+function renderCompare(){
+  const periods = ['10','20','30'].filter(p=>cstate.periods.includes(p));
+  const plans = ['10','20','30'].filter(p=>cstate.plans.includes(p));
+  const body = document.getElementById('cmp-body');
+  const badge = document.getElementById('cmp-badge');
+  const title = document.getElementById('cmp-title');
+  body.innerHTML='';
+  badge.textContent = `${cstate.gender==='male'?'男性':'女性'} · ${cstate.age}歲`;
+  title.textContent = `同齡・${periods.length}種期別 × ${plans.length}種計劃 保費比較`;
+
+  const rows = [];
+  periods.forEach(p=>{
+    plans.forEach(pl=>{
+      const m = maxAgeFor(p);
+      const premium = cstate.age>m ? null : WEHS_DATA[p+'_'+pl][cstate.gender][cstate.age];
+      const years = parseInt(p);
+      rows.push({ p, pl, premium, total: premium===null ? null : premium*years });
+    });
+  });
+
+  const validPremiums = rows.filter(r=>r.premium!==null).map(r=>r.premium);
+  const validTotals   = rows.filter(r=>r.total!==null).map(r=>r.total);
+
+  if(validPremiums.length===0){
+    body.innerHTML = `<tr><td colspan="5" style="color:var(--ink-400);">此年齡在所選組合下皆超出投保年齡範圍</td></tr>`;
+    renderBenefitTable('benefit-pre74','pre74');
+    renderBenefitTable('benefit-post74','post74');
+    return;
+  }
+  const minPremium = Math.min(...validPremiums);
+  const minTotal    = Math.min(...validTotals);
+  const maxPremium = Math.max(...validPremiums, 1);
+
+  rows.forEach(r=>{
+    const tr = document.createElement('tr');
+    if(r.premium===null){
+      tr.innerHTML = `<td>${periodLabel[r.p]}</td><td class="plan-${r.pl}">計劃${r.pl}</td><td colspan="2" style="color:var(--ink-400);">超出投保年齡範圍</td>`;
+      body.appendChild(tr);
+      return;
+    }
+    const isMinPremium = r.premium===minPremium;
+    const isMinTotal = r.total===minTotal;
+    tr.innerHTML = `
+      <td>${periodLabel[r.p]}</td>
+      <td class="plan-${r.pl}" style="font-weight:700;">計劃${r.pl}</td>
+      <td class="plan-${r.pl}" style="${isMinPremium?'color:var(--ns-blue-700);font-weight:700;':''}">${fmt(r.premium)}${isMinPremium?' ●':''}
+        <div class="bar"><i style="width:${(r.premium/maxPremium*100).toFixed(0)}%"></i></div>
+      </td>
+      <td class="plan-${r.pl}">${fmt(r.total)}</td>
+    `;
+    body.appendChild(tr);
+  });
+
+  renderBenefitTable('benefit-pre74','pre74');
+  renderBenefitTable('benefit-post74','post74');
+}
+
+function renderBenefitTable(elId, stage){
+  const el = document.getElementById(elId);
+  const plans = ['10','20','30'].filter(p=>cstate.plans.includes(p));
+  const planColors = {10:'plan-10',20:'plan-20',30:'plan-30'};
+  let head = '<thead><tr><th style="text-align:left;">給付項目</th>' + plans.map(p=>`<th class="${planColors[p]}">計劃${p}</th>`).join('') + '</tr></thead>';
+  const rowCount = BENEFITS['10'][stage].length;
+  let body = '<tbody>';
+  for(let i=0;i<rowCount;i++){
+    const label = BENEFITS['10'][stage][i][0];
+    const isTotalRow = label.includes('最高總給付');
+    // trophy only applies to the total-payout row, and only when there's a strict max (not a tie)
+    let maxVal = -Infinity;
+    let allNumeric = true;
+    const numericVals = [];
+    plans.forEach(p=>{
+      const v = BENEFITS[p][stage][i][1];
+      if(typeof v !== 'number'){ allNumeric = false; }
+      else { numericVals.push(v); if(v>maxVal) maxVal = v; }
+    });
+    const allTied = allNumeric && numericVals.every(v=>v===numericVals[0]);
+    body += `<tr class="${isTotalRow?'total-row':''}"><td>${label}</td>`;
+    plans.forEach(p=>{
+      const [,val,flag] = BENEFITS[p][stage][i];
+      const isMax = isTotalRow && allNumeric && !allTied && plans.length>1 && typeof val==='number' && val===maxVal;
+      const display = typeof val === 'number' ? fmt(val) + ' 元' : val;
+      body += `<td class="${planColors[p]}">${display}${isMax?' <span class="trophy">🏆</span>':''}${flag?' <span style="color:var(--ns-gold-600);">＊</span>':''}</td>`;
+    });
+    body += '</tr>';
+  }
+  body += '</tbody>';
+  el.innerHTML = head + body;
+}
+
+renderCompare();
+</script>
+</body>
+</html>
