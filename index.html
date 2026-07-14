@@ -1,438 +1,359 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0a1a30">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>2026 南山人壽 順可通訊處｜商品委員會</title>
+<title>2026 南山人壽 順可通訊處｜商品委員會 Q3</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;600;700;900&family=Noto+Sans+TC:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --gold: #B8922A;
-    --gold-light: #D4AF5A;
-    --gold-pale: #F5EDD6;
-    --navy: #0D1B2A;
-    --navy-mid: #1A2F45;
-    --navy-soft: #2C4560;
-    --white: #FAFAF8;
-    --gray-soft: #F0EDE8;
-    --text-body: #2E2E2E;
-    --text-muted: #6B6B6B;
+  :root{
+    --navy-deep:#0a1a30;
+    --navy:#0e223f;
+    --navy-card:#132a4d;
+    --gold:#c9a227;
+    --gold-bright:#e6c565;
+    --cream:#f4efe2;
+    --mist:#9fb0c9;
+    --line: rgba(201,162,39,0.22);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth; background:var(--navy-deep); color-scheme:dark;}
+  body{
+    background-color:var(--navy-deep);
+    background-image:
+      radial-gradient(ellipse at 20% 0%, rgba(201,162,39,0.08), transparent 55%),
+      radial-gradient(ellipse at 100% 30%, rgba(201,162,39,0.05), transparent 50%);
+    background-attachment:fixed;
+    color:var(--cream);
+    font-family:'Noto Sans TC', sans-serif;
+    font-weight:300;
+    line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  .wrap{max-width:920px; margin:0 auto; padding:0 28px;}
+
+  /* ---- Scroll reveal ---- */
+  .reveal{opacity:0; transform:translateY(22px); transition:opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1);}
+  .reveal.in{opacity:1; transform:translateY(0);}
+  .reveal-stagger > *{opacity:0; transform:translateY(18px); transition:opacity .6s cubic-bezier(.2,.7,.2,1), transform .6s cubic-bezier(.2,.7,.2,1);}
+  .reveal-stagger.in > *{opacity:1; transform:translateY(0);}
+  .reveal-stagger.in > *:nth-child(1){transition-delay:.03s;}
+  .reveal-stagger.in > *:nth-child(2){transition-delay:.11s;}
+  .reveal-stagger.in > *:nth-child(3){transition-delay:.19s;}
+  .reveal-stagger.in > *:nth-child(4){transition-delay:.27s;}
+  .reveal-stagger.in > *:nth-child(5){transition-delay:.35s;}
+  .reveal-stagger.in > *:nth-child(6){transition-delay:.43s;}
+  .reveal-stagger.in > *:nth-child(7){transition-delay:.51s;}
+
+  @media (prefers-reduced-motion: reduce){
+    .reveal, .reveal-stagger > *{opacity:1 !important; transform:none !important; transition:none !important;}
+    .hero-in *{animation:none !important;}
   }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    background: var(--navy);
-    color: var(--white);
-    font-family: 'Noto Sans TC', sans-serif;
-    font-weight: 300;
-    overflow-x: hidden;
-    -webkit-font-smoothing: antialiased;
+  /* ---- Header ---- */
+  header{padding:64px 0 40px; text-align:center; position:relative;}
+  @keyframes heroFade{from{opacity:0; transform:translateY(14px);} to{opacity:1; transform:translateY(0);}}
+  @keyframes lineDraw{from{width:0;} to{width:64px;}}
+  .eyebrow{
+    font-family:'DM Mono', monospace;
+    font-size:12px; letter-spacing:0.35em; text-transform:uppercase;
+    color:var(--gold); margin-bottom:20px;
+    animation:heroFade .7s cubic-bezier(.2,.7,.2,1) both;
+  }
+  h1{
+    font-family:'Noto Serif TC', serif; font-weight:700;
+    font-size:clamp(26px,5vw,42px);
+    letter-spacing:0.02em;
+    color:var(--cream);
+    margin-bottom:10px;
+    animation:heroFade .8s cubic-bezier(.2,.7,.2,1) .12s both;
+  }
+  h1 .quarter{
+    display:inline-block; color:var(--gold-bright); font-weight:900;
+    position:relative; padding:0 4px;
+  }
+  .subtitle-line{
+    width:64px; height:1px; background:var(--gold); margin:24px auto 22px;
+    animation:lineDraw .9s cubic-bezier(.2,.7,.2,1) .32s both;
+  }
+  .members{
+    font-size:13px; color:var(--mist); letter-spacing:0.03em;
+    animation:heroFade .8s cubic-bezier(.2,.7,.2,1) .46s both;
+  }
+  @media (prefers-reduced-motion: reduce){
+    .eyebrow, h1, .subtitle-line, .members{animation:none !important;}
   }
 
-  /* ─── HERO ─── */
-  .hero {
-    position: relative;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 80px 24px 60px;
-    overflow: hidden;
+  /* ---- Section shell ---- */
+  section{padding:56px 0; border-top:1px solid var(--line);}
+  .section-eyebrow{
+    font-family:'DM Mono', monospace; font-size:11px; letter-spacing:0.3em;
+    text-transform:uppercase; color:var(--gold); margin-bottom:14px;
   }
-
-  .hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: 
-      radial-gradient(ellipse 70% 60% at 50% 30%, rgba(184,146,42,0.18) 0%, transparent 70%),
-      radial-gradient(ellipse 40% 40% at 80% 80%, rgba(44,69,96,0.6) 0%, transparent 60%);
-    pointer-events: none;
+  h2{
+    font-family:'Noto Serif TC', serif; font-weight:600;
+    font-size:clamp(21px,3.4vw,28px);
+    color:var(--cream); margin-bottom:30px;
   }
-
-  .hero-badge {
-    display: inline-block;
-    border: 1px solid rgba(184,146,42,0.5);
-    color: var(--gold-light);
-    font-size: 11px;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    padding: 6px 18px;
-    border-radius: 2px;
-    margin-bottom: 28px;
-    animation: fadeUp 0.8s ease both;
+  h3.sub-label{
+    font-family:'DM Mono', monospace; font-weight:500; font-size:12px; letter-spacing:0.2em;
+    color:var(--mist); margin:30px 0 16px; text-transform:uppercase;
   }
+  h3.sub-label:first-of-type{margin-top:0;}
 
-  .hero h1 {
-    font-family: 'Noto Serif TC', serif;
-    font-size: clamp(32px, 6vw, 64px);
-    font-weight: 700;
-    line-height: 1.2;
-    letter-spacing: 0.04em;
-    margin-bottom: 16px;
-    animation: fadeUp 0.8s 0.1s ease both;
+  /* ---- Strategy cards ---- */
+  .pair{display:grid; grid-template-columns:1fr 1fr; gap:20px;}
+  @media(max-width:680px){.pair{grid-template-columns:1fr;}}
+  .card{
+    background:linear-gradient(180deg, var(--navy-card), var(--navy));
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:26px 24px;
   }
-
-  .hero h1 span {
-    display: block;
-    background: linear-gradient(135deg, var(--gold-light), var(--gold));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+  .card-label{
+    font-family:'DM Mono', monospace; font-size:11px; letter-spacing:0.2em;
+    color:var(--mist); text-transform:uppercase; margin-bottom:12px;
   }
+  .card p{font-size:15px; color:#dfe6f0; font-weight:300;}
 
-  .hero-sub {
-    font-size: 14px;
-    color: rgba(255,255,255,0.55);
-    letter-spacing: 0.12em;
-    margin-bottom: 48px;
-    animation: fadeUp 0.8s 0.2s ease both;
+  /* ---- Process (晨會通關機制) ---- */
+  .process{display:flex; flex-direction:column; gap:0;}
+  .step{
+    display:grid; grid-template-columns:56px 1fr; gap:22px;
+    padding:22px 0; border-top:1px solid var(--line);
   }
-
-  .hero-divider {
-    width: 60px;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    margin: 0 auto 48px;
-    animation: fadeUp 0.8s 0.3s ease both;
+  .step:first-child{border-top:none;}
+  .step-num{
+    font-family:'DM Mono', monospace; font-size:22px; color:var(--gold);
+    font-weight:500;
   }
-
-  /* ─── SECTION WRAPPER ─── */
-  .section {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 64px 24px;
+  .step-title{
+    font-family:'Noto Serif TC', serif; font-weight:600; font-size:17px;
+    color:var(--cream); margin-bottom:6px;
   }
+  .step-desc{font-size:14.5px; color:#c7d1e0; font-weight:300;}
 
-  .section-label {
-    font-size: 10px;
-    letter-spacing: 0.3em;
-    color: var(--gold);
-    text-transform: uppercase;
-    margin-bottom: 12px;
+  /* ---- Resource cards ---- */
+  .grid{display:grid; grid-template-columns:repeat(2,1fr); gap:18px;}
+  @media(max-width:680px){.grid{grid-template-columns:1fr;}}
+  .res-card{
+    background:var(--navy-card); border:1px solid var(--line); border-radius:4px;
+    padding:24px; display:flex; flex-direction:column; gap:12px;
+    transition:border-color .2s ease, transform .2s ease;
   }
-
-  .section-title {
-    font-family: 'Noto Serif TC', serif;
-    font-size: clamp(22px, 3vw, 32px);
-    font-weight: 600;
-    margin-bottom: 32px;
-    position: relative;
-    padding-bottom: 20px;
+  .res-card:hover{border-color:var(--gold); transform:translateY(-2px);}
+  .res-top{display:flex; align-items:center; justify-content:space-between;}
+  .res-icon{font-size:26px;}
+  .res-tag{
+    font-family:'DM Mono', monospace; font-size:10px; letter-spacing:0.05em;
+    padding:3px 9px; border-radius:20px; font-weight:500;
   }
-
-  .section-title::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0;
-    width: 40px; height: 2px;
-    background: var(--gold);
+  .res-tag.pdf{background:rgba(201,162,39,0.12); color:var(--mist); border:1px solid var(--line);}
+  .res-tag.tool{background:rgba(201,162,39,0.18); color:var(--gold-bright); border:1px solid var(--line);}
+  .res-name{font-family:'Noto Serif TC', serif; font-weight:600; font-size:16px; color:var(--cream);}
+  .res-link{
+    font-family:'DM Mono', monospace; font-size:12px; letter-spacing:0.05em;
+    color:var(--gold-bright); text-decoration:none; border-bottom:1px solid transparent;
   }
+  .res-link:hover{border-color:var(--gold-bright);}
 
-  /* ─── STRATEGY BLOCK ─── */
-  .strategy-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2px;
-    background: rgba(255,255,255,0.06);
-    border-radius: 4px;
-    overflow: hidden;
+  /* ---- Talk points ---- */
+  .talk{display:flex; flex-direction:column; gap:0;}
+  .talk-item{
+    display:grid; grid-template-columns:44px 1fr; gap:18px;
+    padding:20px 0; border-top:1px solid var(--line);
   }
+  .talk-item:first-child{border-top:none;}
+  .talk-num{font-family:'DM Mono', monospace; color:var(--gold); font-size:14px;}
+  .talk-text{font-size:15px; color:#dfe6f0;}
+  .talk-text b{color:var(--gold-bright); font-weight:500;}
 
-  .strategy-card {
-    background: rgba(13,27,42,0.9);
-    padding: 32px 28px;
-    transition: background 0.3s;
-  }
+  /* ---- Outlook ---- */
+  .outlook-grid{display:grid; grid-template-columns:1fr 1fr; gap:20px;}
+  @media(max-width:680px){.outlook-grid{grid-template-columns:1fr;}}
+  .outlook-card{padding:24px 0;}
+  .outlook-icon{font-size:24px; margin-bottom:10px;}
+  .outlook-title{font-family:'Noto Serif TC', serif; font-weight:600; font-size:16px; color:var(--gold-bright); margin-bottom:8px;}
+  .outlook-desc{font-size:14.5px; color:#c7d1e0;}
 
-  .strategy-card:hover { background: var(--navy-mid); }
+  /* ---- Team ---- */
+  .team-photo{width:100%; border-radius:4px; border:1px solid var(--line); display:block; margin-bottom:18px;}
+  .team-caption{text-align:center; font-family:'DM Mono', monospace; font-size:12px; letter-spacing:0.15em; color:var(--mist); text-transform:uppercase;}
 
-  .strategy-card .tag {
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    color: var(--gold);
-    margin-bottom: 12px;
-    text-transform: uppercase;
-  }
-
-  .strategy-card p {
-    font-size: 15px;
-    color: rgba(255,255,255,0.75);
-    line-height: 1.7;
-  }
-
-  /* ─── DOWNLOAD CARDS ─── */
-  .resource-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 16px;
-    margin-bottom: 48px;
-  }
-
-  .resource-card {
-    position: relative;
-    background: linear-gradient(135deg, var(--navy-mid) 0%, var(--navy-soft) 100%);
-    border: 1px solid rgba(184,146,42,0.2);
-    border-radius: 6px;
-    padding: 32px 12px;
-    text-align: center;
-    transition: all 0.3s ease;
-    overflow: hidden;
-  }
-
-  .resource-card:hover {
-    border-color: rgba(184,146,42,0.5);
-    transform: translateY(-4px);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.4);
-  }
-
-  .resource-icon {
-    font-size: 36px;
-    margin-bottom: 16px;
-    display: block;
-  }
-
-  .resource-title {
-    font-family: 'Noto Serif TC', serif;
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--white);
-    margin-bottom: 20px;
-    line-height: 1.4;
-    white-space: nowrap;
-  }
-
-  .btn-download {
-    display: inline-block;
-    padding: 10px 22px;
-    background: linear-gradient(135deg, var(--gold), var(--gold-light));
-    color: var(--navy);
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-decoration: none;
-    border-radius: 2px;
-    transition: all 0.2s;
-    white-space: nowrap;
-  }
-
-  /* ─── QUOTES ─── */
-  .quotes-block {
-    background: linear-gradient(135deg, rgba(184,146,42,0.08), rgba(184,146,42,0.03));
-    border-left: 3px solid var(--gold);
-    border-radius: 0 6px 6px 0;
-    padding: 32px 24px;
-  }
-
-  .quote-num {
-    font-family: 'Noto Serif TC', serif;
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--gold);
-    opacity: 0.5;
-    min-width: 28px;
-    line-height: 1;
-  }
-
-  .quote-text {
-    font-size: 15px;
-    color: rgba(255,255,255,0.85);
-    line-height: 1.7;
-    text-align: justify;
-  }
-
-  /* ─── OUTLOOK ─── */
-  .outlook-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-  }
-
-  .outlook-card {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 6px;
-    padding: 28px 24px;
-    transition: all 0.3s;
-  }
-
-  /* ─── TEAM ─── */
-  .team-section {
-    background: var(--navy-mid);
-    padding: 80px 24px;
-    text-align: center;
-  }
-
-  .team-img-wrapper {
-    max-width: 720px;
-    margin: 0 auto;
-    border-radius: 8px;
-    overflow: hidden;
-    border: 1px solid rgba(184,146,42,0.25);
-    box-shadow: 0 24px 80px rgba(0,0,0,0.5);
-  }
-
-  .team-img-wrapper img {
-    width: 100%;
-    display: block;
-  }
-
-  /* ─── FOOTER ─── */
-  footer {
-    background: var(--navy);
-    border-top: 1px solid rgba(255,255,255,0.06);
-    text-align: center;
-    padding: 28px 24px;
-    font-size: 11px;
-    color: rgba(255,255,255,0.3);
-    letter-spacing: 0.1em;
-  }
-
-  /* ─── ANIMATIONS ─── */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  .fade-up {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
-
-  .fade-up.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  @media (max-width: 640px) {
-    .strategy-grid { grid-template-columns: 1fr; }
-    .outlook-grid  { grid-template-columns: 1fr; }
-    .resource-grid { grid-template-columns: 1fr 1fr; }
-    .resource-title { white-space: normal; }
-  }
+  footer{padding:40px 0 60px; text-align:center; font-size:12px; color:var(--mist); border-top:1px solid var(--line);}
 </style>
-
 </head>
 <body>
 
-<section class="hero">
-  <div class="hero-badge">南山人壽 · 順可通訊處</div>
-  <h1>
-    2026 南山人壽<br>
-    <span>順可通訊處｜商品委員會</span>
-  </h1>
-  <p class="hero-sub">商品委員會｜吳約翰主任 ·吳政勳經理 ·鍾馨醇襄理 ·何青航襄理 ·吳健瑋襄理</p>
-  <div class="hero-divider"></div>
+<header class="wrap">
+  <div class="eyebrow">南山人壽 · 順可通訊處</div>
+  <h1>2026 <span class="quarter">Q3</span> 南山人壽 順可通訊處｜商品委員會</h1>
+  <div class="subtitle-line"></div>
+  <div class="members">商品委員會｜吳約翰主任 · 吳政勳經理 · 鍾馨醇襄理 · 何青航襄理 · 吳健瑋襄理</div>
+</header>
+
+<section class="wrap reveal" id="strategy">
+  <div class="section-eyebrow">Strategy</div>
+  <h2>Q3 戰略：AI工具持續進化 × 晨會通關賦能</h2>
+  <div class="pair reveal-stagger">
+    <div class="card">
+      <div class="card-label">市場痛點</div>
+      <p>工具已陸續產出，但工具與訓練之間出現落差——夥伴知道有工具，卻不一定清楚怎麼用、什麼時候用，好工具的轉換效益因此打了折扣。</p>
+    </div>
+    <div class="card">
+      <div class="card-label">解決方案</div>
+      <p>商品委員會攜手教育訓練部，將AI賦能工具正式排入晨會通關機制，逐一拆解操作情境與應用時機，讓每位夥伴不只「有工具」，而是真正「會用、敢用、用出績效」。</p>
+    </div>
+  </div>
 </section>
 
-<div class="section fade-up">
-  <p class="section-label">Strategy</p>
-  <h2 class="section-title">Q1 戰略：專業工具賦能</h2>
-  <div class="strategy-grid">
-    <div class="strategy-card">
-      <div class="tag">市場痛點</div>
-      <p>夥伴在市場上遇到客戶嫌儲蓄險利率低、稅務問題太複雜不敢碰，專業溝通存在落差。</p>
+<section class="wrap reveal" id="process">
+  <div class="section-eyebrow">Mechanism</div>
+  <h2>晨會通關機制</h2>
+  <div class="process reveal-stagger">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div>
+        <div class="step-title">工具產出</div>
+        <div class="step-desc">商品委員會持續開發AI賦能工具，針對實戰情境設計操作邏輯，確保每套工具都能直接用在客戶面前。</div>
+      </div>
     </div>
-    <div class="strategy-card">
-      <div class="tag">解決方案</div>
-      <p>製作專業商品推銷夾，將複雜數據「可視化」，讓專業成為業務夥伴在市場上的最強武器。</p>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div>
+        <div class="step-title">晨會通關</div>
+        <div class="step-desc">與教育訓練部合作安排晨會時段，由夥伴實機操作、現場演練，通過通關才算真正掌握工具。</div>
+      </div>
     </div>
-  </div>
-</div>
-
-<div class="section fade-up">
-  <p class="section-label">Resources</p>
-  <h2 class="section-title">實戰武器庫</h2>
-  <div class="resource-grid">
-    <div class="resource-card">
-      <span class="resource-icon">🏥</span>
-      <div class="resource-title">長照險推銷夾</div>
-      <a class="btn-download" href="https://johngyh.github.io/product/long_term_care.pdf" target="_blank">立即下載</a>
-    </div>
-    <div class="resource-card">
-      <span class="resource-icon">⚖️</span>
-      <div class="resource-title">稅務簡單說</div>
-      <a class="btn-download" href="https://johngyh.github.io/product/tax_guide.pdf" target="_blank">立即下載</a>
-    </div>
-    <div class="resource-card">
-      <span class="resource-icon">💰</span>
-      <div class="resource-title">儲蓄險推銷夾</div>
-      <a class="btn-download" href="https://johngyh.github.io/product/savings_plan.pdf" target="_blank">立即下載</a>
-    </div>
-    <div class="resource-card">
-      <span class="resource-icon">🛡️</span>
-      <div class="resource-title">重大傷病推銷夾</div>
-      <a class="btn-download" href="https://johngyh.github.io/product/critical_illness.pdf" target="_blank">立即下載</a>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div>
+        <div class="step-title">績效追蹤與迭代</div>
+        <div class="step-desc">蒐集通關後的第一線使用回饋，作為下一版工具優化的依據，形成產出—訓練—回饋的循環。</div>
+      </div>
     </div>
   </div>
+</section>
 
-  <div class="quotes-block">
-    <div style="font-size:11px; color:var(--gold-light); margin-bottom:20px; letter-spacing:0.2em">💡 主委貼心話術</div>
-    <div style="display:flex; gap:16px; margin-bottom:15px">
-      <span class="quote-num">01</span>
-      <p class="quote-text"><strong>長照：</strong>不是在買保險，是在預留未來的尊嚴。</p>
+<section class="wrap reveal" id="resources">
+  <div class="section-eyebrow">Resources</div>
+  <h2>實戰武器庫</h2>
+
+  <h3 class="sub-label">🧮 互動試算工具</h3>
+  <div class="grid reveal-stagger">
+    <div class="res-card">
+      <div class="res-top"><div class="res-icon">🧮</div><div class="res-tag tool">互動工具</div></div>
+      <div class="res-name">BVA轉換試算</div>
+      <a class="res-link" href="./bva-calculator.html">開啟工具 →</a>
     </div>
-    <div style="display:flex; gap:16px; margin-bottom:15px">
-      <span class="quote-num">02</span>
-      <p class="quote-text"><strong>稅務：</strong>人壽保險是遺產外的現金，受益人可以立即獲得的一筆資產。</p>
+    <div class="res-card">
+      <div class="res-top"><div class="res-icon">🏨</div><div class="res-tag tool">互動工具</div></div>
+      <div class="res-name">WEHS方案比較</div>
+      <a class="res-link" href="./wehs-comparison.html">開啟工具 →</a>
     </div>
-    <div style="display:flex; gap:16px; margin-bottom:15px">
-      <span class="quote-num">03</span>
-      <p class="quote-text"><strong>儲蓄：</strong>強迫儲蓄不是減少消費，是提早預約財富自由。</p>
-    </div>
-    <div style="display:flex; gap:16px">
-      <span class="quote-num">04</span>
-      <p class="quote-text"><strong>重大傷病：</strong>人生最貴的不是醫療費，而是失去收入時依然要支付的生活費。</p>
+    <div class="res-card">
+      <div class="res-top"><div class="res-icon">👵</div><div class="res-tag tool">互動工具</div></div>
+      <div class="res-name">長照商品比較</div>
+      <a class="res-link" href="./ltc-comparison.html">開啟工具 →</a>
     </div>
   </div>
-</div>
 
-<div class="section fade-up">
-  <p class="section-label">Outlook</p>
-  <h2 class="section-title">下季展望：專業進化</h2>
-  <div class="outlook-grid">
+  <h3 class="sub-label">📄 推銷夾下載</h3>
+  <div class="grid reveal-stagger">
+    <div class="res-card">
+      <div class="res-top"><div class="res-icon">🏥</div><div class="res-tag pdf">PDF下載</div></div>
+      <div class="res-name">長照險推銷夾</div>
+      <a class="res-link" href="https://johngyh.github.io/product/long_term_care.pdf">立即下載 →</a>
+    </div>
+    <div class="res-card">
+      <div class="res-top"><div class="res-icon">⚖️</div><div class="res-tag pdf">PDF下載</div></div>
+      <div class="res-name">稅務簡單說</div>
+      <a class="res-link" href="https://johngyh.github.io/product/tax_guide.pdf">立即下載 →</a>
+    </div>
+    <div class="res-card">
+      <div class="res-top"><div class="res-icon">💰</div><div class="res-tag pdf">PDF下載</div></div>
+      <div class="res-name">儲蓄險推銷夾</div>
+      <a class="res-link" href="https://johngyh.github.io/product/savings_plan.pdf">立即下載 →</a>
+    </div>
+    <div class="res-card">
+      <div class="res-top"><div class="res-icon">🛡️</div><div class="res-tag pdf">PDF下載</div></div>
+      <div class="res-name">重大傷病推銷夾</div>
+      <a class="res-link" href="https://johngyh.github.io/product/critical_illness.pdf">立即下載 →</a>
+    </div>
+  </div>
+</section>
+
+<section class="wrap reveal" id="talk">
+  <div class="section-eyebrow">Talking Points</div>
+  <h2>💡 主委貼心話術</h2>
+  <div class="talk reveal-stagger">
+    <div class="talk-item">
+      <div class="talk-num">01</div>
+      <div class="talk-text"><b>工具：</b>不是多一個步驟，是讓客戶秒懂複雜數據的捷徑。</div>
+    </div>
+    <div class="talk-item">
+      <div class="talk-num">02</div>
+      <div class="talk-text"><b>長照：</b>不是在買保險，是在預留未來的尊嚴。</div>
+    </div>
+    <div class="talk-item">
+      <div class="talk-num">03</div>
+      <div class="talk-text"><b>稅務：</b>人壽保險是遺產外的現金，受益人可以立即獲得的一筆資產。</div>
+    </div>
+    <div class="talk-item">
+      <div class="talk-num">04</div>
+      <div class="talk-text"><b>儲蓄：</b>強迫儲蓄不是減少消費，是提早預約財富自由。</div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap reveal" id="outlook">
+  <div class="section-eyebrow">Outlook</div>
+  <h2>下季展望：Q4 系統化落地</h2>
+  <div class="outlook-grid reveal-stagger">
     <div class="outlook-card">
-      <span style="font-size:24px; margin-bottom:14px; display:block">🏫</span>
-      <h3 style="font-family:'Noto Serif TC', serif; font-size:16px; margin-bottom:10px">晨會小學堂</h3>
-      <p style="font-size:14px; color:rgba(255,255,255,0.6); line-height:1.7">啟動高頻率碎片化教育，針對稅務新制、特定商品優勢進行宣導，內化銷售話術。</p>
+      <div class="outlook-icon">📊</div>
+      <div class="outlook-title">通關數據化</div>
+      <div class="outlook-desc">建立晨會通關的完成率與現場使用率追蹤，讓工具導入成效可被檢視。</div>
     </div>
     <div class="outlook-card">
-      <span style="font-size:24px; margin-bottom:14px; display:block">🔄</span>
-      <h3 style="font-family:'Noto Serif TC', serif; font-size:16px; margin-bottom:10px">工具 2.0 迭代</h3>
-      <p style="font-size:14px; color:rgba(255,255,255,0.6); line-height:1.7">蒐集實戰回饋，持續優化推銷夾的邏輯流暢度與視覺呈現，貼近一線需求。</p>
+      <div class="outlook-icon">🔄</div>
+      <div class="outlook-title">工具矩陣擴充</div>
+      <div class="outlook-desc">依通關回饋擴充AI工具矩陣，涵蓋更多商品情境與客戶輪廓。</div>
     </div>
   </div>
-</div>
+</section>
 
-<div class="team-section fade-up">
-  <p class="section-label">Our Team</p>
-  <h2 class="section-title">商品委員會：黃金陣容</h2>
-  <div class="team-img-wrapper">
-    <img src="member_list.png" alt="團隊合照">
-  </div>
-  <p style="margin-top:28px; font-size:13px; letter-spacing:0.2em; color:rgba(255,255,255,0.45)">
-    專業引領 <span style="color:var(--gold); margin:0 8px">·</span> 實戰賦能 <span style="color:var(--gold); margin:0 8px">·</span> 最強後盾
-  </p>
-</div>
+<section class="wrap reveal" id="team">
+  <div class="section-eyebrow">Our Team</div>
+  <h2>商品委員會：黃金陣容</h2>
+  <img class="team-photo reveal" src="./team-committee.jpg" alt="商品委員會成員陣容">
+  <div class="team-caption">專業引領 · 實戰賦能 · 最強後盾</div>
+</section>
 
-<footer>
+<footer class="wrap">
   © 2026 南山人壽｜順可通訊處 · 商品委員會
 </footer>
 
 <script>
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-      }
-    });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  const revealEls = document.querySelectorAll('.reveal, .reveal-stagger');
+  if('IntersectionObserver' in window){
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        }
+      });
+    }, {threshold:0.12, rootMargin:'0px 0px -40px 0px'});
+    revealEls.forEach(el=>io.observe(el));
+  } else {
+    revealEls.forEach(el=>el.classList.add('in'));
+  }
 </script>
 
 </body>
