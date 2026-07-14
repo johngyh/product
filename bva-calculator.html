@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>投資型保單試算表</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700;900&family=Noto+Sans+TC:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* 南山人壽 CI：藍為主色，黃(溫暖)、綠(活力)為輔助色 － 沿用 WEHS 配色 */
+    --navy:#0b2e5c;--navy2:#134a8c;--blue-500:#1c63b3;--blue-100:#e7f0fb;
+    --gold:#c9860f;--gold2:#e3a635;--gold-100:#fdf1dc;
+    --green:#1f7a4d;--green2:#3f9e6d;--green-100:#e6f6ee;
+    --white:#ffffff;--card-bg:#ffffff;
+    --ink-900:#101826;--muted:#71809a;--ink-600:#3d4a5f;
+    --line:#d8e0ec;--bg:#f3f6fb;
+    --border:var(--line);--neg:#c0392b;--good:var(--green);
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--ink-900);font-family:'Noto Sans TC',sans-serif;font-size:15px;line-height:1.7;min-height:100vh;}
+
+  .header{background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%);border-radius:18px;margin:20px 16px 0;padding:30px 22px;text-align:center;position:relative;overflow:hidden;}
+  .header::after{content:'';position:absolute;right:-40px;top:-40px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(227,166,53,.35),transparent 70%);}
+  .header::before{content:'';position:absolute;left:-30px;bottom:-50px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(63,158,109,.3),transparent 70%);}
+  .header-eyebrow{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.22em;color:var(--gold2);text-transform:uppercase;margin-bottom:10px;position:relative;}
+  .header h1{font-family:'Noto Serif TC',serif;font-size:clamp(22px,5vw,30px);font-weight:700;letter-spacing:0.02em;color:#fff;line-height:1.25;position:relative;}
+  .header h1 span{color:var(--gold2);}
+  .header-sub{margin-top:8px;color:#c9d9ef;font-size:13.5px;letter-spacing:0.02em;position:relative;}
+  .header-meta{display:flex;justify-content:center;gap:20px;margin-top:18px;flex-wrap:wrap;position:relative;}
+  .header-meta-item{font-family:'DM Mono',monospace;font-size:11px;color:#c9d9ef;letter-spacing:0.1em;}
+  .header-meta-item strong{color:var(--gold2);font-weight:500;}
+
+  .container{max-width:780px;margin:0 auto;padding:0 16px 60px;}
+  .section-label{display:inline-flex;align-items:center;gap:8px;margin:26px 0 12px;background:var(--blue-100);border-radius:6px;padding:4px 12px;}
+  .section-label::after{content:none;}
+  .section-label span{font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:0.18em;color:var(--navy2);text-transform:uppercase;white-space:nowrap;}
+  .card{background:var(--card-bg);border:1px solid var(--line);border-radius:16px;padding:24px 22px;margin-bottom:16px;box-shadow:0 12px 30px -18px rgba(11,46,92,.18);}
+  .card-title{font-family:'Noto Serif TC',serif;font-size:14px;font-weight:700;color:var(--navy);letter-spacing:0.04em;margin-bottom:14px;}
+
+  /* input form */
+  .field{margin-bottom:16px;}
+  .field:last-child{margin-bottom:0;}
+  .field label{display:block;font-size:12px;color:var(--navy2);letter-spacing:0.06em;margin-bottom:7px;font-family:'DM Mono',monospace;font-weight:500;}
+  .field select, .field input{
+    width:100%;padding:11px 13px;border-radius:8px;
+    border:1px solid var(--line);background:#fff;
+    color:var(--ink-900);font-family:'DM Mono',monospace;font-size:15px;
+    outline:none;transition:border-color .15s,background .15s;
+  }
+  .field select{font-family:'Noto Sans TC',sans-serif;}
+  .field select:focus, .field input:focus{border-color:var(--blue-500);background:var(--blue-100);}
+  .field .prefix-wrap{position:relative;}
+  .field .prefix-wrap input{padding-left:36px;}
+  .field .prefix{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--muted);font-family:'DM Mono',monospace;font-size:14px;pointer-events:none;}
+
+  /* 季加碼 vs 月加碼 比較 */
+  .bonus-compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+  .bonus-box{border-radius:14px;padding:18px 14px;text-align:center;}
+  .bonus-box.old-bva{background:#f6f8fb;border:2px solid var(--line);}
+  .bonus-box.new-bva3{background:linear-gradient(135deg,var(--gold-100) 0%,#fff 100%);border:2px solid var(--gold);}
+  .bonus-box-tag{display:inline-block;font-size:10px;letter-spacing:0.08em;font-weight:700;padding:3px 10px;border-radius:20px;margin-bottom:10px;text-transform:uppercase;}
+  .bonus-box.old-bva .bonus-box-tag{background:var(--blue-100);color:var(--muted);}
+  .bonus-box.new-bva3 .bonus-box-tag{background:var(--gold-100);color:var(--gold);}
+  .bonus-box-title{font-family:'Noto Serif TC',serif;font-size:14px;font-weight:700;margin-bottom:8px;}
+  .bonus-box.old-bva .bonus-box-title{color:var(--ink-900);}
+  .bonus-box.new-bva3 .bonus-box-title{color:var(--gold);}
+  .bonus-box-months{display:flex;gap:5px;justify-content:center;flex-wrap:wrap;margin:10px 0;}
+  .month-pill{font-size:11px;font-weight:700;padding:3px 8px;border-radius:20px;}
+  .month-pill.active-q{background:var(--navy);color:#fff;}
+  .month-pill.inactive{background:var(--blue-100);color:var(--muted);font-weight:400;}
+  .month-pill.active-m{background:var(--gold);color:#fff;}
+  .bonus-box-desc{font-size:12px;color:var(--muted);line-height:1.6;margin-top:8px;}
+  .bonus-box-rate{font-family:'Noto Serif TC',serif;font-size:22px;font-weight:900;margin-top:8px;}
+  .bonus-box.old-bva .bonus-box-rate{color:var(--muted);}
+  .bonus-box.new-bva3 .bonus-box-rate{color:var(--gold);}
+
+  .freq-compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0;}
+  .freq-box{border-radius:10px;padding:14px;text-align:center;}
+  .freq-box.q{background:var(--blue-100);border:1px solid var(--line);}
+  .freq-box.m{background:var(--gold-100);border:1px solid var(--gold);}
+  .freq-label{font-size:11px;letter-spacing:0.06em;color:var(--muted);margin-bottom:6px;text-transform:uppercase;}
+  .freq-num{font-family:'Noto Serif TC',serif;font-size:38px;font-weight:900;line-height:1;}
+  .freq-box.q .freq-num{color:var(--navy);}
+  .freq-box.m .freq-num{color:var(--gold);}
+  .freq-unit{font-size:13px;color:var(--muted);margin-top:4px;}
+  .freq-dots{display:flex;gap:4px;justify-content:center;margin-top:10px;flex-wrap:wrap;}
+  .freq-dot{width:12px;height:12px;border-radius:50%;}
+  .freq-dot.on-q{background:var(--navy);}
+  .freq-dot.on-m{background:var(--gold);}
+  .freq-dot.off{background:var(--line);}
+  @media(max-width:480px){.bonus-compare{grid-template-columns:1fr;}.freq-compare{grid-template-columns:1fr;}}
+
+  .tier-compare{display:flex;flex-direction:column;gap:12px;}
+  .tier-box{border:1px solid var(--line);border-radius:10px;padding:12px 14px;}
+  .tier-box.bva3{border-color:var(--gold);background:var(--gold-100);}
+  .tier-box-title{font-weight:700;font-size:13px;margin-bottom:6px;color:var(--navy);}
+  .tier-box.bva3 .tier-box-title{color:var(--gold);}
+  .tier-row{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:13px;padding:5px 0;border-top:1px dashed var(--line);}
+  .tier-row:first-of-type{border-top:none;padding-top:2px;}
+  .tier-cond{color:var(--muted);flex:1;}
+  .tier-rate{font-family:'DM Mono',monospace;font-weight:600;color:var(--ink-900);white-space:nowrap;text-align:right;}
+  .tier-rate.neg{color:var(--neg);white-space:normal;}
+  .tier-row.bonus{border-top:1px solid var(--gold);margin-top:4px;padding-top:8px;}
+  .tier-row.bonus .tier-cond{color:var(--gold2);}
+
+  .cmp-list{display:flex;flex-direction:column;gap:16px;}
+  .cmp-item{border-bottom:1px solid var(--line);padding-bottom:16px;}
+  .cmp-item:last-child{border-bottom:none;padding-bottom:0;}
+  .cmp-item-label{font-size:12px;color:var(--muted);margin-bottom:8px;font-weight:600;letter-spacing:0.02em;}
+  .cmp-item-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .cmp-item-box{border-radius:8px;padding:9px 11px;}
+  .cmp-item-box.old{background:#f6f8fb;border:1px solid var(--line);}
+  .cmp-item-box.new{background:var(--gold-100);border:1px solid var(--gold);}
+  .cmp-item-box-tag{font-size:10px;color:var(--muted);margin-bottom:3px;}
+  .cmp-item-box.new .cmp-item-box-tag{color:var(--gold);}
+  .cmp-item-box-val{font-family:'DM Mono',monospace;font-weight:700;font-size:14px;color:var(--ink-900);line-height:1.3;}
+  .cmp-item-box.new .cmp-item-box-val{color:var(--gold);}
+  .cmp-item-sub{font-size:10.5px;color:var(--muted);margin-top:3px;font-family:'DM Mono',monospace;}
+  @media(max-width:380px){.cmp-item-grid{grid-template-columns:1fr;}}
+
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .usd-line{color:var(--gold);font-weight:700;}
+  .twd-line{color:var(--muted);font-size:0.85em;font-weight:400;display:inline-block;margin-top:2px;}
+  .row2 > .field{min-width:0;}
+  @media(max-width:480px){.row2{grid-template-columns:1fr;}}
+
+  .data-table{width:100%;border-collapse:collapse;}
+  .data-table tr{border-bottom:1px solid var(--line);}
+  .data-table tr:last-child{border-bottom:none;}
+  .data-table td{padding:9px 4px;font-size:14px;vertical-align:top;}
+  .data-table td:first-child{color:var(--muted);font-size:13px;width:52%;}
+  .data-table td:last-child{font-family:'DM Mono',monospace;font-weight:500;color:var(--ink-900);text-align:right;}
+  .data-table td.highlight{color:var(--navy2);font-size:15px;font-weight:700;}
+  .data-table td.neg{color:var(--neg);}
+
+  .callout{background:var(--green-100);border:1px solid var(--green2);border-radius:10px;padding:14px 18px;margin-bottom:14px;display:flex;align-items:center;gap:14px;}
+  .callout-icon{font-size:28px;flex-shrink:0;}
+  .callout-label{font-size:12px;color:var(--muted);margin-bottom:2px;}
+  .callout-value{font-family:'DM Mono',monospace;font-size:16px;font-weight:700;color:var(--green);}
+
+  .flow{display:flex;flex-direction:column;}
+  .flow-row{width:100%;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid var(--line);}
+  .flow-row:last-child{border-bottom:none;}
+  .flow-label{font-size:13px;color:var(--muted);}
+  .flow-arrow{font-size:16px;color:var(--gold);text-align:center;}
+  .flow-value{font-family:'DM Mono',monospace;font-weight:500;font-size:15px;color:var(--ink-900);text-align:right;}
+  .flow-value.neg{color:var(--neg);}
+  .flow-value.final{color:var(--navy2);font-size:18px;font-weight:700;}
+
+  .fee-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:999px;font-family:'DM Mono',monospace;font-size:12px;font-weight:500;letter-spacing:0.03em;background:var(--navy);color:var(--gold2);border:1px solid var(--navy);margin-bottom:16px;}
+  .fee-badge.high{background:var(--green);color:#fff;border-color:var(--green);}
+
+  .notes{margin-top:14px;padding:14px 16px;background:var(--blue-100);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;}
+  .notes p{font-size:12px;color:var(--ink-600);line-height:1.7;margin-bottom:4px;}
+  .notes p:last-child{margin-bottom:0;}
+  .notes strong{color:var(--navy2);font-weight:700;}
+
+  .condition-grid{display:flex;flex-direction:column;gap:10px;}
+  .condition-block{border-radius:8px;padding:14px 16px;display:flex;align-items:flex-start;gap:12px;}
+  .condition-block.base{background:var(--blue-100);border:1px solid var(--blue-500);}
+  .condition-block.bonus-big{background:linear-gradient(135deg,var(--green-100) 0%,#fff 100%);border:2px solid var(--green);padding:18px 16px;}
+  .condition-block.none{background:#f6f8fb;border:1px solid var(--line);}
+  .condition-icon{font-size:22px;flex-shrink:0;margin-top:2px;}
+  .condition-title{font-size:13px;font-weight:700;color:var(--ink-900);margin-bottom:4px;}
+  .condition-block.bonus-big .condition-title{font-size:14px;color:var(--green);}
+  .condition-desc{font-size:12px;color:var(--muted);line-height:1.5;}
+  .condition-amount{font-family:'DM Mono',monospace;font-size:18px;font-weight:500;margin-top:4px;color:var(--navy2);}
+  .condition-block.bonus-big .condition-amount{font-size:20px;}
+  .condition-amount.gold{color:var(--navy2);}
+  .condition-amount.orange{color:var(--green);}
+  .condition-amount.grey{color:var(--muted);}
+  .max-total-block{margin-top:14px;background:linear-gradient(135deg,var(--gold-100) 0%,#fff 100%);border:2px solid var(--gold);border-radius:10px;padding:14px 16px;text-align:center;}
+  .max-total-label{font-size:12px;letter-spacing:0.08em;color:var(--gold);margin-bottom:8px;}
+  .max-total-value{font-family:'DM Mono',monospace;font-size:clamp(26px,6vw,36px);font-weight:700;color:var(--gold);letter-spacing:-0.01em;line-height:1.1;}
+  .max-total-sub{font-size:11px;color:var(--muted);margin-top:5px;}
+
+  .grand-total{background:linear-gradient(135deg,var(--gold-100) 0%,#fff 100%);border:1px solid var(--gold);border-radius:12px;padding:24px 20px;margin-bottom:14px;}
+  .grand-total-title{font-family:'Noto Serif TC',serif;font-size:14px;font-weight:700;color:var(--gold);letter-spacing:0.08em;margin-bottom:18px;text-align:center;}
+  .grand-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:center;}
+  .grand-col{text-align:center;}
+  .grand-col-label{font-size:11px;color:var(--muted);letter-spacing:0.1em;margin-bottom:8px;}
+  .grand-amount{font-family:'DM Mono',monospace;font-size:clamp(22px,6vw,34px);font-weight:700;line-height:1;letter-spacing:-0.02em;}
+  .grand-amount.old{color:var(--muted);}
+  .grand-amount.new{color:var(--navy2);}
+  .grand-unit{font-size:12px;color:var(--muted);margin-top:6px;}
+  .grand-unit.twd-sub{color:var(--gold);font-weight:600;}
+  .grand-arrow{font-size:28px;color:var(--gold);text-align:center;}
+  .grand-delta{text-align:center;margin-top:18px;padding-top:16px;border-top:1px solid var(--line);display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .grand-delta-label{font-size:11px;color:var(--muted);margin-bottom:4px;}
+  .grand-delta-value{font-family:'DM Mono',monospace;font-size:18px;font-weight:700;color:var(--green);}
+  @media(max-width:480px){.grand-grid{grid-template-columns:1fr;}.grand-delta{grid-template-columns:1fr;}}
+
+  .alloc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;}
+  .alloc-pill{border-radius:8px;padding:14px 10px;text-align:center;}
+  .alloc-pill.taiwan{background:rgba(192,57,43,0.06);border:1px solid rgba(192,57,43,0.3);}
+  .alloc-pill.global{background:var(--blue-100);border:1px solid var(--blue-500);}
+  .alloc-pill.bond{background:var(--green-100);border:1px solid var(--green2);}
+  .alloc-label{font-size:12px;margin-bottom:4px;}
+  .alloc-pill.taiwan .alloc-label{color:#c0392b;}
+  .alloc-pill.global .alloc-label{color:var(--navy2);}
+  .alloc-pill.bond .alloc-label{color:var(--green);}
+  .alloc-pct{font-family:'DM Mono',monospace;font-size:22px;font-weight:700;color:var(--ink-900);}
+  .alloc-sub{font-size:10px;color:var(--muted);margin-top:4px;line-height:1.4;}
+  @media(max-width:480px){.alloc-grid{grid-template-columns:1fr;}}
+
+  .date-row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;}
+  .date-pill{background:var(--blue-100);border:1px solid var(--line);border-radius:8px;padding:10px 16px;font-family:'DM Mono',monospace;font-size:14px;color:var(--navy2);}
+
+  .footer{border-top:1px solid var(--line);margin-top:48px;padding:20px 16px;text-align:center;}
+  .footer-author{font-family:'Noto Serif TC',serif;font-size:14px;font-weight:700;color:var(--navy);letter-spacing:0.08em;}
+  .footer-sub{font-size:11px;color:var(--ink-600);margin-top:4px;letter-spacing:0.06em;}
+  .footer-disclaimer{margin-top:14px;font-size:10px;color:var(--muted);line-height:1.6;max-width:600px;margin-left:auto;margin-right:auto;}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-eyebrow">NAN SHAN LIFE · 順可通訊處</div>
+  <h1>投資型保單試算表</h1>
+  <div class="header-sub">BVA3 鑫月雙享變額年金保險</div>
+</div>
+
+<div class="container">
+
+  <div class="section-label" id="oldSectionLabel"><span>現有保單現況</span></div>
+  <div class="card">
+    <div class="card-title">請輸入保單資訊</div>
+    <div class="field">
+      <label for="version">客戶類別</label>
+      <select id="version">
+        <option value="BVA">BVA（持有舊保單）</option>
+        <option value="BVA2">BVA2（持有舊保單）</option>
+        <option value="UBVA">UBVA（持有舊保單）</option>
+        <option value="UBVA2">UBVA2（持有舊保單）</option>
+        <option value="matured">滿期金客戶（2.7%）</option>
+        <option value="active_contract">有效契約客戶（2.8%）</option>
+        <option value="other_new">非上述滿期金及有效契約客戶（3.0%）</option>
+        <option value="lump_sum">躉繳／超額保險費≧新臺幣200萬（2.7%）</option>
+      </select>
+    </div>
+
+    <div class="field" id="fxRateField" style="display:none;">
+      <label for="fxRateInput">美元兌台幣匯率（請輸入當下匯率）</label>
+      <input type="number" id="fxRateInput" placeholder="例如 32.500" min="0" step="0.001">
+    </div>
+
+    <div id="oldFields">
+      <div class="field">
+        <label for="date">投入年月日</label>
+        <input type="date" id="date">
+      </div>
+      <div class="field">
+        <label for="invested">當年投入本金</label>
+        <div class="prefix-wrap">
+          <span class="prefix curr-prefix">NT$</span>
+          <input type="number" id="invested" placeholder="0" min="0" step="1000">
+        </div>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label for="withdrawn">歷年已領回合計</label>
+          <div class="prefix-wrap">
+            <span class="prefix curr-prefix">NT$</span>
+            <input type="number" id="withdrawn" placeholder="0" min="0" step="1000">
+          </div>
+        </div>
+        <div class="field">
+          <label for="surrender">目前解約金</label>
+          <div class="prefix-wrap">
+            <span class="prefix curr-prefix">NT$</span>
+            <input type="number" id="surrender" placeholder="0" min="0" step="1000">
+          </div>
+        </div>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label for="currentPayout">目前每月撥回金額（原保單）</label>
+          <div class="prefix-wrap">
+            <span class="prefix curr-prefix">NT$</span>
+            <input type="number" id="currentPayout" placeholder="0" min="0" step="100">
+          </div>
+        </div>
+        <div class="field">
+          <label for="redeemAmount">舊保單額外贖回金額（無則免填）</label>
+          <div class="prefix-wrap">
+            <span class="prefix curr-prefix">NT$</span>
+            <input type="number" id="redeemAmount" placeholder="0" min="0" step="1000">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="field" id="newInvestField" style="display:none;">
+      <label for="newInvest">現在想投入的金額</label>
+      <div class="prefix-wrap">
+        <span class="prefix curr-prefix">NT$</span>
+        <input type="number" id="newInvest" placeholder="0" min="0" step="1000">
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="netValue">BVA3 目前淨值（元／單位）</label>
+      <input type="number" id="netValue" placeholder="請輸入目前公告淨值" min="0" step="0.01">
+    </div>
+  </div>
+
+  <div class="card" id="historyCard">
+    <div class="card-title">歷年投入與累積現況</div>
+    <table class="data-table">
+      <tr><td>客戶類別</td><td id="outVer">BVA</td></tr>
+      <tr><td>已投入年期</td><td id="outYears">—</td></tr>
+      <tr><td>當年投入本金</td><td id="outInvested">NT$ 0</td></tr>
+      <tr><td>歷年已領回合計</td><td class="neg" id="outWithdrawn">− NT$ 0</td></tr>
+      <tr><td>舊保單額外贖回金額（無則免填）</td><td class="neg" id="outRedeem">− NT$ 0</td></tr>
+      <tr><td>目前解約金</td><td class="highlight" id="outSurrender">NT$ 0</td></tr>
+    </table>
+  </div>
+
+  <div class="callout" id="oldCallout">
+    <div class="callout-icon">✅</div>
+    <div class="callout-text">
+      <div class="callout-label">本案亮點</div>
+      <div class="callout-value">解約金全額轉入，無需額外補繳差額</div>
+    </div>
+  </div>
+
+  <div class="callout" id="newCallout" style="display:none;">
+    <div class="callout-icon">🆕</div>
+    <div class="callout-text">
+      <div class="callout-label">本案亮點</div>
+      <div class="callout-value">全新投資部位，即刻享有 BVA3 資產撥回機制</div>
+    </div>
+  </div>
+
+  <div id="bonusCompareSection">
+    <div class="section-label"><span>撥回機制比較｜舊保單 vs BVA3</span></div>
+    <div class="bonus-compare">
+      <div class="bonus-box old-bva">
+        <div class="bonus-box-tag">現有舊保單</div>
+        <div class="bonus-box-title">季加碼</div>
+        <div class="bonus-box-months">
+          <span class="month-pill inactive">1月</span>
+          <span class="month-pill inactive">2月</span>
+          <span class="month-pill active-q">3月 ✓</span>
+          <span class="month-pill inactive">4月</span>
+          <span class="month-pill inactive">5月</span>
+          <span class="month-pill active-q">6月 ✓</span>
+          <span class="month-pill inactive">7月</span>
+          <span class="month-pill inactive">8月</span>
+          <span class="month-pill active-q">9月 ✓</span>
+          <span class="month-pill inactive">10月</span>
+          <span class="month-pill inactive">11月</span>
+          <span class="month-pill active-q">12月 ✓</span>
+        </div>
+        <div class="bonus-box-desc">每年僅在 3、6、9、12 月的 20 日<br>確認基本撥回費率，並檢視是否觸發季加碼</div>
+        <div class="bonus-box-rate">4 次／年</div>
+      </div>
+      <div class="bonus-box new-bva3">
+        <div class="bonus-box-tag">🔥 BVA3 新制</div>
+        <div class="bonus-box-title">月月加碼</div>
+        <div class="bonus-box-months">
+          <span class="month-pill active-m">1月</span>
+          <span class="month-pill active-m">2月</span>
+          <span class="month-pill active-m">3月</span>
+          <span class="month-pill active-m">4月</span>
+          <span class="month-pill active-m">5月</span>
+          <span class="month-pill active-m">6月</span>
+          <span class="month-pill active-m">7月</span>
+          <span class="month-pill active-m">8月</span>
+          <span class="month-pill active-m">9月</span>
+          <span class="month-pill active-m">10月</span>
+          <span class="month-pill active-m">11月</span>
+          <span class="month-pill active-m">12月</span>
+        </div>
+        <div class="bonus-box-desc">每月確認基本撥回費率，另外<br>檢視期間內淨值曾 &gt; 10.30 即加碼 0.05</div>
+        <div class="bonus-box-rate">12 次／年</div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:0;">
+      <div class="card-title">撥回費率門檻比較</div>
+      <div class="tier-compare">
+        <div class="tier-box" id="tierGen1">
+          <div class="tier-box-title">第一代（BVA／UBVA）</div>
+          <div class="tier-row"><span class="tier-cond">淨值 ≥ 9</span><span class="tier-rate">0.042／單位</span></div>
+          <div class="tier-row"><span class="tier-cond">淨值 ＜ 9</span><span class="tier-rate">0.036／單位</span></div>
+        </div>
+        <div class="tier-box" id="tierGen2">
+          <div class="tier-box-title">第二代（BVA2／UBVA2）</div>
+          <div class="tier-row"><span class="tier-cond">淨值 ≥ 9</span><span class="tier-rate">0.042／單位</span></div>
+          <div class="tier-row"><span class="tier-cond">8 ≤ 淨值 ＜ 9</span><span class="tier-rate">0.036／單位</span></div>
+          <div class="tier-row"><span class="tier-cond">淨值 ＜ 8</span><span class="tier-rate neg">不撥回（保護本金）</span></div>
+        </div>
+        <div class="tier-box bva3">
+          <div class="tier-box-title">🔥 BVA3</div>
+          <div class="tier-row"><span class="tier-cond">淨值 ≥ 8</span><span class="tier-rate">0.042／單位</span></div>
+          <div class="tier-row"><span class="tier-cond">淨值 ＜ 8</span><span class="tier-rate neg">不撥回（保護本金）</span></div>
+          <div class="tier-row bonus"><span class="tier-cond">月加碼：檢視期間淨值曾 ＞ 10.30</span><span class="tier-rate">再加碼 0.05／單位</span></div>
+        </div>
+      </div>
+      <div class="notes" style="margin-top:10px;">
+        <p><strong>關鍵差異：</strong>BVA3 把「保護本金、暫停撥回」的門檻從 8～9 之間降到淨值 8，代表淨值只要不低於 8 就能持續領到全額 0.042／單位，不會因為淨值稍微下滑就被降檔或停止撥回；同時確認頻率從每季 4 次提高到每月 12 次，讓季加碼／月加碼的觸發機會也從一年 4 次提升到最多 12 次。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label"><span>轉換試算</span></div>
+  <div class="card">
+
+    <div class="card-title">BVA3｜投入試算</div>
+    <span class="fee-badge" id="feeBadge">手續費率 2.8%</span>
+    <div class="flow">
+      <div class="flow-row">
+        <div class="flow-label" id="flowBaseLabel">擬投入金額（全額解約金）</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-value" id="flowBase">NT$ 0</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-label" id="flowFeeLabel">手續費 2.8%</div>
+        <div class="flow-arrow">−</div>
+        <div class="flow-value neg" id="flowFee">NT$ 0</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-label">實際投入淨額</div>
+        <div class="flow-arrow">=</div>
+        <div class="flow-value final" id="flowNet">NT$ 0</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-label" id="flowUnitsLabel">換算單位數（÷ 淨值）</div>
+        <div class="flow-arrow">=</div>
+        <div class="flow-value" id="flowUnits">0 單位</div>
+      </div>
+    </div>
+    <div class="notes">
+      <p><strong>試算邏輯：</strong>轉換基準金額（BVA／BVA2／UBVA／UBVA2 客戶）= 目前解約金；擬投入金額（滿期金／有效契約／其他新資金／躉繳超額客戶）= 現在想投入的金額。持有舊保單客戶：金額 200 萬元（含）以上手續費率 2.7%，200 萬元以下 2.8%；其他客戶別依所選類別適用固定費率（滿期金客戶 2.7%、有效契約客戶 2.8%、非上述客戶 3.0%、躉繳／超額保險費≧200萬 2.7%），依 BVA3 商品簡介保費費用表。UBVA／UBVA2 請以美金輸入各項金額並自行輸入當下匯率，試算結果將同時呈現美金原始金額與換算後台幣金額。實際投入淨額 = 基準金額 −手續費；單位數 = 實際投入淨額 ÷ BVA3 目前公告淨值（非固定金額，須依轉換當日淨值輸入）。</p>
+      <p>當年投入本金與歷年已領回合計僅作為現況參考，不列入轉換金額計算。</p>
+    </div>
+  </div>
+
+  <div class="section-label"><span>撥回機制說明</span></div>
+  <div class="card">
+    <div class="card-title">三種撥回情境（依當月淨值）</div>
+
+    <div class="field" style="margin-bottom:18px;">
+      <label for="payoutMethod">撥回方式</label>
+      <select id="payoutMethod">
+        <option value="cash">現金給付</option>
+        <option value="reinvest">再投入購買單位數</option>
+      </select>
+    </div>
+
+    <div class="condition-grid">
+
+      <div class="condition-block base">
+        <div class="condition-icon">💰</div>
+        <div class="condition-content">
+          <div class="condition-title">基本撥回｜淨值 ≥ 8.00</div>
+          <div class="condition-desc">每單位撥回 <strong style="color:var(--gold2);">0.042 元</strong>，基準日每月20日（遇假日順延）</div>
+          <div class="condition-amount gold" id="baseCalc">0 × 0.042 = NT$ 0 ／月</div>
+        </div>
+      </div>
+
+      <div class="condition-block bonus-big">
+        <div class="condition-icon">🔥</div>
+        <div class="condition-content">
+          <div class="condition-title">加碼撥回｜月檢視期間內淨值曾 ＞ 10.30</div>
+          <div class="condition-desc">每單位再加碼 <strong style="color:#4CC38A;">0.05 元</strong>，非固定觸發，視市場表現</div>
+          <div class="condition-amount orange" id="bonusCalc">0 × 0.05 = NT$ 0（加碼）</div>
+          <div class="max-total-block">
+            <div class="max-total-label" id="maxTotalLabel">🔥 月最大撥回合計（基本 ＋ 加碼）</div>
+            <div class="max-total-value" id="maxTotal">NT$ 0</div>
+            <div class="max-total-sub" id="maxTotalSub">基本撥回 ＋ 加碼撥回</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="condition-block none">
+        <div class="condition-icon">⏸</div>
+        <div class="condition-content">
+          <div class="condition-title">暫停撥回｜淨值 ＜ 8.00</div>
+          <div class="condition-desc">當月不進行撥回，保護本金不加速消耗</div>
+          <div class="condition-amount grey">NT$ 0</div>
+        </div>
+      </div>
+
+    </div>
+    <div class="notes">
+      <p><strong>備註：</strong>加碼撥回依月加碼檢視期間（前月撥回基準日次一營業日至當月撥回基準日）內淨值是否曾超過 10.30 元為判斷依據，每月一次為限；目前淨值欄位僅用於判斷當下屬於哪一種撥回情境，實際每月是否加碼仍需視當月檢視期間淨值表現。若選擇「再投入購買單位數」，撥回金額將以當月淨值折算為新增單位數，長期累積效果視每月淨值變動而定，非保證增值。</p>
+    </div>
+  </div>
+
+  <div class="section-label" id="cmpLabel"><span>每月撥回比較</span></div>
+  <div class="grand-total" id="cmpCard">
+    <div class="grand-total-title">✦ 轉換前後月領比較 ✦</div>
+    <div class="grand-grid">
+      <div class="grand-col">
+        <div class="grand-col-label">現有保單</div>
+        <div class="grand-amount old" id="cmpOld">0</div>
+        <div class="grand-unit" id="cmpOldUnit">元／月</div>
+        <div class="grand-unit twd-sub" id="cmpOldTwd" style="display:none;"></div>
+      </div>
+      <div class="grand-arrow">→</div>
+      <div class="grand-col">
+        <div class="grand-col-label">BVA3（基本撥回）</div>
+        <div class="grand-amount new" id="cmpNew">0</div>
+        <div class="grand-unit">元／月</div>
+      </div>
+    </div>
+    <div class="grand-delta">
+      <div>
+        <div class="grand-delta-label">每月增幅</div>
+        <div class="grand-delta-value" id="cmpDeltaMonth">＋ 0 元</div>
+      </div>
+      <div>
+        <div class="grand-delta-label">每年增幅</div>
+        <div class="grand-delta-value" id="cmpDeltaYear">＋ 0 元</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grand-total" id="cmpBonusCard" style="margin-top:14px;">
+    <div class="grand-total-title">✦ 季加碼 vs 月月加碼 ✦</div>
+    <div class="grand-grid">
+      <div class="grand-col">
+        <div class="grand-col-label">現有保單（季加碼，每次）</div>
+        <div class="grand-amount old" id="cmpBonusOld">0</div>
+        <div class="grand-unit" id="cmpBonusOldUnit">元／次・共 4 次／年</div>
+        <div class="grand-unit twd-sub" id="cmpBonusOldTwd" style="display:none;"></div>
+      </div>
+      <div class="grand-arrow">→</div>
+      <div class="grand-col">
+        <div class="grand-col-label">BVA3（月加碼，每次）</div>
+        <div class="grand-amount new" id="cmpBonusNew">0</div>
+        <div class="grand-unit">元／次・最多 12 次／年</div>
+      </div>
+    </div>
+    <div class="grand-delta">
+      <div>
+        <div class="grand-delta-label">現有保單年加碼合計</div>
+        <div class="grand-delta-value" id="cmpBonusOldYear">NT$ 0</div>
+      </div>
+      <div>
+        <div class="grand-delta-label">BVA3 年加碼合計（上限）</div>
+        <div class="grand-delta-value" id="cmpBonusNewYear">NT$ 0</div>
+      </div>
+    </div>
+    <div class="notes" style="margin-top:10px;">
+      <p><strong>提醒：</strong>現有保單季加碼金額依「目前每月撥回金額」反推單位數後，套用與 BVA3 相同的加碼比例（0.05／單位）概略推算，僅供概略比較，實際加碼門檻與比例請以原保單條款為準；BVA3 年加碼合計為每月皆觸發加碼的上限試算，實際次數與金額視每月淨值表現而定，非保證數字。</p>
+    </div>
+  </div>
+
+  <div class="section-label" id="sumLabel"><span>效益摘要</span></div>
+  <div class="card" id="sumCard">
+    <div class="card-title">轉換前後比較一覽</div>
+    <div class="cmp-list">
+      <div class="cmp-item">
+        <div class="cmp-item-label">帳戶價值</div>
+        <div class="cmp-item-grid">
+          <div class="cmp-item-box old">
+            <div class="cmp-item-box-tag">現有保單（解約金）</div>
+            <div class="cmp-item-box-val" id="sumAcctOld">NT$ 0</div>
+            <div class="cmp-item-sub" id="sumAcctOldSub"></div>
+          </div>
+          <div class="cmp-item-box new">
+            <div class="cmp-item-box-tag">BVA3（實際投入淨額）</div>
+            <div class="cmp-item-box-val" id="sumAcctNew">NT$ 0</div>
+          </div>
+        </div>
+      </div>
+      <div class="cmp-item">
+        <div class="cmp-item-label">每月基本撥回</div>
+        <div class="cmp-item-grid">
+          <div class="cmp-item-box old">
+            <div class="cmp-item-box-tag">現有保單</div>
+            <div class="cmp-item-box-val" id="sumPayoutOld">NT$ 0／月</div>
+            <div class="cmp-item-sub" id="sumPayoutOldSub"></div>
+          </div>
+          <div class="cmp-item-box new">
+            <div class="cmp-item-box-tag">BVA3</div>
+            <div class="cmp-item-box-val" id="sumPayoutNew">NT$ 0／月</div>
+          </div>
+        </div>
+      </div>
+      <div class="cmp-item">
+        <div class="cmp-item-label">加碼機制</div>
+        <div class="cmp-item-grid">
+          <div class="cmp-item-box old">
+            <div class="cmp-item-box-tag">現有保單</div>
+            <div class="cmp-item-box-val">季加碼</div>
+            <div class="cmp-item-sub">4 次／年</div>
+          </div>
+          <div class="cmp-item-box new">
+            <div class="cmp-item-box-tag">BVA3</div>
+            <div class="cmp-item-box-val">月月加碼</div>
+            <div class="cmp-item-sub">最多 12 次／年</div>
+          </div>
+        </div>
+      </div>
+      <div class="cmp-item" style="border-bottom:none;padding-bottom:0;">
+        <div class="cmp-item-label">差額補繳</div>
+        <div style="color:var(--good);font-family:'DM Mono',monospace;font-weight:700;font-size:14px;">無需補繳 ✓</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label"><span>BVA3 資產配置</span></div>
+  <div class="card">
+    <div class="card-title">黃金 3-3-3 配置策略</div>
+    <div class="alloc-grid">
+      <div class="alloc-pill taiwan">
+        <div class="alloc-label">🇹🇼 台股（台灣資優生）</div>
+        <div class="alloc-pct">1/3</div>
+        <div class="alloc-sub">台灣科技股・傳產股・金融股</div>
+      </div>
+      <div class="alloc-pill global">
+        <div class="alloc-label">🌐 優質股（全球大型企業）</div>
+        <div class="alloc-pct">1/3</div>
+        <div class="alloc-sub">全球股・區域股票・單一國家股票・趨勢股</div>
+      </div>
+      <div class="alloc-pill bond">
+        <div class="alloc-label">🛡 保護債（複合收益債券）</div>
+        <div class="alloc-pct">1/3</div>
+        <div class="alloc-sub">全球債／複合債・投資等級債・非投資等級債・新興市場債・短天期債</div>
+      </div>
+    </div>
+    <div class="notes">
+      <p>保護債操作區間約 ±20%，台股／優質股彈性操作區間各自約 ±10%，持有股票整體最高約 80%；未來操作視市場狀況調整，配置比重隨時間變動，僅供參考，不代表帳戶成立後之實際投資比例。</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">帳戶小檔案</div>
+    <table class="data-table">
+      <tr><td>代碼</td><td>EOA</td></tr>
+      <tr><td>投資區域</td><td>台灣及全球</td></tr>
+      <tr><td>風險等級</td><td>RR3</td></tr>
+      <tr><td>帳戶幣別</td><td>新臺幣</td></tr>
+      <tr><td>投資標的</td><td>境內發行以新臺幣計價之基金及ETF</td></tr>
+      <tr><td>經理費</td><td>1.50%／年（反映於淨值，不另外收取）</td></tr>
+      <tr><td>保管費</td><td>不超過 0.02%／年（反映於淨值，不另外收取）</td></tr>
+      <tr><td>帳戶成立日</td><td>預計 2026/8/3</td></tr>
+      <tr><td>帳戶開始實際投資配置日</td><td>預計 2026/8/4</td></tr>
+      <tr><td>撥回基準日（非發放日）</td><td>每個月 20 日（遇非營業日順延次一營業日）</td></tr>
+      <tr><td>加碼檢視期間</td><td>前月撥回基準日次一營業日至當月撥回基準日（含），每月以一次為限</td></tr>
+    </table>
+  </div>
+
+  <div class="section-label"><span>注意事項</span></div>
+  <div class="card">
+    <div class="card-title">BVA3 解約費用率</div>
+    <table class="data-table">
+      <tr><td>第 1 保單年度</td><td class="neg">6%</td></tr>
+      <tr><td>第 2 保單年度</td><td class="neg">5%</td></tr>
+      <tr><td>第 3 保單年度</td><td class="neg">4%</td></tr>
+      <tr><td>第 4 保單年度</td><td class="neg">3%</td></tr>
+      <tr><td>第 5 保單年度</td><td class="neg">2%</td></tr>
+      <tr><td>第 6 保單年度</td><td class="neg">1%</td></tr>
+      <tr><td>第 7 保單年度及以後</td><td class="highlight">0%</td></tr>
+    </table>
+    <div class="notes">
+      <p><strong>解約費用計算：</strong>（契約終止之保單帳戶價值 − 配息停泊標的價值）×該保單年度解約費用率。</p>
+      <p><strong>部分提領費用：</strong>解約費用率非零之保單年度，按部分提領金額（扣除配息停泊標的）×該保單年度解約費用率收取；解約費用率為零之保單年度，每年 4 次免費部分提領，超過則每次收取 NT$1,000。</p>
+      <p><strong>其他費用：</strong>投資標的經理費 1.5%／年、保管費 ≤0.02%／年，皆已反映於單位淨值中，不另外收取；保單管理費無另外收取。</p>
+      <p><strong>加值給付：</strong>自第 7 保單年度起，每屆保單週年日按前 12 個保單週月日投資標的價值平均值 × 0.5% 給付，年金給付開始日後不再享有。</p>
+      <p>本商品為投資型保單，保單帳戶價值不受人身保險安定基金保障（保險保障部分除外），資產撥回金額與投資收益均不保證，最大可能損失為全部投資本金。以上資訊依 BVA3 商品簡介（MP-01-602／2026年6月版）整理，實際內容以保單條款及最新公告為準。</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div class="footer-author">吳約翰　業務主任</div>
+  <div class="footer-sub">南山人壽 順可通訊處｜保單優化試算工具</div>
+  <div class="footer-disclaimer">
+    本試算結果依客戶輸入資料自動計算，僅供參考，非保證收益，實際轉換金額與單位數以核算及轉換當日公告淨值為準。本文件不得外流，僅供與客戶面談參考使用。
+  </div>
+</div>
+
+<script>
+  const $ = id => document.getElementById(id);
+  const fmt = n => 'NT$ ' + Math.round(n).toLocaleString('zh-TW');
+  const fmtUSD = n => 'US$ ' + Math.round(n).toLocaleString('zh-TW');
+  const fmtDual = (usdVal, twdVal, isUSD, fx, sign='') => {
+    if(!isUSD) return sign + fmt(twdVal);
+    if(!fx) return `<span class="usd-line">${sign}${fmtUSD(usdVal)}</span><br><span class="twd-line">請輸入匯率換算台幣</span>`;
+    return `<span class="usd-line">${sign}${fmtUSD(usdVal)}</span><br><span class="twd-line">≈ ${sign}${fmt(twdVal)}</span>`;
+  };
+  const splitDual = (usdVal, twdVal, isUSD, fx, suffix='') => {
+    if(!isUSD) return [fmt(twdVal) + suffix, ''];
+    if(!fx) return [fmtUSD(usdVal) + suffix, '請輸入匯率換算台幣'];
+    return [fmtUSD(usdVal) + suffix, '≈ ' + fmt(twdVal) + suffix];
+  };
+
+  // today's date (used for years-held calculation)
+  const today = new Date();
+
+  const HELD_VERSIONS = ['BVA','BVA2','UBVA','UBVA2'];
+  const USD_VERSIONS = ['UBVA','UBVA2'];
+  const GEN1_VERSIONS = ['BVA','UBVA'];
+  const GEN2_VERSIONS = ['BVA2','UBVA2'];
+
+  function toggleFields(){
+    const version = $('version').value;
+    const isHeld = HELD_VERSIONS.includes(version);
+    const isNone = !isHeld;
+    const isUSD = USD_VERSIONS.includes(version);
+
+    $('oldFields').style.display = isNone ? 'none' : '';
+    $('newInvestField').style.display = isNone ? '' : 'none';
+    $('historyCard').style.display = isNone ? 'none' : '';
+    $('oldCallout').style.display = isNone ? 'none' : '';
+    $('newCallout').style.display = isNone ? '' : 'none';
+    $('bonusCompareSection').style.display = isNone ? 'none' : '';
+    $('tierGen1').style.display = GEN1_VERSIONS.includes(version) ? '' : 'none';
+    $('tierGen2').style.display = GEN2_VERSIONS.includes(version) ? '' : 'none';
+    $('cmpLabel').style.display = isNone ? 'none' : '';
+    $('cmpCard').style.display = isNone ? 'none' : '';
+    $('cmpBonusCard').style.display = isNone ? 'none' : '';
+    $('sumLabel').style.display = isNone ? 'none' : '';
+    $('sumCard').style.display = isNone ? 'none' : '';
+    $('flowBaseLabel').textContent = isNone ? '擬投入金額（新資金）' : '擬投入金額（全額解約金）';
+
+    $('fxRateField').style.display = isUSD ? '' : 'none';
+    document.querySelectorAll('.curr-prefix').forEach(el=>{
+      el.textContent = isUSD ? 'US$' : 'NT$';
+    });
+  }
+
+  function calc(){
+    const version = $('version').value;
+    const isHeld = HELD_VERSIONS.includes(version);
+    const isNone = !isHeld;
+    const isUSD = USD_VERSIONS.includes(version);
+    const fx = parseFloat($('fxRateInput').value) || 0;
+    const mult = (isUSD && fx > 0) ? fx : 1;
+
+    const dateVal = $('date').value;
+    const invested = parseFloat($('invested').value) || 0;
+    const withdrawn = parseFloat($('withdrawn').value) || 0;
+    const surrender = parseFloat($('surrender').value) || 0;
+    const netValue = parseFloat($('netValue').value) || 0;
+    const currentPayout = parseFloat($('currentPayout').value) || 0;
+    const redeemAmount = parseFloat($('redeemAmount').value) || 0;
+    const newInvest = parseFloat($('newInvest').value) || 0;
+
+    const investedTwd = invested * mult;
+    const withdrawnTwd = withdrawn * mult;
+    const surrenderTwd = surrender * mult;
+    const redeemAmountTwd = redeemAmount * mult;
+
+    const base = isNone ? Math.max(newInvest, 0) : Math.max(surrenderTwd, 0);
+    const isHigh = base >= 2000000;
+    let rate;
+    if(isHeld){
+      rate = isHigh ? 0.027 : 0.028;
+    } else if(version === 'matured'){
+      rate = 0.027;
+    } else if(version === 'active_contract'){
+      rate = 0.028;
+    } else if(version === 'other_new'){
+      rate = 0.030;
+    } else if(version === 'lump_sum'){
+      rate = 0.027;
+    } else {
+      rate = 0.028;
+    }
+    const fee = base * rate;
+    const net = base - fee;
+    const units = netValue > 0 ? net / netValue : 0;
+    const usdBase = isUSD ? Math.max(surrender, 0) : 0;
+    const usdFee = usdBase * rate;
+    const usdNet = usdBase - usdFee;
+
+    let yearsText = '—';
+    if(!isNone && dateVal){
+      const start = new Date(dateVal);
+      let years = (today - start) / (1000*60*60*24*365.25);
+      if(years < 0) years = 0;
+      yearsText = years.toFixed(1) + ' 年';
+    }
+
+    const rateLabel = isHeld ? `${(rate*100).toFixed(1)}%${isHigh ? '（≥200萬）' : '（<200萬）'}` : `${(rate*100).toFixed(1)}%`;
+
+    $('feeBadge').textContent = `手續費率 ${rateLabel}`;
+    $('feeBadge').classList.toggle('high', isHigh);
+
+    const verLabel = {
+      BVA:'BVA（持有舊保單）', BVA2:'BVA2（持有舊保單）',
+      UBVA:'UBVA（持有舊保單）', UBVA2:'UBVA2（持有舊保單）',
+      matured:'滿期金客戶', active_contract:'有效契約客戶',
+      other_new:'非上述滿期金及有效契約客戶', lump_sum:'躉繳／超額保險費≧新臺幣200萬'
+    }[version];
+    $('outVer').textContent = verLabel;
+    $('outYears').textContent = yearsText;
+    $('outInvested').innerHTML = fmtDual(invested, investedTwd, isUSD, fx);
+    $('outWithdrawn').innerHTML = fmtDual(withdrawn, withdrawnTwd, isUSD, fx, '− ');
+    $('outSurrender').innerHTML = fmtDual(surrender, surrenderTwd, isUSD, fx);
+    $('outRedeem').innerHTML = fmtDual(redeemAmount, redeemAmountTwd, isUSD, fx, '− ');
+
+    $('flowBase').innerHTML = fmtDual(usdBase, base, isUSD, fx);
+    $('flowFeeLabel').textContent = `手續費 ${rateLabel}`;
+    $('flowFee').innerHTML = fmtDual(usdFee, fee, isUSD, fx);
+    $('flowNet').innerHTML = fmtDual(usdNet, net, isUSD, fx);
+    $('flowUnitsLabel').textContent = netValue > 0 ? `換算單位數（÷ ${netValue.toFixed(2)}）` : '換算單位數（請輸入目前淨值）';
+    $('flowUnits').textContent = Math.round(units).toLocaleString('zh-TW') + ' 單位';
+
+    // (效益摘要比較列表於下方 if(!isNone) 區塊中賦值)
+
+    // 月撥回試算（依單位數）
+    const roundedUnits = Math.round(units);
+    const basePayout = roundedUnits * 0.042;
+    const bonusPayout = roundedUnits * 0.05;
+    const maxPayout = basePayout + bonusPayout;
+    const payoutMethod = $('payoutMethod').value;
+
+    if(payoutMethod === 'reinvest' && netValue > 0){
+      const baseUnits = basePayout / netValue;
+      const bonusUnits = bonusPayout / netValue;
+      const maxUnits = maxPayout / netValue;
+      $('baseCalc').textContent = `${roundedUnits.toLocaleString('zh-TW')} × 0.042 ÷ ${netValue.toFixed(2)} = ${baseUnits.toFixed(2)} 單位／月（再投入）`;
+      $('bonusCalc').textContent = `${roundedUnits.toLocaleString('zh-TW')} × 0.05 ÷ ${netValue.toFixed(2)} = ${bonusUnits.toFixed(2)} 單位（加碼再投入）`;
+      $('maxTotalLabel').textContent = '🔥 月最大增購單位數（基本 ＋ 加碼）';
+      $('maxTotal').textContent = `${maxUnits.toFixed(2)} 單位`;
+      $('maxTotalSub').textContent = '以當月淨值折算，長期累積效果視淨值變動而定';
+    } else {
+      $('baseCalc').textContent = `${roundedUnits.toLocaleString('zh-TW')} × 0.042 = ${fmt(basePayout)} ／月`;
+      $('bonusCalc').textContent = `${roundedUnits.toLocaleString('zh-TW')} × 0.05 = ${fmt(bonusPayout)}（加碼）`;
+      $('maxTotalLabel').textContent = '🔥 月最大撥回合計（基本 ＋ 加碼）';
+      $('maxTotal').textContent = fmt(maxPayout);
+      $('maxTotalSub').textContent = '基本撥回 ＋ 加碼撥回';
+    }
+
+    if(!isNone){
+      const currentPayoutTwd = currentPayout * mult;
+
+      // 每月撥回比較（現有保單 vs BVA3基本撥回）
+      const deltaMonth = basePayout - currentPayoutTwd;
+      const deltaYear = deltaMonth * 12;
+      $('cmpOld').textContent = Math.round(currentPayout).toLocaleString('zh-TW');
+      $('cmpNew').textContent = Math.round(basePayout).toLocaleString('zh-TW');
+      $('cmpOldUnit').textContent = isUSD ? 'US$／月' : '元／月';
+      if(isUSD && fx > 0){
+        $('cmpOldTwd').style.display = '';
+        $('cmpOldTwd').textContent = '≈ ' + fmt(currentPayoutTwd);
+      } else {
+        $('cmpOldTwd').style.display = 'none';
+      }
+      $('cmpDeltaMonth').textContent = (deltaMonth >= 0 ? '＋ ' : '－ ') + Math.round(Math.abs(deltaMonth)).toLocaleString('zh-TW') + ' 元';
+      $('cmpDeltaYear').textContent = (deltaYear >= 0 ? '＋ ' : '－ ') + Math.round(Math.abs(deltaYear)).toLocaleString('zh-TW') + ' 元';
+
+      // 季加碼（現有保單，4次/年，依目前每月撥回金額推算） vs 月月加碼（BVA3，最多12次/年）
+      const oldUnitsEstimate = currentPayoutTwd > 0 ? currentPayoutTwd / 0.042 : 0;
+      const oldBonusPerTriggerTwd = oldUnitsEstimate * 0.05;
+      const oldBonusPerTriggerDisplay = (isUSD && fx > 0) ? oldBonusPerTriggerTwd / fx : oldBonusPerTriggerTwd;
+      const oldBonusYearTwd = oldBonusPerTriggerTwd * 4;
+      const newBonusYear = bonusPayout * 12;
+      $('cmpBonusOld').textContent = Math.round(oldBonusPerTriggerDisplay).toLocaleString('zh-TW');
+      $('cmpBonusNew').textContent = Math.round(bonusPayout).toLocaleString('zh-TW');
+      $('cmpBonusOldUnit').textContent = isUSD ? 'US$／次・共 4 次／年' : '元／次・共 4 次／年';
+      if(isUSD && fx > 0){
+        $('cmpBonusOldTwd').style.display = '';
+        $('cmpBonusOldTwd').textContent = '≈ ' + fmt(oldBonusPerTriggerTwd) + '／次';
+      } else {
+        $('cmpBonusOldTwd').style.display = 'none';
+      }
+      $('cmpBonusOldYear').textContent = fmt(oldBonusYearTwd);
+      $('cmpBonusNewYear').textContent = fmt(newBonusYear);
+
+      // 效益摘要｜轉換前後比較一覽
+      const [acctOldMain, acctOldSub] = splitDual(usdBase, base, isUSD, fx);
+      $('sumAcctOld').textContent = acctOldMain;
+      $('sumAcctOldSub').textContent = acctOldSub;
+      $('sumAcctNew').textContent = fmt(net);
+
+      const [payoutOldMain, payoutOldSub] = splitDual(currentPayout, currentPayoutTwd, isUSD, fx, '／月');
+      $('sumPayoutOld').textContent = payoutOldMain;
+      $('sumPayoutOldSub').textContent = payoutOldSub;
+      $('sumPayoutNew').textContent = fmt(basePayout) + '／月';
+    }
+  }
+
+  ['version','fxRateInput','date','invested','withdrawn','surrender','netValue','currentPayout','redeemAmount','newInvest','payoutMethod'].forEach(id=>{
+    $(id).addEventListener('input', calc);
+    $(id).addEventListener('change', () => { toggleFields(); calc(); });
+  });
+
+  toggleFields();
+
+  calc();
+</script>
+
+</body>
+</html>
