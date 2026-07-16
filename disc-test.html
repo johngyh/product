@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DISC 人際風格分析</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700;900&family=Noto+Sans+TC:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0b2e5c;
+    --navy-mid: #134a8c;
+    --navy-light: #e7f0fb;
+    --gold: #c9860f;
+    --gold-light: #e3a635;
+    --text: #101826;
+    --text-dim: #71809a;
+    --bg: #f3f6fb;
+    --line: #d8e0ec;
+    --white: #ffffff;
+    --D: #c23b3b;
+    --I: #D4600A;
+    --S: #1f7a4d;
+    --C: #134a8c;
+    --D-bg: rgba(194,59,59,0.08);
+    --I-bg: rgba(212,96,10,0.08);
+    --S-bg: rgba(31,122,77,0.08);
+    --C-bg: rgba(19,74,140,0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans TC', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    text-align: center;
+    padding: 50px 20px 36px;
+    background: linear-gradient(135deg, var(--navy), var(--navy-mid));
+    border-radius: 0 0 20px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    right: -40px; top: -40px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(227,166,53,.3), transparent 70%);
+    pointer-events: none;
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    left: -30px; bottom: -50px;
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(31,122,77,.22), transparent 70%);
+    pointer-events: none;
+  }
+  .disc-badge {
+    display: inline-flex;
+    gap: 6px;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .disc-badge span {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 700;
+    font-size: 16px;
+  }
+  .disc-badge .d { background: var(--D); color: #fff; }
+  .disc-badge .i { background: var(--I); color: #fff; }
+  .disc-badge .s { background: var(--S); color: #fff; }
+  .disc-badge .c { background: var(--C); color: #fff; }
+
+  header h1 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(24px, 4vw, 38px);
+    color: #ffffff;
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+    position: relative;
+  }
+  header p {
+    color: #c9d9ef;
+    font-size: 14px;
+    letter-spacing: 0.05em;
+    max-width: 520px;
+    margin: 0 auto;
+    line-height: 1.7;
+    position: relative;
+  }
+
+  /* ── INSTRUCTIONS ── */
+  .instructions {
+    max-width: 700px;
+    margin: 32px auto;
+    padding: 22px 26px;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    box-shadow: 0 4px 16px -8px rgba(11,46,92,0.12);
+  }
+  .instructions h3 {
+    font-family: 'Noto Serif TC', serif;
+    color: var(--navy-mid);
+    font-size: 14px;
+    letter-spacing: 0.1em;
+    margin-bottom: 10px;
+  }
+  .instructions p {
+    color: var(--text-dim);
+    font-size: 13.5px;
+    line-height: 1.8;
+  }
+  .score-pills {
+    display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap;
+  }
+  .score-pills span {
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .score-pills .s7 { background: rgba(201,134,15,0.15); color: var(--gold); border: 1px solid var(--gold); }
+  .score-pills .s5 { background: rgba(201,134,15,0.07); color: var(--gold); border: 1px solid rgba(201,134,15,0.4); }
+  .score-pills .s3 { background: var(--navy-light); color: var(--text-dim); border: 1px solid var(--line); }
+  .score-pills .s1 { background: transparent; color: var(--text-dim); border: 1px solid var(--line); }
+
+  /* ── FORM ── */
+  .form-wrap {
+    max-width: 700px;
+    margin: 0 auto 60px;
+    padding: 0 20px;
+  }
+
+  .question-block {
+    margin-bottom: 16px;
+    background: var(--white);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    box-shadow: 0 4px 16px -10px rgba(11,46,92,0.15);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .question-block:focus-within {
+    border-color: var(--navy-mid);
+    box-shadow: 0 4px 20px -8px rgba(11,46,92,0.2);
+  }
+  .block-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    background: var(--navy-light);
+    border-bottom: 1px solid var(--line);
+  }
+  .block-label {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--navy-mid);
+    width: 28px;
+  }
+  .block-hint {
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+  .block-status {
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--text-dim);
+    transition: color 0.3s;
+  }
+  .block-status.complete { color: var(--S); }
+  .block-warn {
+    font-size: 12px;
+    color: var(--D);
+    display: none;
+    animation: fadeIn 0.2s ease;
+  }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(-2px); } to { opacity: 1; transform: translateY(0); } }
+  .score-btn.active-dup {
+    background: rgba(194,59,59,0.15);
+    border-color: var(--D);
+    color: var(--D);
+    animation: shake 0.3s ease;
+  }
+  @keyframes shake {
+    0%   { transform: translateX(0); }
+    25%  { transform: translateX(-4px); }
+    50%  { transform: translateX(4px); }
+    75%  { transform: translateX(-3px); }
+    100% { transform: translateX(0); }
+  }
+
+  .options { padding: 4px 0; }
+  .option-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 18px;
+    border-bottom: 1px solid var(--line);
+    transition: background 0.15s;
+  }
+  .option-row:last-child { border-bottom: none; }
+  .option-row:hover { background: var(--navy-light); }
+
+  .option-num {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--navy-light);
+    border: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+    color: var(--text-dim);
+    flex-shrink: 0;
+  }
+  .option-text {
+    flex: 1;
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  .score-select { display: flex; gap: 6px; }
+  .score-btn {
+    width: 36px; height: 36px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--white);
+    color: var(--text-dim);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: 'Noto Sans TC', sans-serif;
+  }
+  .score-btn:hover { border-color: var(--navy-mid); color: var(--navy-mid); background: var(--navy-light); }
+  .score-btn.active-7 { background: var(--navy); border-color: var(--navy); color: #fff; font-weight: 700; }
+  .score-btn.active-5 { background: var(--navy-light); border-color: var(--navy-mid); color: var(--navy-mid); font-weight: 600; }
+  .score-btn.active-3 { background: var(--navy-light); border-color: var(--line); color: var(--text-dim); }
+  .score-btn.active-1 { background: transparent; border-color: var(--line); color: var(--text-dim); }
+
+  /* ── SUBMIT ── */
+  .submit-area {
+    max-width: 700px;
+    margin: 0 auto 80px;
+    padding: 0 20px;
+    text-align: center;
+  }
+  .error-msg {
+    color: var(--D);
+    font-size: 13px;
+    margin-bottom: 16px;
+    min-height: 18px;
+  }
+  .submit-btn {
+    padding: 16px 56px;
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 20px rgba(11,46,92,0.25);
+  }
+  .submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(11,46,92,0.35);
+  }
+  .submit-btn:active { transform: translateY(0); }
+
+  /* ── RESULTS ── */
+  #results { display: none; }
+  .result-header {
+    text-align: center;
+    padding: 50px 20px 30px;
+    background: linear-gradient(135deg, var(--navy), var(--navy-mid));
+    border-radius: 0 0 20px 20px;
+    margin-bottom: 30px;
+  }
+  .result-header h2 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(22px, 3.5vw, 32px);
+    color: #ffffff;
+    margin-bottom: 8px;
+    letter-spacing: 0.06em;
+  }
+  .result-header p { color: #c9d9ef; font-size: 13px; }
+
+  /* scores table */
+  .scores-table {
+    max-width: 560px;
+    margin: 0 auto 20px;
+    padding: 0 20px;
+  }
+  .scores-table table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    background: var(--white);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    box-shadow: 0 4px 16px -8px rgba(11,46,92,0.12);
+  }
+  .scores-table th {
+    padding: 10px 12px;
+    text-align: center;
+    background: var(--navy-mid);
+    color: #fff;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+  }
+  .scores-table td {
+    padding: 8px 12px;
+    text-align: center;
+    border-bottom: 1px solid var(--line);
+    color: var(--text);
+  }
+  .scores-table .row-label { text-align: left; color: var(--navy-mid); font-weight: 600; }
+  .scores-table .total-row td {
+    background: var(--navy-light);
+    border-top: 2px solid var(--line);
+    font-weight: 700;
+    font-size: 15px;
+  }
+
+  /* quadrant chart */
+  .quadrant-wrap {
+    max-width: 420px;
+    margin: 20px auto;
+    padding: 0 20px;
+  }
+  .quadrant-wrap h3 {
+    font-family: 'Noto Serif TC', serif;
+    text-align: center;
+    font-size: 14px;
+    color: var(--navy-mid);
+    letter-spacing: 0.1em;
+    margin-bottom: 16px;
+  }
+  .quadrant-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    background: var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    box-shadow: 0 4px 16px -8px rgba(11,46,92,0.12);
+  }
+  .quad-cell {
+    padding: 22px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 7px;
+    position: relative;
+    background: var(--white);
+  }
+  .quad-cell.D { background: var(--D-bg); }
+  .quad-cell.I { background: var(--I-bg); }
+  .quad-cell.S { background: var(--S-bg); }
+  .quad-cell.C { background: var(--C-bg); }
+
+  .quad-label {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 26px;
+    font-weight: 700;
+  }
+  .quad-cell.D .quad-label { color: var(--D); }
+  .quad-cell.I .quad-label { color: var(--I); }
+  .quad-cell.S .quad-label { color: var(--S); }
+  .quad-cell.C .quad-label { color: var(--C); }
+
+  .quad-name { font-size: 12px; color: var(--text-dim); letter-spacing: 0.05em; }
+  .quad-score {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text);
+    font-family: 'Noto Serif TC', serif;
+  }
+  .quad-bar-wrap {
+    width: 100%;
+    height: 5px;
+    background: var(--line);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .quad-bar {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 1s ease;
+  }
+  .quad-cell.D .quad-bar { background: var(--D); }
+  .quad-cell.I .quad-bar { background: var(--I); }
+  .quad-cell.S .quad-bar { background: var(--S); }
+  .quad-cell.C .quad-bar { background: var(--C); }
+
+  .winner-badge {
+    position: absolute;
+    top: 10px; right: 10px;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+    color: #fff;
+  }
+
+  .strengths-weaknesses {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 16px;
+  }
+  .sw-box {
+    padding: 14px;
+    background: var(--navy-light);
+    border-radius: 8px;
+    border: 1px solid var(--line);
+  }
+  .sw-box h4 {
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+    margin-bottom: 10px;
+  }
+  .sw-box ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .sw-box ul li {
+    font-size: 13px;
+    color: var(--text);
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    line-height: 1.5;
+  }
+  .sw-box ul li::before { flex-shrink: 0; }
+  .sw-box.str ul li::before { content: '✦'; color: var(--gold); font-size: 10px; margin-top: 2px; }
+  .sw-box.weak ul li::before { content: '▸'; color: var(--text-dim); font-size: 10px; margin-top: 3px; }
+
+  /* ── ALL ANIMALS SECTION ── */
+  .all-animals {
+    max-width: 700px;
+    margin: 0 auto 20px;
+    padding: 0 20px;
+  }
+  .all-animals h3 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 14px;
+    color: var(--navy-mid);
+    letter-spacing: 0.1em;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+  .animal-card {
+    background: var(--white);
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    margin-bottom: 12px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 4px 14px -8px rgba(11,46,92,0.1);
+  }
+  .animal-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+  }
+  .animal-card.D::before { background: var(--D); }
+  .animal-card.I::before { background: var(--I); }
+  .animal-card.S::before { background: var(--S); }
+  .animal-card.C::before { background: var(--C); }
+
+  .animal-card-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 18px 14px 22px;
+    cursor: pointer;
+    user-select: none;
+    background: var(--white);
+    transition: background 0.15s;
+  }
+  .animal-card-header:hover { background: var(--navy-light); }
+  .animal-emoji { font-size: 28px; }
+  .animal-title-wrap { flex: 1; }
+  .animal-disc-badge {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 700;
+    font-size: 12px;
+    color: #fff;
+    margin-right: 4px;
+  }
+  .animal-card.D .animal-disc-badge { background: var(--D); }
+  .animal-card.I .animal-disc-badge { background: var(--I); }
+  .animal-card.S .animal-disc-badge { background: var(--S); }
+  .animal-card.C .animal-disc-badge { background: var(--C); }
+
+  .animal-name {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 16px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .animal-en { font-size: 12px; color: var(--text-dim); margin-top: 2px; }
+  .animal-score-pill {
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-weight: 600;
+  }
+  .animal-card.D .animal-score-pill { background: var(--D-bg); color: var(--D); border: 1px solid var(--D); }
+  .animal-card.I .animal-score-pill { background: var(--I-bg); color: var(--I); border: 1px solid var(--I); }
+  .animal-card.S .animal-score-pill { background: var(--S-bg); color: var(--S); border: 1px solid var(--S); }
+  .animal-card.C .animal-score-pill { background: var(--C-bg); color: var(--C); border: 1px solid var(--C); }
+
+  .animal-chevron {
+    color: var(--text-dim);
+    font-size: 13px;
+    transition: transform 0.25s;
+  }
+  .animal-card.open .animal-chevron { transform: rotate(180deg); }
+
+  .animal-card-body {
+    display: none;
+    padding: 0 22px 20px 22px;
+    border-top: 1px solid var(--line);
+  }
+  .animal-card.open .animal-card-body { display: block; }
+
+  .animal-desc {
+    font-size: 13.5px;
+    line-height: 1.9;
+    color: var(--text-dim);
+    padding: 14px 0 14px;
+  }
+  .animal-traits {
+    display: flex; flex-wrap: wrap; gap: 7px;
+    margin-bottom: 14px;
+  }
+  .animal-trait {
+    padding: 3px 11px;
+    border-radius: 20px;
+    font-size: 12px;
+    border: 1px solid;
+  }
+  .D .animal-trait { background: var(--D-bg); border-color: var(--D); color: var(--D); }
+  .I .animal-trait { background: var(--I-bg); border-color: var(--I); color: var(--I); }
+  .S .animal-trait { background: var(--S-bg); border-color: var(--S); color: var(--S); }
+  .C .animal-trait { background: var(--C-bg); border-color: var(--C); color: var(--C); }
+
+  /* ── SYNTHESIS ── */
+  .synthesis-wrap {
+    max-width: 700px;
+    margin: 30px auto 20px;
+    padding: 0 20px;
+  }
+  .synthesis-wrap h3 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 14px;
+    color: var(--navy-mid);
+    letter-spacing: 0.1em;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+  .synthesis-box {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 26px 24px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 16px -8px rgba(11,46,92,0.12);
+  }
+  .synthesis-box::after {
+    content: '✦';
+    position: absolute;
+    top: 16px; right: 20px;
+    color: rgba(201,134,15,0.15);
+    font-size: 32px;
+  }
+  .synthesis-loading {
+    text-align: center;
+    padding: 20px 0;
+    color: var(--text-dim);
+    font-size: 14px;
+  }
+  .loading-dots::after {
+    content: '';
+    animation: dots 1.4s infinite;
+  }
+  @keyframes dots {
+    0%   { content: ''; }
+    33%  { content: '.'; }
+    66%  { content: '..'; }
+    100% { content: '...'; }
+  }
+  .synthesis-content {
+    font-size: 14px;
+    line-height: 2;
+    color: var(--text);
+    white-space: pre-wrap;
+  }
+  .synthesis-section-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 13px;
+    color: var(--navy-mid);
+    letter-spacing: 0.08em;
+    margin: 18px 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* ── ACTION BUTTONS ── */
+  .action-area {
+    max-width: 700px;
+    margin: 30px auto 0;
+    padding: 0 20px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .action-btn {
+    padding: 13px 28px;
+    border-radius: 8px;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-print {
+    background: linear-gradient(135deg, var(--gold) 0%, #b8892a 100%);
+    border: none;
+    color: var(--navy);
+    font-weight: 700;
+    box-shadow: 0 4px 16px rgba(201,168,76,0.2);
+  }
+  .btn-print:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201,168,76,0.3); }
+  .btn-email {
+    background: transparent;
+    border: 1px solid rgba(91,143,212,0.5);
+    color: var(--C);
+  }
+  .btn-email:hover { background: rgba(91,143,212,0.1); border-color: var(--C); }
+  .btn-retry {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--text-dim);
+  }
+  .btn-retry:hover { border-color: var(--navy-mid); color: var(--navy-mid); background: var(--navy-light); }
+
+  /* ── EMAIL MODAL ── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal-box {
+    background: var(--navy-mid);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 12px;
+    padding: 32px 28px;
+    width: 100%;
+    max-width: 440px;
+    position: relative;
+  }
+  .modal-box h3 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 18px;
+    color: var(--gold-light);
+    margin-bottom: 8px;
+  }
+  .modal-box p { font-size: 13px; color: var(--text-dim); margin-bottom: 20px; line-height: 1.7; }
+  .modal-close {
+    position: absolute;
+    top: 14px; right: 16px;
+    background: none; border: none;
+    color: var(--text-dim); font-size: 20px; cursor: pointer;
+  }
+  .modal-input {
+    width: 100%;
+    padding: 12px 14px;
+    background: var(--navy);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 8px;
+    color: var(--text);
+    font-size: 14px;
+    font-family: 'Noto Sans TC', sans-serif;
+    margin-bottom: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .modal-input:focus { border-color: var(--gold); }
+  .modal-send {
+    width: 100%;
+    padding: 13px;
+    background: linear-gradient(135deg, var(--C) 0%, #3a6aaa 100%);
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.06em;
+    transition: opacity 0.2s;
+  }
+  .modal-send:hover { opacity: 0.88; }
+  .modal-feedback { font-size: 13px; text-align: center; margin-top: 10px; min-height: 18px; }
+  .modal-feedback.ok { color: var(--S); }
+  .modal-feedback.err { color: var(--D); }
+
+  /* ── PRINT STYLES ── */
+  @media print {
+    body { background: #fff !important; color: #111 !important; }
+    #quiz, .action-area, .modal-overlay { display: none !important; }
+    #results { display: block !important; }
+    header, .result-header { padding: 20px 0 10px !important; }
+    .animal-card-body { display: block !important; }
+    .animal-chevron { display: none; }
+    .synthesis-box { border: 1px solid #ccc !important; background: #f9f9f9 !important; }
+    :root {
+      --navy: #fff; --navy-mid: #f5f5f5; --navy-light: #eee;
+      --text: #111; --text-dim: #555; --gold: #8a6200; --gold-light: #8a6200;
+    }
+  }
+
+  /* ── SPACING ── */
+  .section-divider {
+    max-width: 700px;
+    margin: 28px auto;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .section-divider::before, .section-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+  .section-divider span {
+    font-size: 12px;
+    color: var(--navy-mid);
+    letter-spacing: 0.12em;
+    white-space: nowrap;
+    font-weight: 600;
+  }
+
+  .bottom-pad { height: 60px; }
+
+  @media (max-width: 480px) {
+    .score-btn { width: 30px; height: 30px; font-size: 12px; }
+    .strengths-weaknesses { grid-template-columns: 1fr; }
+    .option-text { font-size: 13px; }
+    .action-area { flex-direction: column; align-items: stretch; }
+    .action-btn { justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════ QUIZ SECTION ═══════════ -->
+<div id="quiz">
+  <header>
+    <div class="disc-badge">
+      <span class="d">D</span>
+      <span class="i">I</span>
+      <span class="s">S</span>
+      <span class="c">C</span>
+    </div>
+    <h1>人際風格分析</h1>
+    <p>透過簡單的自我評分，了解您的溝通風格與人際特質，協助您在工作與生活中發揮優勢。</p>
+  </header>
+
+  <div class="instructions">
+    <h3>📋 填寫說明</h3>
+    <p>每個題組有 4 個描述，請依符合您個性的程度各給一個分數。每組必須各出現一次：</p>
+    <div class="score-pills">
+      <span class="s7">7 ── 最接近</span>
+      <span class="s5">5 ── 接近</span>
+      <span class="s3">3 ── 稍符合</span>
+      <span class="s1">1 ── 最不像</span>
+    </div>
+  </div>
+
+  <div class="form-wrap" id="formWrap"></div>
+
+  <div class="submit-area">
+    <div class="error-msg" id="errorMsg"></div>
+    <button class="submit-btn" onclick="submitForm()">查看我的分析結果 →</button>
+  </div>
+</div>
+
+<!-- ═══════════ RESULTS SECTION ═══════════ -->
+<div id="results">
+  <div class="result-header">
+    <h2>您的 DISC 分析結果</h2>
+    <p>根據您的自我評分，以下是您的人際風格輪廓</p>
+  </div>
+
+  <div class="scores-table">
+    <table id="scoresTable"></table>
+  </div>
+
+  <div class="quadrant-wrap">
+    <h3>四象限得分分布</h3>
+    <div class="quadrant-grid" id="quadrantGrid"></div>
+  </div>
+
+  <div class="section-divider"><span>四種人際風格介紹</span></div>
+
+  <div class="all-animals" id="allAnimals"></div>
+
+  <div class="section-divider"><span>綜合個人分析</span></div>
+
+  <div class="synthesis-wrap">
+    <h3>✦ AI 綜合分析報告</h3>
+    <div class="synthesis-box" id="synthesisBox">
+      <div class="synthesis-loading">
+        <span class="loading-dots">分析中，請稍候</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="action-area">
+    <button class="action-btn btn-retry" onclick="resetForm()">↺ 重新作答</button>
+  </div>
+
+  <div class="bottom-pad"></div>
+</div>
+
+
+
+<script>
+const questions = [
+  { label: 'A', items: ['堅定、固執', '有說服力、善表達', '溫和、文雅', '謙虛、容忍'] },
+  { label: 'B', items: ['喜歡冒險、膽大', '團體中活力的來源', '節制、穩健', '嚴格、考究'] },
+  { label: 'C', items: ['有決心、有決斷力', '使人心服、善於遊說', '善良、和諧', '謹慎、小心'] },
+  { label: 'D', items: ['有競爭性、有進取心', '頑皮、開朗', '親切、誠懇', '順從、善思考'] },
+  { label: 'E', items: ['堅持、有魄力', '樂觀、好玩', '寬大、仁慈', '正確、準確'] }
+];
+
+const SCORES = [7, 5, 3, 1];
+const DISC_LABELS = ['D', 'I', 'S', 'C'];
+
+const personalities = {
+  D: {
+    name: '老虎型', en: 'Dominance', emoji: '🐯',
+    desc: '如同老虎般充滿霸氣與衝勁，您是果斷、直接且以結果為導向的行動者。面對挑戰時您傾向於主動掌控局勢、快速做出決策。您在競爭環境中表現出色，喜歡效率，不喜歡繁文縟節，天生就是帶頭衝鋒的領導者。',
+    traits: ['決策果斷', '目標導向', '競爭意識強', '喜歡掌控', '行動力強'],
+    strengths: ['能快速做決策', '勇於承擔挑戰', '推動團隊執行', '高效率完成目標'],
+    weaknesses: ['有時缺乏耐心', '可能忽略他人感受', '傾向獨自行動', '對細節較不在意']
+  },
+  I: {
+    name: '孔雀型', en: 'Influence', emoji: '🦚',
+    desc: '如同孔雀般光彩耀眼、自信展現自我，您充滿熱情、善於表達且具有感染力。您天生擅長建立關係，能在人群中創造正向氣氛。您富有創意、樂觀開朗，善於以故事和情感說服他人，是團隊中不可或缺的凝聚力量。',
+    traits: ['熱情洋溢', '善於溝通', '富有感染力', '創意豐富', '人際關係廣'],
+    strengths: ['激勵鼓舞他人', '快速建立信任', '在公開場合表現突出', '帶動正向氛圍'],
+    weaknesses: ['有時過於情緒化', '注意力較易分散', '細節執行力較弱', '容易過度承諾']
+  },
+  S: {
+    name: '無尾熊型', en: 'Steadiness', emoji: '🐨',
+    desc: '如同無尾熊般溫和平靜、讓人感到安心，您是耐心、可靠且善於聆聽的支持者。您重視和諧、穩定的環境，在需要持續努力的工作中表現優異。您具備高度同理心，能敏銳察覺他人需求，是團隊中最可信賴的夥伴。',
+    traits: ['耐心穩重', '善解人意', '忠誠可靠', '重視和諧', '擅長聆聽'],
+    strengths: ['建立長期信任關係', '提供穩定的支持', '處理壓力時沉著冷靜', '善於傾聽需求'],
+    weaknesses: ['面對變化時較抗拒', '難以說「不」', '決策時可能猶豫不決', '傾向避免衝突']
+  },
+  C: {
+    name: '貓頭鷹型', en: 'Conscientiousness', emoji: '🦉',
+    desc: '如同貓頭鷹般睿智縝密、洞察入微，您是嚴謹、分析力強且注重品質的完美主義者。您在處理複雜問題時展現出卓越的邏輯思維，重視數據與事實，追求高標準的執行品質，能發現別人容易忽視的細節與風險。',
+    traits: ['邏輯嚴謹', '注重細節', '追求準確', '分析能力強', '高標準'],
+    strengths: ['確保工作品質', '能發現潛在問題', '系統性規劃執行', '做出有據可查的決策'],
+    weaknesses: ['有時過於追求完美', '決策速度較慢', '社交場合較為保守', '情感表達較不直接']
+  }
+};
+
+let answers = {};
+let lastTotals = [];
+
+// ── FORM BUILD ──
+function buildForm() {
+  const wrap = document.getElementById('formWrap');
+  wrap.innerHTML = '';
+  questions.forEach(q => {
+    const block = document.createElement('div');
+    block.className = 'question-block';
+    block.id = 'block-' + q.label;
+    block.innerHTML = `
+      <div class="block-header">
+        <span class="block-label">${q.label}</span>
+        <span class="block-hint">每組選 7、5、3、1 各一次</span>
+        <span class="block-warn" id="warn-${q.label}"></span>
+        <span class="block-status" id="status-${q.label}">待填寫</span>
+      </div>
+      <div class="options">
+        ${q.items.map((item, idx) => `
+          <div class="option-row">
+            <div class="option-num">${idx + 1}</div>
+            <div class="option-text">${item}</div>
+            <div class="score-select" id="sel-${q.label}-${idx + 1}">
+              ${SCORES.map(s => `<button class="score-btn" onclick="selectScore('${q.label}',${idx + 1},${s})">${s}</button>`).join('')}
+            </div>
+          </div>`).join('')}
+      </div>`;
+    wrap.appendChild(block);
+  });
+}
+
+function selectScore(group, item, score) {
+  answers[`${group}-${item}`] = score;
+  const q = questions.find(q => q.label === group);
+
+  // Check for duplicates in this group
+  const allVals = [1,2,3,4].map(i => answers[`${group}-${i}`]).filter(v => v !== undefined);
+  const dupes = allVals.filter((v, i, arr) => arr.indexOf(v) !== i);
+  const warn = document.getElementById(`warn-${group}`);
+  if (dupes.length > 0) {
+    warn.textContent = `⚠ 分數 ${[...new Set(dupes)].join('、')} 重複了`;
+    warn.style.display = 'inline';
+  } else {
+    warn.textContent = '';
+    warn.style.display = 'none';
+  }
+
+  // Re-render buttons — highlight duplicated scores in red
+  q.items.forEach((_, idx) => {
+    const i = idx + 1;
+    const container = document.getElementById(`sel-${group}-${i}`);
+    const val = answers[`${group}-${i}`];
+    container.querySelectorAll('.score-btn').forEach(btn => {
+      const s = parseInt(btn.textContent);
+      if (val === s) {
+        btn.className = dupes.includes(s) ? 'score-btn active-dup' : `score-btn active-${s}`;
+      } else {
+        btn.className = 'score-btn';
+      }
+    });
+  });
+
+  updateStatus(group);
+}
+
+function getGroupScores(group) { return [1,2,3,4].map(i => answers[`${group}-${i}`]); }
+
+function isGroupValid(group) {
+  const scores = getGroupScores(group);
+  if (scores.some(s => s === undefined)) return false;
+  const used = new Set(scores);
+  return used.size === 4 && [7,5,3,1].every(s => used.has(s));
+}
+
+function updateStatus(group) {
+  const el = document.getElementById(`status-${group}`);
+  if (isGroupValid(group)) {
+    el.textContent = '✓ 完成'; el.className = 'block-status complete';
+  } else {
+    const filled = [1,2,3,4].filter(i => answers[`${group}-${i}`] !== undefined).length;
+    el.textContent = filled > 0 ? `${filled}/4` : '待填寫';
+    el.className = 'block-status';
+  }
+}
+
+function submitForm() {
+  const invalid = questions.filter(q => !isGroupValid(q.label));
+  if (invalid.length > 0) {
+    document.getElementById('errorMsg').textContent = `請完成題組 ${invalid.map(q => q.label).join('、')} 的填寫，並確認 7、5、3、1 各出現一次。`;
+    return;
+  }
+  document.getElementById('errorMsg').textContent = '';
+  showResults();
+}
+
+// ── RESULTS ──
+function showResults() {
+  const totals = [0, 0, 0, 0];
+  const tableData = {};
+  questions.forEach(q => {
+    const scores = getGroupScores(q.label);
+    tableData[q.label] = scores;
+    scores.forEach((s, i) => totals[i] += s);
+  });
+  lastTotals = totals;
+
+  // Table
+  const table = document.getElementById('scoresTable');
+  let html = `<tr><th>題組</th>${DISC_LABELS.map(l => `<th style="color:var(--${l})">${l}</th>`).join('')}</tr>`;
+  questions.forEach(q => {
+    html += `<tr><td class="row-label">${q.label}</td>${tableData[q.label].map(s => `<td>${s}</td>`).join('')}</tr>`;
+  });
+  html += `<tr class="total-row"><td class="row-label">總分</td>${totals.map((t, i) => `<td style="color:var(--${DISC_LABELS[i]})">${t}</td>`).join('')}</tr>`;
+  table.innerHTML = html;
+
+  // Quadrant
+  const maxScore = Math.max(...totals);
+  document.getElementById('quadrantGrid').innerHTML = DISC_LABELS.map((type, i) => {
+    const score = totals[i];
+    const pct = Math.round((score / maxScore) * 100);
+    const p = personalities[type];
+    return `<div class="quad-cell ${type}">
+      ${score === maxScore ? '<div class="winner-badge">★</div>' : ''}
+      <div style="font-size:28px">${p.emoji}</div>
+      <div class="quad-label">${type}</div>
+      <div class="quad-name">${p.name}</div>
+      <div class="quad-score">${score}</div>
+      <div class="quad-bar-wrap"><div class="quad-bar" style="width:${pct}%"></div></div>
+    </div>`;
+  }).join('');
+
+  // All animals — sorted by score descending
+  const sorted = DISC_LABELS.map((type, i) => ({ type, score: totals[i] }))
+    .sort((a, b) => b.score - a.score);
+
+  document.getElementById('allAnimals').innerHTML = sorted.map(({ type, score }, rank) => {
+    const p = personalities[type];
+    const isTop = rank === 0;
+    return `<div class="animal-card ${type}${isTop ? ' open' : ''}" id="acard-${type}">
+      <div class="animal-card-header" onclick="toggleAnimal('${type}')">
+        <div class="animal-emoji">${p.emoji}</div>
+        <div class="animal-title-wrap">
+          <div class="animal-name">
+            <span class="animal-disc-badge">${type}</span>
+            ${p.name}
+            ${isTop ? '<span style="font-size:12px;color:var(--gold);font-family:\'Noto Sans TC\'">⭐ 主導風格</span>' : ''}
+          </div>
+          <div class="animal-en">${p.en}｜得分 ${score} 分（第 ${rank+1} 高）</div>
+        </div>
+        <div class="animal-score-pill">${score} 分</div>
+        <div class="animal-chevron">▼</div>
+      </div>
+      <div class="animal-card-body">
+        <div class="animal-desc">${p.desc}</div>
+        <div class="animal-traits">${p.traits.map(t => `<span class="animal-trait">${t}</span>`).join('')}</div>
+        <div class="strengths-weaknesses">
+          <div class="sw-box str">
+            <h4>✦ 優勢特質</h4>
+            <ul>${p.strengths.map(s => `<li>${s}</li>`).join('')}</ul>
+          </div>
+          <div class="sw-box weak">
+            <h4>▸ 成長空間</h4>
+            <ul>${p.weaknesses.map(w => `<li>${w}</li>`).join('')}</ul>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('quiz').style.display = 'none';
+  document.getElementById('results').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // AI synthesis
+  generateSynthesis(totals, sorted);
+}
+
+function toggleAnimal(type) {
+  const card = document.getElementById('acard-' + type);
+  card.classList.toggle('open');
+}
+
+// ── AI SYNTHESIS ──
+async function generateSynthesis(totals, sorted) {
+  const box = document.getElementById('synthesisBox');
+  const dominantType = sorted[0].type;
+  const secondType = sorted[1].type;
+  const dp = personalities[dominantType];
+  const sp = personalities[secondType];
+
+  const prompt = `你是一位專業的人際風格顧問，精通DISC人際風格分析。以下是一位填答者的DISC測驗結果：
+
+D（老虎型）：${totals[0]}分
+I（孔雀型）：${totals[1]}分
+S（無尾熊型）：${totals[2]}分
+C（貓頭鷹型）：${totals[3]}分
+
+主導風格：${dp.emoji}${dp.name}（${totals[DISC_LABELS.indexOf(dominantType)]}分）
+次要風格：${sp.emoji}${sp.name}（${totals[DISC_LABELS.indexOf(secondType)]}分）
+
+請以溫暖、專業的繁體中文撰寫一份個人化綜合分析報告，格式如下（每段直接寫內容，不要用markdown符號）：
+
+【整體風格輪廓】
+（2-3句整體描述，結合主次風格的組合特質）
+
+【在工作中的表現】
+（描述這個組合在職場中的行為模式、溝通方式、決策風格，約3-4句）
+
+【人際互動特色】
+（描述與他人相處時的特質，以及最適合合作的對象，約2-3句）
+
+【最大的潛在優勢】
+（點出這個風格組合獨特的競爭優勢，約2-3句）
+
+【個人成長建議】
+（針對這個組合給出2-3條具體可操作的成長建議）
+
+語氣要親切有洞見，讓填答者感受到被理解，每個段落都要緊扣具體的分數比例與動物特質。`;
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const data = await response.json();
+    const text = data.content?.[0]?.text || '';
+
+    // Parse sections
+    const sections = [
+      { key: '整體風格輪廓', icon: '🧭' },
+      { key: '在工作中的表現', icon: '💼' },
+      { key: '人際互動特色', icon: '🤝' },
+      { key: '最大的潛在優勢', icon: '⚡' },
+      { key: '個人成長建議', icon: '🌱' }
+    ];
+
+    let html = '';
+    sections.forEach((sec, idx) => {
+      const startTag = `【${sec.key}】`;
+      const nextTag = idx < sections.length - 1 ? `【${sections[idx+1].key}】` : null;
+      const start = text.indexOf(startTag);
+      if (start === -1) return;
+      const contentStart = start + startTag.length;
+      const contentEnd = nextTag ? text.indexOf(nextTag) : text.length;
+      const content = text.slice(contentStart, contentEnd === -1 ? text.length : contentEnd).trim();
+      html += `<div class="synthesis-section-title">${sec.icon} ${sec.key}</div>
+               <div class="synthesis-content">${content}</div>`;
+    });
+
+    box.innerHTML = html || `<div class="synthesis-content">${text}</div>`;
+  } catch (e) {
+    box.innerHTML = `<div class="synthesis-content" style="color:var(--text-dim)">分析載入失敗，請確認網路連線後重試。</div>`;
+  }
+}
+
+// ── RESET ──
+function resetForm() {
+  answers = {};
+  lastTotals = [];
+  buildForm();
+  document.getElementById('quiz').style.display = 'block';
+  document.getElementById('results').style.display = 'none';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+buildForm();
+</script>
+</body>
+</html>
