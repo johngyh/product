@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>南山人壽 長照險 試算比較</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  /* 南山人壽 CI：藍為主色，黃(溫暖)、綠(活力)為輔助色 — 配色參考 WEHS 試算表 */
+  --navy:#0b2e5c;--navy2:#ffffff;--navy3:#e7f0fb;
+  --blue2:#134a8c;--blue3:#1c63b3;
+  --gold:#c9860f;--gold2:#e3a635;
+  --text:#101826;--text2:#71809a;
+  --green:#1f7a4d;--green2:#3f9e6d;--brown:#8b5e3c;--red:#c23b3b;
+  --c1:#c9860f;--c2:#1c63b3;--c3:#1f7a4d;--c4:#b5562f;
+  --bg:#f3f6fb;--line:#d8e0ec;
+  --radius:12px;
+  --serif:'Noto Serif TC',serif;--sans:'Noto Sans TC',sans-serif;
+}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:60px}
+
+/* HEADER */
+.site-header{background:linear-gradient(135deg,var(--navy),var(--blue2));border-bottom:none;padding:22px 20px 18px;text-align:center;position:relative;overflow:hidden;border-radius:0 0 18px 18px}
+.site-header::before{content:'';position:absolute;right:-40px;top:-40px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(227,166,53,.35),transparent 70%)}
+.site-header::after{content:'';position:absolute;left:-30px;bottom:-50px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(63,158,109,.32),transparent 70%)}
+.brand-tag{font-size:13px;letter-spacing:3px;color:var(--gold2);font-weight:500;margin-bottom:5px;position:relative}
+.site-title{font-family:var(--serif);font-size:22px;font-weight:700;color:#fff;letter-spacing:1px;position:relative}
+.site-sub{font-size:13px;color:#c9d9ef;margin-top:4px;letter-spacing:1px;position:relative}
+
+.container{max-width:700px;margin:0 auto;padding:0 16px}
+
+.section-label{font-size:13px;letter-spacing:3px;color:var(--gold);font-weight:600;margin:24px 0 10px;display:flex;align-items:center;gap:10px}
+.section-label::after{content:'';flex:1;height:1px;background:rgba(201,134,15,.25)}
+
+/* PRODUCT SELECTOR */
+.product-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px 10px}
+.prod-card{background:var(--navy2);border:2px solid var(--line);border-radius:var(--radius);padding:14px;cursor:pointer;transition:all .2s;user-select:none;position:relative;box-shadow:0 6px 16px -12px rgba(11,46,92,.3)}
+.prod-card.active{border-color:var(--prod-color,var(--gold));background:rgba(var(--prod-rgb,201,134,15),.06)}
+.prod-card .prod-code{font-size:13px;font-weight:700;letter-spacing:2px;color:var(--prod-color,var(--gold));margin-bottom:4px}
+.prod-card .prod-name{font-size:15px;color:var(--text);font-weight:500;line-height:1.4}
+.prod-card .prod-desc{font-size:13px;color:var(--text2);margin-top:4px;line-height:1.5}
+.prod-card .prod-check{position:absolute;top:10px;right:12px;width:23px;height:23px;border-radius:50%;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:13px;transition:all .2s;background:#fff}
+.prod-card .rank-badge{position:absolute;top:-9px;left:12px;background:linear-gradient(135deg,var(--gold2),var(--gold));color:#fff;font-size:10px;font-weight:700;letter-spacing:1px;padding:3px 9px 3px 7px;border-radius:20px;display:flex;align-items:center;gap:3px;box-shadow:0 2px 6px rgba(11,46,92,.35);white-space:nowrap;z-index:2}
+.prod-card .prod-badge{position:absolute;top:-9px;left:12px;background:var(--prod-color,var(--gold));color:#fff;font-size:10px;font-weight:700;letter-spacing:.5px;padding:3px 9px 3px 7px;border-radius:20px;display:flex;align-items:center;gap:3px;box-shadow:0 2px 6px rgba(11,46,92,.35);white-space:nowrap;z-index:2}
+.prod-card.active .prod-check{background:var(--prod-color,var(--gold));border-color:var(--prod-color,var(--gold));color:#fff}
+
+/* INPUT CARD */
+.input-card{background:var(--navy2);border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:0 12px 30px -20px rgba(11,46,92,.25)}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.field-row.triple{grid-template-columns:1fr 1fr 1fr}
+.field{display:flex;flex-direction:column;gap:4px}
+.field label{font-size:13px;color:var(--blue2);font-weight:700;letter-spacing:1px}
+.toggle-group{display:flex;background:var(--navy3);border-radius:7px;overflow:hidden;border:1px solid var(--line)}
+.toggle-group input[type=radio]{display:none}
+.toggle-group label{flex:1;text-align:center;padding:8px 4px;font-size:14px;font-weight:500;color:var(--text2);background:none;cursor:pointer;transition:all .2s;letter-spacing:0}
+.toggle-group input:checked+label{background:var(--blue2);color:#fff;font-weight:700}
+.field input[type=number],.field select{background:var(--navy3);border:1px solid var(--line);border-radius:7px;color:var(--text);font-family:var(--sans);font-size:17px;font-weight:500;padding:8px 12px;outline:none;width:100%;transition:border-color .2s;-webkit-appearance:none}
+.field input:focus,.field select:focus{border-color:var(--blue3)}
+.input-hint{font-size:13px;color:var(--text2);margin-top:2px}
+.calc-btn{width:100%;padding:13px;background:linear-gradient(135deg,var(--gold),#a8710c);color:#fff;border:none;border-radius:9px;font-family:var(--serif);font-size:17px;font-weight:700;cursor:pointer;margin-top:14px;letter-spacing:2px;transition:opacity .2s;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 10px 22px -12px rgba(201,134,15,.55)}
+.calc-btn:hover{opacity:.92}
+.calc-btn:active{transform:scale(.98)}
+.error-msg{background:rgba(194,59,59,.08);border:1px solid rgba(194,59,59,.3);border-radius:8px;padding:11px 14px;font-size:14px;color:var(--red);text-align:center;margin-top:10px;display:none}
+
+/* RESULTS */
+#results{display:none}
+
+/* Premium summary table */
+.summary-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-bottom:12px;border-radius:10px;box-shadow:0 12px 30px -22px rgba(11,46,92,.3)}
+.summary-table{width:100%;border-collapse:collapse;min-width:360px;background:var(--navy2)}
+.summary-table th{background:var(--blue2);font-size:13px;color:#fff;letter-spacing:1px;padding:9px 10px;text-align:left;border-bottom:none;font-weight:600}
+.summary-table th:not(:first-child){text-align:center}
+.summary-table td{padding:9px 10px;font-size:14px;border-bottom:1px solid var(--line)}
+.summary-table td:not(:first-child){text-align:center;font-family:var(--serif);font-weight:600;color:var(--text)}
+.summary-table tr:last-child td{border-bottom:none}
+.summary-table .row-label{color:var(--text2);font-size:13px}
+.summary-table .prod-header{font-size:13px;font-weight:700;letter-spacing:1px;padding:7px 10px;text-align:center;border-bottom:2px solid}
+.summary-table .na{color:var(--text2);font-size:13px}
+.summary-table .highlight-val{color:var(--gold)}
+.summary-table .best{background:rgba(31,122,77,.1)}
+
+/* Detail sections */
+.detail-cols{display:grid;gap:10px;margin-bottom:10px}
+.detail-cols.cols-1{grid-template-columns:1fr}
+.detail-cols.cols-2{grid-template-columns:1fr 1fr}
+.detail-cols.cols-3{grid-template-columns:1fr 1fr 1fr}
+.detail-cols.cols-4{grid-template-columns:1fr 1fr}
+
+.prod-detail-card{background:var(--navy2);border:1px solid var(--line);border-top:3px solid var(--prod-color,var(--gold));border-radius:var(--radius);overflow:hidden;box-shadow:0 12px 30px -22px rgba(11,46,92,.3)}
+.prod-detail-header{padding:12px 14px;background:var(--navy3)}
+.prod-detail-header .d-code{font-size:13px;font-weight:700;letter-spacing:2px;color:var(--prod-color,var(--gold))}
+.prod-detail-header .d-name{font-size:15px;color:var(--text);font-weight:600;margin-top:2px}
+.prod-detail-header .d-prem{font-family:var(--serif);font-size:22px;font-weight:700;color:var(--blue2);margin-top:6px}
+.prod-detail-header .d-prem-sub{font-size:13px;color:var(--text2);margin-top:2px}
+
+.benefit-row{display:flex;justify-content:space-between;align-items:baseline;padding:7px 14px;border-bottom:1px solid var(--line);font-size:13px}
+.benefit-row:last-child{border-bottom:none}
+.benefit-row .b-label{color:var(--text2)}
+.benefit-row .b-val{font-family:var(--serif);font-weight:600;color:var(--text);font-size:15px}
+.benefit-row .b-val.gold{color:var(--gold)}
+.benefit-row .b-val.na{color:var(--text2);font-size:13px;font-family:var(--sans);font-weight:400}
+.benefit-row .b-val.green{color:var(--green)}
+.benefit-divider{padding:5px 14px;background:var(--navy3);font-size:13px;color:var(--blue2);letter-spacing:1px;border-bottom:1px solid var(--line);font-weight:600}
+
+/* installment mini table */
+.mini-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-bottom:8px}
+.mini-table{width:100%;border-collapse:collapse;font-size:12px;min-width:0;table-layout:auto}
+.mini-table th{padding:4px 5px;font-size:11px;color:#fff;letter-spacing:.5px;background:var(--blue2);border-bottom:none;text-align:right;font-weight:500;white-space:nowrap}
+.mini-table th:first-child{text-align:left}
+.mini-table td{padding:4px 5px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+.mini-table td:first-child{text-align:left;color:var(--text2)}
+.mini-table .amt{font-family:var(--serif);font-weight:600;color:var(--text);font-size:12.5px}
+.mini-table tr:last-child td{border-bottom:none}
+.mini-table .total-tr td{background:rgba(201,134,15,.12);color:var(--gold);font-family:var(--serif);font-weight:700;border-top:1px solid rgba(201,134,15,.3);font-size:13px}
+.first-tr td{background:rgba(31,122,77,.08)}
+
+/* LTC costs */
+.ltc-cost-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px}
+.ltc-cost-card{background:var(--navy2);border:1px solid var(--line);border-radius:10px;padding:12px 10px;text-align:center;box-shadow:0 6px 16px -14px rgba(11,46,92,.3)}
+.ltc-cost-card--wide{grid-column:1/-1;display:flex;align-items:center;gap:12px;text-align:left;padding:12px 16px}
+.ltc-icon{font-size:24px;margin-bottom:6px;line-height:1}
+.ltc-cost-card--wide .ltc-icon{margin-bottom:0;font-size:26px;flex-shrink:0}
+.ltc-title{font-size:13px;color:var(--text2);margin-bottom:5px;line-height:1.4}
+.ltc-cost-card--wide .ltc-title{margin-bottom:3px}
+.ltc-amount{font-size:15px;color:var(--text)}
+.ltc-amount strong{color:var(--gold);font-family:var(--serif);font-size:17px}
+.ltc-amount span{font-size:13px;color:var(--text2);margin-left:2px}
+
+.footer-note{margin-top:20px;padding:14px 16px;background:var(--navy3);border-radius:8px;font-size:13px;color:var(--text2);line-height:1.8;border:1px solid var(--line)}
+.footer-note strong{color:var(--text)}
+
+/* CRITERIA */
+.criteria-card{background:var(--navy2);border:1px solid var(--line);border-radius:var(--radius);padding:16px;box-shadow:0 12px 30px -22px rgba(11,46,92,.25)}
+.criteria-title{font-family:var(--serif);font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px}
+.criteria-sub{font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:12px}
+.criteria-block{margin-bottom:14px}
+.criteria-block:last-child{margin-bottom:0}
+.criteria-badge{display:inline-block;font-size:13px;font-weight:700;letter-spacing:1px;padding:3px 10px;border-radius:20px;margin-bottom:7px}
+.criteria-badge.blue{background:var(--navy3);color:var(--blue2);border:1px solid rgba(11,46,92,.15)}
+.criteria-badge.gold{background:rgba(201,134,15,.12);color:var(--gold);border:1px solid rgba(201,134,15,.3)}
+.criteria-desc{font-size:13px;color:var(--text2);line-height:1.7}
+.criteria-desc strong{color:var(--text)}
+.adl-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-top:10px}
+.adl-item{background:var(--navy3);border-radius:8px;padding:8px 4px;text-align:center;border:1px solid var(--line)}
+.adl-icon{font-size:22px;margin-bottom:4px}
+.adl-label{font-size:12px;color:var(--text2);line-height:1.3}
+.disability-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px}
+.dis-item{background:var(--navy3);border-radius:7px;padding:8px 10px;font-size:13px;color:var(--text2);line-height:1.5;border:1px solid var(--line)}
+.dis-item--wide{grid-column:1/-1}
+.criteria-footnote{font-size:13px;color:var(--text2);margin-top:12px;padding-top:10px;border-top:1px solid var(--line);line-height:1.7}
+.criteria-footnote strong{color:var(--gold)}
+@media(max-width:420px){
+  .adl-grid{grid-template-columns:repeat(3,1fr)}
+  .disability-grid{grid-template-columns:1fr}
+}
+
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-thumb{background:rgba(201,134,15,.35);border-radius:2px}
+
+@media(max-width:420px){
+  .product-grid{grid-template-columns:1fr 1fr}
+  .field-row{grid-template-columns:1fr}
+  .field-row.triple{grid-template-columns:1fr 1fr}
+  .detail-cols.cols-2,.detail-cols.cols-3,.detail-cols.cols-4{grid-template-columns:1fr}
+  .ltc-cost-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="brand-tag">NAN SHAN LIFE · 順可通訊處</div>
+  <div class="site-title">長照險 快速試算比較</div>
+  <div class="site-sub">HRLTC3 ／ HPLTC ／ HLTC ／ HTLTC ／ FLTC</div>
+</header>
+
+<div class="container">
+
+<!-- STEP 1: PRODUCT SELECT -->
+<div class="section-label">選擇試算險種</div>
+<div class="product-grid">
+  <div class="prod-card active" data-prod="HRLTC3" style="--prod-color:#c9a84c;overflow:visible" onclick="toggleProd(this)">
+    <div class="rank-badge">最全方位的長照保險🏆</div>
+    <div class="prod-check">✓</div>
+    <div class="prod-code">HRLTC3</div>
+    <div class="prod-name">相守溢百</div>
+    <div class="prod-desc">長期照顧終身保險<br>含一次金50%＋輔具＋喘息</div>
+  </div>
+  <div class="prod-card active" data-prod="HPLTC" style="--prod-color:#a066cc;overflow:visible" onclick="toggleProd(this)">
+    <div class="prod-badge">兼具保障及資產移轉的最佳選擇💰</div>
+    <div class="prod-check">✓</div>
+    <div class="prod-code">HPLTC</div>
+    <div class="prod-name">溢路相挺</div>
+    <div class="prod-desc">長期照顧終身保險<br>一次金＝保額×係數，身故1.03倍</div>
+  </div>
+  <div class="prod-card active" data-prod="HLTC" style="--prod-color:#5b9bd5;overflow:visible" onclick="toggleProd(this)">
+    <div class="prod-badge">最照顧自己的長照保險❤️</div>
+    <div class="prod-check">✓</div>
+    <div class="prod-code">HLTC</div>
+    <div class="prod-name">溢路守護</div>
+    <div class="prod-desc">長期照顧終身健康保險<br>一次金＝1.02×年繳總和×係數</div>
+  </div>
+  <div class="prod-card active" data-prod="HTLTC" style="--prod-color:#3f9e6d;overflow:visible" onclick="toggleProd(this)">
+    <div class="prod-badge">不還本型的高槓桿方案📈</div>
+    <div class="prod-check">✓</div>
+    <div class="prod-code">HTLTC</div>
+    <div class="prod-name">溢路陪伴</div>
+    <div class="prod-desc">長期照顧健康保險<br>一次金＝保額×係數，可繳30年</div>
+  </div>
+  <div class="prod-card active" data-prod="FLTC" style="--prod-color:#e07b5e;overflow:visible" onclick="toggleProd(this)">
+    <div class="prod-badge">政府合作長照市佔第1名🏆</div>
+    <div class="prod-check">✓</div>
+    <div class="prod-code">FLTC</div>
+    <div class="prod-name">輕鬆陪伴</div>
+    <div class="prod-desc">長期照顧健康保險（普惠型）<br>無一次金，分期定額，保額上限36萬</div>
+  </div>
+</div>
+
+<!-- STEP 2: CONDITIONS -->
+<div class="section-label">投保條件</div>
+<div class="input-card">
+  <div class="field-row">
+    <div class="field">
+      <label>性別</label>
+      <div class="toggle-group">
+        <input type="radio" name="gender" id="g-m" value="male" checked><label for="g-m">男</label>
+        <input type="radio" name="gender" id="g-f" value="female"><label for="g-f">女</label>
+      </div>
+    </div>
+    <div class="field">
+      <label>繳費年期</label>
+      <div class="toggle-group">
+        <input type="radio" name="period" id="p-10" value="10" checked><label for="p-10">10年</label>
+        <input type="radio" name="period" id="p-20" value="20"><label for="p-20">20年</label>
+        <input type="radio" name="period" id="p-30" value="30"><label for="p-30">30年</label>
+      </div>
+    </div>
+  </div>
+  <div class="field-row">
+    <div class="field">
+      <label>投保年齡（足歲）</label>
+      <input type="number" id="age" min="15" max="70" placeholder="例：40" inputmode="numeric">
+      <div class="input-hint">各險種支援年齡不同，自動判斷</div>
+    </div>
+    <div class="field">
+      <label>保險金額（萬元）</label>
+      <input type="number" id="amount" min="12" placeholder="例：24" inputmode="numeric" step="1">
+      <div class="input-hint">最低 12 萬元</div>
+    </div>
+  </div>
+  <div class="field-row">
+    <div class="field">
+      <label>健康促進等級</label>
+      <div class="toggle-group">
+        <input type="radio" name="health" id="h-best" value="best" checked><label for="h-best">最佳體況</label>
+        <input type="radio" name="health" id="h-std" value="std"><label for="h-std">標準體況</label>
+      </div>
+      <div class="input-hint">最佳：HRLTC3 S×1.05 / HLTC、HTLTC A++×1.03<br>標準：一律 A×1.00（FLTC 無係數）</div>
+    </div>
+    <div class="field">
+      <label>繳費折扣</label>
+      <div class="toggle-group">
+        <input type="radio" name="disc" id="d-y" value="0.99" checked><label for="d-y">自動轉帳1%折扣</label>
+        <input type="radio" name="disc" id="d-n" value="1"><label for="d-n">無轉帳</label>
+      </div>
+    </div>
+  </div>
+  <div class="error-msg" id="error-msg"></div>
+  <button class="calc-btn" onclick="calculate()">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="12" y2="18"/></svg>
+    立即試算
+  </button>
+</div>
+
+<!-- RESULTS -->
+<div id="results">
+  <div class="section-label">保費比較</div>
+  <div class="summary-table-wrap">
+    <table class="summary-table" id="summary-table"></table>
+  </div>
+
+  <div class="section-label">保障金額比較（依輸入保額試算）</div>
+  <div class="summary-table-wrap">
+    <table class="summary-table" id="benefit-table"></table>
+  </div>
+
+  <div class="section-label">各險種給付明細</div>
+  <div class="detail-cols" id="detail-cols"></div>
+
+  <!-- LTC costs -->
+  <div class="section-label">長照常見民生費用參考</div>
+  <div class="ltc-cost-grid">
+    <div class="ltc-cost-card"><div class="ltc-icon">🧑‍🤝‍🧑</div><div class="ltc-title">外籍看護</div><div class="ltc-amount">約 <strong>3萬</strong><span>/月</span></div></div>
+    <div class="ltc-cost-card"><div class="ltc-icon">👩‍⚕️</div><div class="ltc-title">本籍看護</div><div class="ltc-amount">約 <strong>8～9萬</strong><span>/月</span></div></div>
+    <div class="ltc-cost-card"><div class="ltc-icon">🏥</div><div class="ltc-title">入住長照機構</div><div class="ltc-amount">約 <strong>3.3～6萬</strong><span>/月</span></div></div>
+    <div class="ltc-cost-card"><div class="ltc-icon">💰</div><div class="ltc-title">家人照顧月收入損失</div><div class="ltc-amount">約 <strong>4.6萬</strong><span>/月</span></div></div>
+    <div class="ltc-cost-card"><div class="ltc-icon">🛒</div><div class="ltc-title">尿布・耗材</div><div class="ltc-amount"><strong>1～3萬</strong><span>/月不等</span></div></div>
+    <div class="ltc-cost-card"><div class="ltc-icon">🩺</div><div class="ltc-title">醫療・長照自費</div><div class="ltc-amount">約 <strong>1萬</strong><span>/月</span></div></div>
+    <div class="ltc-cost-card ltc-cost-card--wide"><div class="ltc-icon">⏳</div><div><div class="ltc-title">國人平均被照顧時間</div><div class="ltc-amount"><strong>8～9年</strong><span>（長照需求平均持續年數）</span></div></div></div>
+    <div class="ltc-cost-card ltc-cost-card--wide"><div class="ltc-icon">🛏️</div><div><div class="ltc-title">一次性費用（輔具・居家無障礙改造）</div><div class="ltc-amount"><strong>約 4萬</strong><span>（每3年，政府補助上限）</span></div></div></div>
+  </div>
+  <div style="font-size:13px;color:var(--text2);margin-bottom:20px;padding:0 2px;line-height:1.8">資料來源：行政院主計總處113年家庭收支調查、勞動部112年移工調查統計、市場訪查略估值。</div>
+
+  <!-- 啟動標準 -->
+  <div class="section-label">長照險啟動標準</div>
+
+  <div class="criteria-card">
+    <div class="criteria-title">🏥 如何判斷長期照顧狀態</div>
+    <div class="criteria-sub">因疾病、傷害、體質衰弱或認知障礙，經醫院專科醫師診斷確定符合下列二項情形之一者：</div>
+
+    <div class="criteria-block">
+      <div class="criteria-badge blue">生理功能障礙</div>
+      <div class="criteria-desc">依巴氏量表或依其它臨床專業評量表診斷判定，下列六項日常生活自理能力，<strong>持續存有三項（含）以上</strong>之障礙者：</div>
+      <div class="adl-grid">
+        <div class="adl-item"><div class="adl-icon">🍚</div><div class="adl-label">進食障礙</div></div>
+        <div class="adl-item"><div class="adl-icon">♿</div><div class="adl-label">移位障礙</div></div>
+        <div class="adl-item"><div class="adl-icon">🚽</div><div class="adl-label">如廁障礙</div></div>
+        <div class="adl-item"><div class="adl-icon">🚿</div><div class="adl-label">沐浴障礙</div></div>
+        <div class="adl-item"><div class="adl-icon">🚶</div><div class="adl-label">平地行動障礙</div></div>
+        <div class="adl-item"><div class="adl-icon">👕</div><div class="adl-label">更衣障礙</div></div>
+      </div>
+    </div>
+
+    <div class="criteria-block">
+      <div class="criteria-badge gold">認知功能障礙</div>
+      <div class="criteria-desc">經診斷判定為持續失智狀態且依臨床失智量表（CDR）評估達<strong>中度（含）以上</strong>（即 CDR ≥ 2，非各分項總和）者。</div>
+    </div>
+  </div>
+
+  <div class="criteria-card" style="margin-top:10px">
+    <div class="criteria-title">⚠️ 「完全失能」等級（符合任一項即達標）</div>
+    <div class="disability-grid">
+      <div class="dis-item">① 雙目均失明者</div>
+      <div class="dis-item">② 兩上肢腕關節缺失，或兩下肢足踝關節缺失者</div>
+      <div class="dis-item">③ 一上肢腕關節及一下肢足踝關節缺失者</div>
+      <div class="dis-item">④ 一目失明及一上肢腕關節缺失，或一目失明及一下肢足踝關節缺失者</div>
+      <div class="dis-item">⑤ 永久喪失咀嚼或言語之機能者</div>
+      <div class="dis-item">⑥ 四肢機能永久完全喪失者</div>
+      <div class="dis-item dis-item--wide">⑦ 中樞神經系統機能遺存極度障礙或胸、腹部臟器機能遺存極度障礙，終身不能從事任何工作，經常需醫療護理或專人周密照護者</div>
+    </div>
+    <div class="criteria-footnote">◎免責期間：被保險人確定為長期照顧狀態之日起算，持續符合長期照顧狀態達 <strong>90日</strong> 之期間。</div>
+  </div>
+
+  <div class="footer-note">
+    <strong>注意事項</strong><br>
+    • <strong>HRLTC3</strong>：健促S級×1.05/A×1.00；一次金=50%×保額×係數；輔具=25%×保額×係數；喘息=10%×分期；身故/祝壽=年繳總和×係數（會扣除累計已領取各項保險金）<br>
+    • <strong>HPLTC</strong>：健促A++×1.03/A×1.00；一次金＝max(保單價值準備金, 年繳總和×1.03)×係數（試算取下限：年繳總和×1.03×係數）；一次金與分期保險金同時給付，不互相扣抵；身故/祝壽同公式（扣除已領）<br>
+    • <strong>HLTC</strong>：健促A++×1.03/A+×1.02/A×1.00；一次金=1.02×年繳總和×係數；未觸發長照者身故/99歲給付無理賠鼓勵保險金（同一次金）<br>
+    • <strong>HTLTC</strong>：健促A++×1.03/A+×1.02/A×1.00；一次金=保額×係數；保障至95歲；<strong>無身故保險金</strong><br>
+    • <strong>FLTC</strong>：無一次金、無健促係數；分期保險金定額=保額（不含2%遞增）；<strong>無身故保險金</strong>；最平價入門款<br>
+    • 分期保險金（HRLTC3/HLTC/HTLTC）係數=[1+2%×(t-1)]，FLTC定額；兩項（長照+完全失能）合計達15次後契約終止<br>
+    • 月繳為年繳÷12之估算；實際保費與給付以保單條款及核保結果為準。
+  </div>
+</div>
+
+<div style="margin-top:18px;padding:16px;text-align:center;border-top:1px solid rgba(201,134,15,.2)">
+  <div style="width:36px;height:2px;background:linear-gradient(90deg,var(--gold),var(--green));margin:0 auto 10px"></div>
+  <div style="font-size:13px;color:var(--text2);line-height:1.8">
+    本試算工具由 <strong style="color:var(--gold)">南山人壽 順可通訊處</strong> 業務主任 <strong style="color:var(--navy)">吳約翰</strong> 製作提供<br>
+    僅供保戶參考說明，實際保費及給付內容以保單條款及核保結果為準
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<script>
+// ── PRODUCT CONFIG ──
+const PROD_CONFIG = {
+  HRLTC3:{name:'相守溢百',fullName:'相守溢百長期照顧終身保險',color:'#c9a84c',
+    periods:[10,20],maxAge:{10:70,20:60},minAge:15,
+    hasOnce:true,oncePct:.5,hasEquip:true,hasRespite:true,hasInstCoeff:true,
+    hasNoClaim:false,hasHealthCoeff:true,hasDeath:true,deathMult:1.0,coverageAge:'100歲',beneficiary:'可指定受益人',
+    coeffMap:{best:1.05,std:1.0},coeffLabel:{best:'S級×1.05',std:'A×1.00'}},
+  HPLTC:{name:'溢路相挺',fullName:'溢路相挺長期照顧終身保險',color:'#a066cc',
+    periods:[10,20],maxAge:{10:65,20:60},minAge:15,
+    hasOnce:true,oncePremBased:true,onceMult:1.03,hasEquip:false,hasRespite:false,hasInstCoeff:true,
+    hasNoClaim:false,hasHealthCoeff:true,hasDeath:true,deathMult:1.03,coverageAge:'99歲',beneficiary:'可指定受益人',
+    coeffMap:{best:1.03,std:1.0},coeffLabel:{best:'A++×1.03',std:'A×1.00'}},
+  HLTC:{name:'溢路守護',fullName:'溢路守護長期照顧終身健康保險',color:'#5b9bd5',
+    periods:[10,20],maxAge:{10:65,20:60},minAge:15,
+    hasOnce:true,oncePremBased:true,onceMult:1.02,hasEquip:false,hasRespite:false,hasInstCoeff:true,
+    hasNoClaim:true,hasHealthCoeff:true,hasDeath:true,deathMult:1.0,coverageAge:'99歲',beneficiary:'僅限法定繼承人',
+    coeffMap:{best:1.03,std:1.0},coeffLabel:{best:'A++×1.03',std:'A×1.00'}},
+  HTLTC:{name:'溢路陪伴',fullName:'溢路陪伴長期照顧健康保險',color:'#3f9e6d',
+    periods:[10,20,30],maxAge:{10:65,20:60,30:50},minAge:15,
+    hasOnce:true,onceAmtBased:true,hasEquip:false,hasRespite:false,hasInstCoeff:true,
+    hasNoClaim:false,hasHealthCoeff:true,hasDeath:false,deathMult:1.0,coverageAge:'95歲',
+    coeffMap:{best:1.03,std:1.0},coeffLabel:{best:'A++×1.03',std:'A×1.00'}},
+  FLTC:{name:'輕鬆陪伴',fullName:'輕鬆陪伴長期照顧健康保險',color:'#e07b5e',
+    periods:[10,20,30],maxAge:{10:70,20:60,30:50},minAge:15,
+    hasOnce:false,hasEquip:false,hasRespite:false,hasInstCoeff:false,
+    hasNoClaim:false,hasHealthCoeff:false,hasDeath:false,deathMult:1.0,maxAmount:36,coverageAge:'95歲',
+    coeffMap:{best:1.0,std:1.0},coeffLabel:{best:'無',std:'無'}}
+};
+
+// ── RATE TABLES ──
+function makeRateMap(periods,data){
+  const result={};
+  periods.forEach(p=>{result[p]={male:{},female:{}}});
+  data.forEach(({period,gender,startAge,rates})=>{
+    rates.forEach((r,i)=>{result[period][gender][startAge+i]=r});
+  });
+  return result;
+}
+
+const RATES={
+  HPLTC:makeRateMap([10,20],[
+    {period:10,gender:'male',startAge:15,rates:[2020,2106,2192,2278,2364,2450,2549,2648,2747,2846,2945,3044,3143,3242,3341,3440,3586,3732,3878,4024,4170,4316,4462,4608,4754,4900,5166,5432,5698,5964,6230,6496,6762,7028,7294,7560,8228,8896,9564,10232,10900,11568,12236,12904,13572,14240,15672,17104,18536,19968,21400]},
+    {period:10,gender:'female',startAge:15,rates:[2720,2828,2936,3044,3152,3260,3386,3512,3638,3764,3890,4016,4142,4268,4394,4520,4704,4888,5072,5256,5440,5624,5808,5992,6176,6360,6683,7006,7329,7652,7975,8298,8621,8944,9267,9590,10431,11272,12113,12954,13795,14636,15477,16318,17159,18000,19828,21656,23484,25312,27140]},
+    {period:20,gender:'male',startAge:15,rates:[1100,1150,1200,1250,1300,1350,1399,1448,1497,1546,1595,1644,1693,1742,1791,1840,1908,1976,2044,2112,2180,2248,2316,2384,2452,2520,2658,2796,2934,3072,3210,3348,3486,3624,3762,3900,4320,4740,5160,5580,6000,6420,6840,7260,7680,8100]},
+    {period:20,gender:'female',startAge:15,rates:[1500,1562,1624,1686,1748,1810,1868,1926,1984,2042,2100,2158,2216,2274,2332,2390,2475,2560,2645,2730,2815,2900,2985,3070,3155,3240,3409,3578,3747,3916,4085,4254,4423,4592,4761,4930,5467,6004,6541,7078,7615,8152,8689,9226,9763,10300]}
+  ]),
+  HRLTC3:makeRateMap([10,20],[
+    {period:10,gender:'male',startAge:15,rates:[1480,1509,1538,1567,1596,1625,1670,1715,1760,1805,1850,1895,1940,1985,2030,2075,2129,2182,2236,2289,2343,2396,2450,2503,2557,2610,2744,2878,3012,3146,3280,3414,3548,3682,3816,3950,4267,4583,4900,5216,5533,5849,6166,6482,6799,7115,7962,8808,9655,10501,11348,12194,13041,13887,14734,15580]},
+    {period:10,gender:'female',startAge:15,rates:[1835,1871,1907,1943,1979,2015,2073,2130,2188,2245,2303,2360,2418,2475,2533,2590,2649,2708,2767,2826,2885,2944,3003,3062,3121,3180,3316,3451,3587,3722,3858,3993,4129,4264,4400,4535,4791,5046,5302,5557,5813,6068,6324,6579,6835,7090,7938,8786,9634,10482,11330,12178,13026,13874,14722,15570]},
+    {period:20,gender:'male',startAge:15,rates:[830,847,864,881,898,915,941,967,993,1019,1045,1071,1097,1123,1149,1175,1205,1234,1264,1293,1323,1352,1382,1411,1441,1470,1542,1613,1685,1756,1828,1899,1971,2042,2114,2185,2348,2510,2673,2835,2998,3160,3323,3485,3648,3810]},
+    {period:20,gender:'female',startAge:15,rates:[1035,1056,1077,1098,1119,1140,1172,1203,1235,1266,1298,1329,1361,1392,1424,1455,1489,1523,1557,1591,1625,1659,1693,1727,1761,1795,1873,1950,2028,2105,2183,2260,2338,2415,2493,2570,2694,2818,2942,3066,3190,3314,3438,3562,3686,3810]}
+  ]),
+  HLTC:makeRateMap([10,20],[
+    {period:10,gender:'male',startAge:15,rates:[1810,1886,1962,2038,2114,2190,2268,2346,2424,2502,2580,2658,2736,2814,2892,2970,3095,3220,3345,3470,3595,3720,3845,3970,4095,4220,4433,4646,4859,5072,5285,5498,5711,5924,6137,6350,6910,7470,8030,8590,9150,9710,10270,10830,11390,11950,13132,14314,15496,16678,17860]},
+    {period:10,gender:'female',startAge:15,rates:[2435,2530,2625,2720,2815,2910,3009,3108,3207,3306,3405,3504,3603,3702,3801,3900,4058,4216,4374,4532,4690,4848,5006,5164,5322,5480,5739,5998,6257,6516,6775,7034,7293,7552,7811,8070,8776,9482,10188,10894,11600,12306,13012,13718,14424,15130,16644,18158,19672,21186,22700]},
+    {period:20,gender:'male',startAge:15,rates:[990,1034,1078,1122,1166,1210,1248,1286,1324,1362,1400,1438,1476,1514,1552,1590,1648,1706,1764,1822,1880,1938,1996,2054,2112,2170,2281,2392,2503,2614,2725,2836,2947,3058,3169,3280,3630,3980,4330,4680,5030,5380,5730,6080,6430,6780]},
+    {period:20,gender:'female',startAge:15,rates:[1340,1394,1448,1502,1556,1610,1655,1700,1745,1790,1835,1880,1925,1970,2015,2060,2133,2206,2279,2352,2425,2498,2571,2644,2717,2790,2925,3060,3195,3330,3465,3600,3735,3870,4005,4140,4589,5038,5487,5936,6385,6834,7283,7732,8181,8630]}
+  ]),
+  HTLTC:makeRateMap([10,20,30],[
+    {period:10,gender:'female',startAge:15,rates:[1550,1578,1606,1634,1662,1690,1722,1754,1786,1818,1850,1882,1914,1946,1978,2010,2054,2098,2142,2186,2230,2274,2318,2362,2406,2450,2511,2572,2633,2694,2755,2816,2877,2938,2999,3060,3155,3250,3345,3440,3535,3630,3725,3820,3915,4010,4116,4222,4328,4434,4540]},
+    {period:10,gender:'male',startAge:15,rates:[1190,1202,1214,1226,1238,1250,1273,1296,1319,1342,1365,1388,1411,1434,1457,1480,1515,1550,1585,1620,1655,1690,1725,1760,1795,1830,1873,1916,1959,2002,2045,2088,2131,2174,2217,2260,2331,2402,2473,2544,2615,2686,2757,2828,2899,2970,3066,3162,3258,3354,3450]},
+    {period:20,gender:'female',startAge:15,rates:[800,814,828,842,856,870,887,904,921,938,955,972,989,1006,1023,1040,1064,1088,1112,1136,1160,1184,1208,1232,1256,1280,1316,1352,1388,1424,1460,1496,1532,1568,1604,1640,1697,1754,1811,1868,1925,1982,2039,2096,2153,2210]},
+    {period:20,gender:'male',startAge:15,rates:[620,626,632,638,644,650,663,676,689,702,715,728,741,754,767,780,798,816,834,852,870,888,906,924,942,960,990,1020,1050,1080,1110,1140,1170,1200,1230,1260,1302,1344,1386,1428,1470,1512,1554,1596,1638,1680]},
+    {period:30,gender:'female',startAge:15,rates:[550,562,574,586,598,610,623,636,649,662,675,688,701,714,727,740,763,786,809,832,855,878,901,924,947,970,1008,1029,1050,1071,1092,1113,1134,1155,1195,1234]},
+    {period:30,gender:'male',startAge:15,rates:[420,426,432,438,444,450,460,470,480,490,500,510,520,530,540,550,564,578,592,606,620,634,648,662,676,690,718,746,768,793,818,846,878,910,942,970]}
+  ]),
+  FLTC:makeRateMap([10,20,30],[
+    {period:10,gender:'male',startAge:15,rates:[870,879,888,897,906,915,932,949,966,983,1000,1017,1034,1051,1068,1085,1107,1129,1151,1173,1195,1217,1239,1261,1283,1305,1336,1367,1398,1429,1460,1491,1522,1553,1584,1615,1662,1708,1755,1801,1848,1894,1941,1987,2034,2080,2147,2214,2281,2348,2415,2519,2623,2727,2831,2935]},
+    {period:10,gender:'female',startAge:15,rates:[1215,1237,1259,1281,1303,1325,1350,1375,1400,1425,1450,1475,1500,1525,1550,1575,1605,1634,1664,1693,1723,1752,1782,1811,1841,1870,1911,1951,1992,2032,2073,2113,2154,2194,2235,2275,2328,2380,2433,2485,2538,2590,2643,2695,2748,2800,2876,2952,3028,3104,3180,3314,3448,3582,3716,3850]},
+    {period:20,gender:'male',startAge:15,rates:[450,455,460,465,470,475,485,494,504,513,523,532,542,551,561,570,582,593,605,616,628,639,651,662,674,685,705,724,744,763,783,802,822,841,861,880,910,939,969,998,1028,1057,1087,1116,1146,1175]},
+    {period:20,gender:'female',startAge:15,rates:[615,626,637,648,659,670,683,695,708,720,733,745,758,770,783,795,810,825,840,855,870,885,900,915,930,945,966,987,1008,1029,1050,1071,1092,1113,1134,1155,1195,1234,1274,1313,1353,1392,1432,1471,1511,1550]},
+    {period:30,gender:'male',startAge:15,rates:[305,310,315,320,325,330,337,344,351,358,365,372,379,386,393,400,409,417,426,434,443,451,460,468,477,485,505,524,544,563,583,602,622,641,661,680]},
+    {period:30,gender:'female',startAge:15,rates:[420,429,438,447,456,465,474,482,491,499,508,516,525,533,542,550,564,578,592,606,620,634,648,662,676,690,709,727,746,764,783,801,820,838,857,875]}
+  ])
+};
+
+// ── HELPERS ──
+const SEL_PRODS=new Set(['HRLTC3','HPLTC','HLTC','HTLTC','FLTC']);
+function toggleProd(el){
+  const p=el.dataset.prod;
+  if(SEL_PRODS.has(p)){if(SEL_PRODS.size>1){SEL_PRODS.delete(p);el.classList.remove('active');el.querySelector('.prod-check').textContent=''}}
+  else{SEL_PRODS.add(p);el.classList.add('active');el.querySelector('.prod-check').textContent='✓'}
+}
+function fmt(n){
+  if(n===null||n===undefined)return'—';
+  n=Math.round(n);
+  if(Math.abs(n)>=10000){const w=n/10000;return(w%1===0?w.toLocaleString():w.toFixed(2))+'萬'}
+  return n.toLocaleString()+'元'
+}
+function fmtW(n){return Math.round(n/10000*100)/100+'萬元'}
+function showErr(m){const e=document.getElementById('error-msg');e.textContent='⚠️ '+m;e.style.display='block'}
+function hideErr(){document.getElementById('error-msg').style.display='none'}
+
+function calcProd(prodKey,age,gender,amount,period,healthLevel,discountRate){
+  const cfg=PROD_CONFIG[prodKey];
+  const rMap=RATES[prodKey];
+  if(!cfg.periods.includes(period))return{ok:false,reason:`不符合投保規則（無${period}年期）`};
+  if(age<cfg.minAge||age>(cfg.maxAge[period]||0))return{ok:false,reason:`${period}年期投保年齡 ${cfg.minAge}~${cfg.maxAge[period]}歲`};
+  if(cfg.maxAmount&&amount>cfg.maxAmount)return{ok:false,reason:`最高保險金額 ${cfg.maxAmount}萬元`};
+  const rate=rMap[period]?.[gender]?.[age];
+  if(!rate)return{ok:false,reason:'查無費率'};
+  const coeff=(age>=16&&cfg.hasHealthCoeff)?cfg.coeffMap[healthLevel]:1.0;
+  const amtNTD=amount*10000;
+  const annualOrig=rate*amount;
+  const annualDisc=annualOrig*discountRate;
+  const monthly=annualDisc/12;
+  const totalPrem=annualOrig*period;
+
+  // One-time
+  let once=null;
+  if(cfg.hasOnce){
+    if(cfg.oncePct)once=amtNTD*cfg.oncePct*coeff;
+    else if(cfg.oncePremBased)once=cfg.onceMult*totalPrem*coeff;
+    else if(cfg.onceAmtBased)once=amtNTD*coeff;
+  }
+  const equip=cfg.hasEquip?amtNTD*.25*coeff:null;
+  const deathBase=cfg.hasDeath?totalPrem*(cfg.deathMult||1)*coeff:null;
+
+  // Installments
+  const inst=[];
+  let instTotal=0,respTotal=0;
+  for(let t=1;t<=15;t++){
+    const ct=cfg.hasInstCoeff?(1+.02*(t-1)):1;
+    const pay=amtNTD*ct;
+    const resp=cfg.hasRespite?amtNTD*.10*ct:null;
+    inst.push({t,ct,pay,resp});
+    instTotal+=pay;
+    if(resp)respTotal+=resp;
+  }
+  return{ok:true,cfg,coeff,annualOrig,annualDisc,monthly,totalPrem,once,equip,deathBase,inst,instTotal,respTotal,amtNTD,healthLevel,discountRate,prodKey};
+}
+
+function calculate(){
+  hideErr();
+  document.getElementById('results').style.display='none';
+  if(SEL_PRODS.size===0){showErr('請至少選擇一個險種');return}
+  const gender=document.querySelector('input[name=gender]:checked').value;
+  const period=parseInt(document.querySelector('input[name=period]:checked').value);
+  const age=parseInt(document.getElementById('age').value);
+  const amount=parseFloat(document.getElementById('amount').value);
+  const healthLevel=document.querySelector('input[name=health]:checked').value;
+  const discountRate=parseFloat(document.querySelector('input[name=disc]:checked').value);
+  if(isNaN(age)||isNaN(amount)){showErr('請輸入投保年齡與保險金額');return}
+  if(amount<12){showErr('保險金額最低 12 萬元');return}
+
+  const results={};
+  const prods=[...SEL_PRODS];
+  prods.forEach(pk=>{results[pk]=calcProd(pk,age,gender,amount,period,healthLevel,discountRate)});
+  const okProds=prods.filter(pk=>results[pk].ok);
+  if(okProds.length===0){showErr('所選條件下，所有選取險種均不可投保');return}
+
+  // ── SUMMARY TABLE ──
+  const tbl=document.getElementById('summary-table');
+  const validPrems=okProds.map(pk=>results[pk].annualDisc).filter(Boolean);
+  const minPrem=Math.min(...validPrems);
+  let th='<tr><th>項目</th>';
+  prods.forEach(pk=>{
+    const cfg=PROD_CONFIG[pk];
+    th+=`<th class="prod-header" style="color:${cfg.color};border-color:${cfg.color}">${pk}<br><span style="font-size:12px;font-weight:400;color:var(--text2)">${cfg.name}</span></th>`;
+  });
+  th+='</tr>';
+
+  const rows=[
+    {label:'健促係數',fn:r=>r.ok?r.cfg.coeffLabel[healthLevel]:'—'},
+    {label:'年繳保費（未折）',fn:r=>r.ok?fmt(r.annualOrig)+'元':'不符合投保規則',highlight:false},
+    {label:'年繳保費（折後）',fn:(r,pk)=>{
+      if(!r.ok)return'<span class="na">不符合投保規則</span>';
+      const isBest=r.annualDisc===minPrem;
+      return`<span class="${isBest?'highlight-val':''}">${fmt(r.annualDisc)}</span>`
+    },raw:true},
+    {label:'月繳估算',fn:r=>r.ok?fmt(r.monthly)+'/月（估）':'—'},
+    {label:'繳費總額',fn:r=>r.ok?fmt(r.totalPrem):'—'},
+    {label:'保障至幾歲',fn:r=>r.ok?r.cfg.coverageAge:'—'},
+  ];
+
+  let tbody='';
+  rows.forEach(row=>{
+    tbody+='<tr>';
+    tbody+=`<td class="row-label">${row.label}</td>`;
+    prods.forEach(pk=>{
+      const r=results[pk];
+      tbody+=`<td>${row.raw?row.fn(r,pk):row.fn(r)}</td>`;
+    });
+    tbody+='</tr>';
+  });
+  tbl.innerHTML=th+tbody;
+
+  // ── BENEFIT AMOUNT COMPARISON TABLE ──
+  const btbl=document.getElementById('benefit-table');
+  let bth='<tr><th>保障項目</th>';
+  prods.forEach(pk=>{
+    const cfg=PROD_CONFIG[pk];
+    bth+=`<th class="prod-header" style="color:${cfg.color};border-color:${cfg.color}">${pk}<br><span style="font-size:12px;font-weight:400;color:var(--text2)">${cfg.name}</span></th>`;
+  });
+  bth+='</tr>';
+
+  const CHECK='<span style="color:var(--green);font-weight:700;margin-right:4px">✓</span>';
+  function cellVal(r,val,extra){
+    if(!r.ok)return'<span class="na">不符合投保規則</span>';
+    if(val===null||val===undefined||val===0)return'<span class="na">✕</span>';
+    return CHECK+fmt(val)+(extra||'');
+  }
+
+  const bRows=[
+    {label:'一次給付金',fn:r=>{
+      if(!r.ok)return'<span class="na">不符合投保規則</span>';
+      if(r.once===null)return'<span class="na">✕</span>';
+      return `${CHECK}<span class="highlight-val">${fmt(r.once)}</span>`;
+    }},
+    {label:'輔具補助金',fn:r=>cellVal(r,r.equip)},
+    {label:'喘息保險金（首次）',fn:r=>cellVal(r,r.inst&&r.inst[0]?r.inst[0].resp:null)},
+    {label:'分期保險金（首次）',fn:r=>cellVal(r,r.inst&&r.inst[0]?r.inst[0].pay:null)},
+    {label:'分期保險金累計（15次）',fn:r=>cellVal(r,r.instTotal)},
+    {label:'身故／祝壽保險金',fn:r=>{
+      if(!r.ok)return'<span class="na">不符合投保規則</span>';
+      if(!r.deathBase)return'<span class="na">✕</span>';
+      return CHECK+fmt(r.deathBase);
+    }},
+    {label:'身故受益人限制',fn:r=>{
+      if(!r.ok)return'<span class="na">不符合投保規則</span>';
+      if(!r.cfg.beneficiary)return'<span class="na">✕</span>';
+      const color=r.cfg.beneficiary==='可指定受益人'?'var(--green)':'var(--text2)';
+      return `<span style="color:${color};font-size:13px">${r.cfg.beneficiary}</span>`;
+    }}
+  ];
+
+  let btbody='';
+  bRows.forEach(row=>{
+    btbody+='<tr>';
+    btbody+=`<td class="row-label">${row.label}</td>`;
+    prods.forEach(pk=>{btbody+=`<td>${row.fn(results[pk])}</td>`});
+    btbody+='</tr>';
+  });
+
+  // 總給付上限估算 — 挑出最高金額並加上冠軍Logo
+  const totals={};
+  okProds.forEach(pk=>{
+    const r=results[pk];
+    totals[pk]=r.instTotal+r.respTotal+(r.equip||0)+(r.once||0);
+  });
+  const maxTotal=Math.max(...Object.values(totals));
+  btbody+='<tr>';
+  btbody+='<td class="row-label" style="font-weight:600;color:var(--text)">總給付上限估算</td>';
+  prods.forEach(pk=>{
+    const r=results[pk];
+    if(!r.ok){btbody+='<td><span class="na">不符合投保規則</span></td>';return}
+    const isTop=totals[pk]===maxTotal;
+    const crown=isTop?'<div style="font-size:18px;line-height:1.2">🏆</div>':'';
+    btbody+=`<td class="${isTop?'best':''}">${crown}<span class="highlight-val" style="font-size:15px">${fmt(totals[pk])}</span></td>`;
+  });
+  btbody+='</tr>';
+
+  btbl.innerHTML=bth+btbody;
+
+  // ── DETAIL CARDS ──
+  const cols=document.getElementById('detail-cols');
+  const n=okProds.length;
+  cols.className=`detail-cols cols-${Math.min(n,2)}`;
+  cols.innerHTML='';
+  prods.forEach(pk=>{
+    const r=results[pk];
+    const cfg=PROD_CONFIG[pk];
+    const card=document.createElement('div');
+    card.className='prod-detail-card';
+    card.style.setProperty('--prod-color',cfg.color);
+
+    if(!r.ok){
+      card.innerHTML=`<div class="prod-detail-header">
+        <div class="d-code">${pk}</div>
+        <div class="d-name">${cfg.name}</div>
+        <div class="d-prem" style="color:var(--text2);font-size:16px">⚠ ${r.reason}</div>
+      </div>`;
+      cols.appendChild(card);return;
+    }
+
+    // Installment table — 一次金 integrated into row 1（一次金與分期保險金同時給付，不互斥）
+    const hasOnceCol = r.once !== null;
+    const hasEquipCol = r.equip !== null;
+    const hasRespCol  = r.cfg.hasRespite;
+
+    let instRows = '';
+    r.inst.forEach(({t, pay, resp}, i) => {
+      const isFirst = i === 0;
+      const onceCell  = hasOnceCol  ? (isFirst ? `<td class="amt" style="color:var(--gold2)">${fmt(r.once)}</td>` : `<td style="color:rgba(113,128,154,.45)">—</td>`) : '';
+      const equipCell = hasEquipCol ? (isFirst ? `<td class="amt" style="color:var(--green)">${fmt(r.equip)}</td>` : `<td style="color:rgba(113,128,154,.45)">—</td>`) : '';
+      const respCell  = hasRespCol  ? `<td style="font-size:13px;color:var(--text2)">${fmt(resp)}</td>` : '';
+      const rowSum = pay + (resp || 0) + (isFirst && r.equip ? r.equip : 0) + (isFirst && r.once ? r.once : 0);
+      instRows += `<tr class="${isFirst ? 'first-tr' : ''}">
+        <td>${isFirst ? '1★' : t}</td>
+        ${equipCell}${onceCell}${respCell}
+        <td class="amt">${fmt(pay)}</td>
+        <td class="amt">${fmt(rowSum)}</td>
+      </tr>`;
+    });
+
+    const grandTotal = r.instTotal + r.respTotal + (r.equip || 0) + (r.once || 0);
+    const instTotalRow = `<tr class="total-tr">
+      <td>累計</td>
+      ${hasEquipCol ? `<td>${fmt(r.equip)}<span style="font-size:12px">一次</span></td>` : ''}
+      ${hasOnceCol  ? `<td>${fmt(r.once)}<span style="font-size:12px">一次</span></td>` : ''}
+      ${hasRespCol  ? `<td>${fmt(r.respTotal)}</td>` : ''}
+      <td>${fmt(r.instTotal)}</td>
+      <td>${fmt(grandTotal)}</td>
+    </tr>`;
+
+    const thEquip = hasEquipCol ? '<th>輔具</th>' : '';
+    const thOnce  = hasOnceCol  ? '<th>一次金</th>' : '';
+    const thResp  = hasRespCol  ? '<th>喘息</th>' : '';
+    const simulNote = (hasOnceCol && pk === 'HPLTC') ? `<div style="font-size:13px;color:var(--text2);padding:6px 14px 8px">＊一次金與分期保險金同時給付，不互相扣抵</div>` : '';
+
+    card.innerHTML = `
+      <div class="prod-detail-header">
+        <div class="d-code">${pk}</div>
+        <div class="d-name">${cfg.fullName}</div>
+        <div class="d-prem">${fmt(r.annualDisc)}<span style="font-size:13px;color:var(--text2);margin-left:4px">元/年（折後）</span></div>
+        <div class="d-prem-sub">健促係數：${cfg.coeffLabel[healthLevel]}　月繳約 ${fmt(r.monthly)}</div>
+        <div class="d-prem-sub">保障至：<span style="color:var(--gold2)">${cfg.coverageAge}</span></div>
+      </div>
+      <div class="benefit-divider">給付明細（達長照/完全失能狀態）</div>
+      <div class="mini-table-wrap"><table class="mini-table">
+        <thead><tr><th>次</th>${thEquip}${thOnce}${thResp}<th>分期金</th><th>合計</th></tr></thead>
+        <tbody>${instRows}${instTotalRow}</tbody>
+      </table></div>
+      ${simulNote}
+      ${r.deathBase ? `<div class="benefit-divider">身故/祝壽/無理賠</div>
+      <div class="benefit-row"><span class="b-label">${r.cfg.hasNoClaim ? '無理賠鼓勵保險金' : '身故/祝壽保險金'}</span><span class="b-val">${fmtW(r.deathBase)}</span></div>
+      ${r.cfg.beneficiary ? `<div class="benefit-row"><span class="b-label" style="font-size:12px;color:var(--text2)">受益人</span><span class="b-val" style="font-size:13px;color:var(--gold2)">${r.cfg.beneficiary}</span></div>` : ''}
+      ${r.cfg.hasNoClaim ? '' : '<div class="benefit-row"><span class="b-label" style="font-size:12px;color:var(--text2)">（會扣除累計已領取各項保險金）</span></div>'}
+      ` : ''}
+    `;
+    cols.appendChild(card);
+  });
+
+  document.getElementById('results').style.display='block';
+  setTimeout(()=>document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'}),100);
+}
+document.addEventListener('keydown',e=>{if(e.key==='Enter')calculate()});
+</script>
+</body>
+</html>
