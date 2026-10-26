@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>南山人壽 NCIC 安心溢百重大傷病終身保險 試算系統</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0b2e5c;
+    --navy-2:#134a8c;
+    --navy-3:#1c63b3;
+    --gold:#c9860f;
+    --gold-hi:#e3a635;
+    --gold-deep:#a8710c;
+    --cream:#f3f6fb;
+    --paper:#ffffff;
+    --ink:#101826;
+    --muted:#71809a;
+    --line:#d8e0ec;
+    --blue:#5b9bd5;
+    --teal:#2f9e9e;
+    --coral:#c23b3b;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:"Noto Sans TC",sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  header{
+    background:linear-gradient(135deg,var(--navy) 0%, var(--navy-3) 100%);
+    color:var(--gold-hi);
+    padding:36px 28px 30px;
+    text-align:center;
+    border-bottom:3px solid var(--gold);
+  }
+  header .eyebrow{ font-family:"DM Mono",monospace; letter-spacing:.2em; font-size:12px; color:#a9bcd6; text-transform:uppercase; }
+  header h1{ font-family:"Noto Serif TC",serif; font-weight:900; font-size:clamp(24px,3.6vw,36px); margin:8px 0 6px; }
+  header p{ color:#cdd7e6; font-size:14px; margin:0; }
+
+  .wrap{max-width:1140px;margin:0 auto;padding:28px 20px 60px;}
+  .grid{ display:grid; grid-template-columns:340px 1fr; gap:22px; }
+  @media (max-width:860px){ .grid{grid-template-columns:1fr;} }
+
+  .card{
+    background:var(--paper); border:1px solid var(--line); border-radius:14px;
+    padding:22px; box-shadow:0 4px 18px rgba(11,31,58,.06);
+  }
+  .card h2{
+    font-family:"Noto Serif TC",serif; font-size:18px; color:var(--navy); margin:0 0 16px;
+    padding-bottom:10px; border-bottom:2px solid var(--gold); display:flex; align-items:center; gap:8px;
+  }
+  .field{margin-bottom:18px;}
+  .field label{ display:block; font-size:13px; color:var(--muted); margin-bottom:8px; font-weight:500; }
+  .field .val{ font-family:"DM Mono",monospace; color:var(--navy); font-weight:500; }
+  input[type=range]{ width:100%; accent-color:var(--gold); }
+  input[type=number]{
+    width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:8px;
+    font-family:"DM Mono",monospace; font-size:15px; color:var(--navy); background:#e7f0fb;
+  }
+  .toggle-group{ display:flex; border:1px solid var(--line); border-radius:8px; overflow:hidden; }
+  .toggle-group button{
+    flex:1; padding:10px 6px; border:none; background:#ffffff; color:var(--navy);
+    font-family:"Noto Sans TC",sans-serif; font-size:13.5px; cursor:pointer; transition:.15s; border-right:1px solid var(--line);
+  }
+  .toggle-group button:last-child{border-right:none;}
+  .toggle-group button.active{ background:var(--navy); color:var(--gold-hi); font-weight:700; }
+  .hint{font-size:11.5px;color:var(--muted);margin-top:6px;line-height:1.55;}
+
+  .results{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-bottom:20px; }
+  .stat{ background:linear-gradient(160deg,var(--navy) 0%,var(--navy-2) 100%); border-radius:10px; padding:14px 16px; color:#e9eef6; }
+  .stat .label{font-size:11.5px;color:#9fb2ce;margin-bottom:5px;}
+  .stat .num{ font-family:"DM Mono",monospace; font-size:19px; font-weight:500; color:var(--gold-hi); }
+  .stat .sub{font-size:10.5px;color:#8fa2bd;margin-top:4px;}
+  .stat.gold{ background:linear-gradient(160deg,var(--gold-deep) 0%, var(--gold) 100%); }
+  .stat.gold .label{color:#fff0d0;} .stat.gold .num{color:#fff;font-size:21px;} .stat.gold .sub{color:#fff0d0;}
+  .stat.split{ background:linear-gradient(160deg,#0d3a6b 0%,#155a9e 100%); }
+  .stat.stat35{ background:linear-gradient(160deg,#0d5c5c 0%,#1a8a8a 100%); }
+  .stat.stat35 .num{ color:#c9f5f5; }
+  .stat.statTED{ background:linear-gradient(160deg,#7a5a12 0%,#a8710c 100%); }
+  .stat.statTED .num{ color:#ffe9b8; }
+  .stat .tag35{color:#7fd6d6;font-weight:700;}
+  .stat .tagTED{color:var(--gold-hi);font-weight:700;}
+
+  .product-block{ border-radius:10px; padding:14px 14px 4px; margin-bottom:16px; }
+  .product-block.pb35{ background:#fdf6e6; border:1.5px solid #e3c176; }
+  .product-block.pbTED{ background:#e8f8f8; border:1.5px solid #7ecece; }
+  .product-block .ptitle{
+    font-family:"Noto Serif TC",serif; font-weight:700; font-size:14px; margin-bottom:10px;
+    display:flex; align-items:center; gap:7px;
+  }
+  .product-block.pb35 .ptitle{ color:#1f7a7a; }
+  .product-block.pbTED .ptitle{ color:var(--gold-deep); }
+  .product-block .pdot{ width:10px; height:10px; border-radius:50%; display:inline-block; }
+  .product-block .field{ margin-bottom:14px; }
+  .product-block.pb35 input[type=number]{ border-color:#7ecece; background:#f2fdfd; }
+  .product-block.pb35 input[type=number]:focus{ outline:2px solid var(--teal); }
+  .product-block.pbTED input[type=number]{ border-color:#e3c176; background:#fffaf0; }
+  .product-block.pbTED input[type=number]:focus{ outline:2px solid var(--gold-hi); }
+
+  .scrubber{ background:var(--navy); border-radius:12px; padding:16px 20px 18px; margin-bottom:18px; color:#e9eef6; }
+  .scrubber-top{ display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; flex-wrap:wrap; gap:8px; }
+  .scrubber-top .ttl{ font-family:"Noto Serif TC",serif; font-size:15px; color:var(--gold-hi); }
+  .scrubber-top .now{ font-family:"DM Mono",monospace; font-size:13px; color:#cdd7e6; }
+  .scrubber-top .now b{color:var(--gold-hi); font-size:15px;}
+  #playBtn{
+    background:var(--gold); color:#2a1900; border:none; border-radius:20px;
+    padding:6px 16px; font-size:12.5px; font-weight:700; cursor:pointer; font-family:"Noto Sans TC",sans-serif;
+  }
+  #playBtn:hover{ background:var(--gold-hi); }
+  input[type=range]#policyYear{ accent-color:var(--gold-hi); }
+  .status-chip{ display:inline-block; margin-top:8px; padding:4px 12px; border-radius:20px; font-size:11.5px; font-weight:700; }
+  .status-chip.paying{ background:#5b9bd533; color:#c3ccd9; }
+  .status-chip.paidup{ background:#c9860f33; color:var(--gold-hi); }
+  .status-chip.partial{ background:#2f9e9e33; color:#9fe3e3; }
+  .status-chip.mature{ background:#c23b3b33; color:#ffb199; }
+
+  .chart-shell{ background:#ffffff; border:1px solid var(--line); border-radius:12px; padding:8px 4px 4px; }
+  svg{width:100%;height:auto;display:block;}
+  .zone-label{font-family:"Noto Sans TC",sans-serif;font-size:12px;font-weight:700;}
+  .age-label{font-family:"DM Mono",monospace;font-size:11px;fill:#1c63b3;}
+  .axis-label{font-family:"DM Mono",monospace;font-size:10.5px;fill:#1c63b3;}
+  .callout{font-family:"Noto Sans TC",sans-serif;font-size:13px;font-weight:700;}
+
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:12px;font-size:12px;color:var(--muted);}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .dot{width:10px;height:10px;border-radius:50%;display:inline-block;}
+
+  details{margin-top:22px;}
+  summary{ cursor:pointer; font-family:"Noto Serif TC",serif; color:var(--navy); font-size:15px; padding:10px 0; }
+  table{ width:100%; border-collapse:collapse; font-family:"DM Mono",monospace; font-size:12.5px; margin-top:10px; }
+  th,td{ padding:6px 8px; text-align:center; border-bottom:1px solid var(--line); }
+  th{ background:var(--navy); color:var(--gold-hi); font-family:"Noto Sans TC",sans-serif; font-weight:500; position:sticky; top:0; }
+  tr.current-row td{background:#fff0d0;font-weight:700;}
+  .table-scroll{max-height:340px;overflow:auto;border:1px solid var(--line);border-radius:8px;}
+  .tag-wrap{display:flex;flex-wrap:wrap;gap:7px;}
+  .tag{
+    background:#f3f6fb; border:1px solid var(--line); border-left:3px solid var(--tag-color,var(--line)); border-radius:8px;
+    padding:5px 10px; font-size:12px; color:var(--ink); white-space:nowrap;
+  }
+  .tag b{color:var(--navy);font-family:"DM Mono",monospace;margin-right:4px;}
+  .note{ font-size:12px; color:var(--muted); line-height:1.7; margin-top:16px; padding:12px 14px; background:#eef4fc; border-left:3px solid var(--gold); border-radius:4px; }
+  footer{text-align:center;color:var(--muted);font-size:11.5px;padding:20px;}
+  .stat.statN{ background:linear-gradient(160deg,#7a5a12 0%,#a8710c 100%); }
+  .stat.statN .num{ color:#ffe9b8; }
+  .product-block.pbN{ background:#fdf6e6; border:1.5px solid #e3c176; }
+  .product-block.pbN .ptitle{ color:var(--gold-deep); }
+  .product-block.pbN input[type=number]{ border-color:#e3c176; background:#fffaf0; }
+  .product-block.pbN input[type=number]:focus{ outline:2px solid var(--gold-hi); }
+  .toggle-group button:disabled{ background:#f1f4f9; color:#a9b4c6; }
+  .warn{ color:#c23b3b; font-size:11.5px; margin-top:6px; line-height:1.5; }
+  td.left, th.left{ text-align:left; }
+  .bt td{ text-align:left; vertical-align:top; font-family:"Noto Sans TC",sans-serif; font-size:12.5px; line-height:1.65; }
+  .bt td:first-child{ font-weight:700; white-space:nowrap; background:#fdf6e6; }
+  .bt ul{ margin:0; padding-left:16px; }
+  .chip{ cursor:pointer; border:1px solid #e1e6ef; border-left:4px solid #c9860f; background:#fff; border-radius:10px; padding:6px 10px; font-size:13px; color:var(--navy); font-family:inherit; text-align:left; line-height:1.4; }
+  .chip.sp{ border-left-color:#c23b3b; }
+  .chip b.n{ margin-right:6px; }
+  .chip.on{ background:#fff6da; border-color:#c9860f; }
+  .chip.sp.on{ background:#fdecea; border-color:#c23b3b; }
+  .chip .bdg{ margin-left:6px; }
+  .chips{ display:flex; flex-wrap:wrap; gap:6px; }
+  .chipdetail{ display:none; margin-top:8px; padding:10px 14px; border-radius:10px; background:#f4f6fb; border:1px solid #e1e6ef; font-size:13px; color:#33425b; line-height:1.7; }
+  .chipdetail.show{ display:block; }
+  .it{ border:1px solid #e1e6ef; border-left:4px solid #c9860f; border-radius:10px; background:#fff; margin:0 0 6px; }
+  .it.sp{ border-left-color:#c23b3b; }
+  .it > summary{ cursor:pointer; padding:8px 12px; font-size:13.5px; color:var(--navy); list-style:none; display:flex; flex-wrap:wrap; gap:6px 10px; align-items:center; }
+  .it > summary::-webkit-details-marker{ display:none; }
+  .it > summary::after{ content:'＋'; margin-left:auto; color:#8a97ad; font-weight:700; }
+  .it[open] > summary::after{ content:'－'; }
+  .it > summary b.n{ color:#0b2e5c; min-width:20px; }
+  .it .bd{ padding:2px 14px 10px 34px; font-size:13px; color:#33425b; line-height:1.7; }
+  .bdg{ display:inline-block; font-size:11.5px; font-weight:700; padding:1px 8px; border-radius:10px; white-space:nowrap; }
+  .bdg.g30{ background:#f3c32f; color:#0b2e5c; }
+  .bdg.up{ background:#dff3e6; color:#1b7a43; }
+  .bdg.new{ background:#fde6e3; color:#b3322b; }
+  .win-ncic{ color:#1c63b3; font-weight:700; }
+  .win-ted{ color:#c23b3b; font-weight:700; }
+  .pill{ display:inline-block; padding:2px 10px; border-radius:12px; font-weight:700; white-space:nowrap; }
+  .pill.p0{ background:#fff; color:#a9b4c6; border:1px dashed #a9b4c6; }
+  .pill.p5{ background:#e7ebf2; color:#0b2e5c; }
+  .pill.p30{ background:#f3c32f; color:#0b2e5c; }
+  .pill.p100{ background:#1c63b3; color:#fff; }
+  .pill.t100{ background:#a31d5a; color:#fff; }
+
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Nan Shan Life &nbsp;·&nbsp; 順可通訊處</div>
+  <h1>NCIC　安心溢百重大傷病終身保險<br>保單結構試算</h1>
+</header>
+
+<div class="wrap">
+  <div class="grid">
+
+    <div class="card">
+      <h2>投保條件</h2>
+      <div class="field">
+        <label>投保年齡（保險年齡）　<span class="val" id="ageVal">35</span> 歲</label>
+        <input type="range" id="age" min="0" max="50" value="35">
+        <div class="hint">10 年期：0～60 歲；20 年期：0～50 歲。切換年期時，年齡會自動收斂到該年期的上限。<br><b>請輸入「保險年齡」</b>（條款第2條第18款，與保險法一般算法相同）：投保時以足歲計算，未滿一歲的零數<b>超過 6 個月</b>者加算一歲，以後每經過一個保單年度加算一歲。例：足歲 34 歲又 7 個月 → 保險年齡 35 歲；34 歲又 6 個月 → 34 歲。</div>
+      </div>
+      <div class="field">
+        <label>性別</label>
+        <div class="toggle-group" id="genderToggle">
+          <button data-v="male" class="active">男性</button>
+          <button data-v="female">女性</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>繳費年期</label>
+        <div class="toggle-group" id="termToggle">
+          <button data-v="10">10 年期</button>
+          <button data-v="20" class="active">20 年期</button>
+        </div>
+      </div>
+
+      <div class="product-block pbN">
+        <div class="ptitle"><span class="pdot" style="background:var(--gold-hi);"></span>NCIC　投保金額</div>
+        <div class="field">
+          <label>NCIC 投保金額（萬元）</label>
+          <input type="number" id="amount" value="500" min="0" step="10">
+          <div class="hint">最低 10 萬；最高需同時符合：①累計 NCIC（10／20 年期）≦ 500 萬、②累計重大疾病給付保額總和 ≦ 2,500 萬。<b>留空或輸入 0 代表不試算</b>。</div>
+          <div class="warn" id="amountWarn"></div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>健檢體位（第 3 保單年度起適用）</label>
+        <div class="toggle-group" id="coefToggle">
+          <button data-v="1" class="active">A 級 × 1.00</button>
+          <button data-v="1.05">S 級 × 1.05</button>
+        </div>
+        <div class="hint" id="coefHint"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>保單結構試算</h2>
+
+      <div class="results" id="statsGrid"></div>
+
+      <div class="scrubber">
+        <div class="scrubber-top">
+          <div class="ttl">拖曳查看保單進度 ▸</div>
+          <div class="now">第 <b id="pyVal">0</b> 保單年度　·　您 <b id="pyAge">—</b> 歲　<button id="playBtn">▶ 播放</button></div>
+        </div>
+        <input type="range" id="policyYear" min="0" max="65" value="0" step="1">
+        <div id="statusChip" class="status-chip paying">保單剛生效</div>
+      </div>
+
+      <div class="chart-shell">
+        <svg id="chart" viewBox="0 0 900 470"></svg>
+      </div>
+
+      <div class="legend" id="legendBox"></div>
+      <div class="hint" style="margin-top:8px;" id="chartHint"></div>
+
+      <div class="note" id="stageNote"></div>
+    </div>
+  </div>
+
+  <details open>
+    <summary>▸ NCIC 給付項目一覽（DM 第3頁｜單位：新台幣元）</summary>
+    <div class="table-scroll">
+      <table class="bt">
+        <thead><tr><th class="left" style="width:120px;">給付項目</th><th class="left">投保時保險年齡未達16歲</th><th class="left">投保時保險年齡16歲(含)以上</th></tr></thead>
+        <tbody>
+          <tr><td>重大傷病保險金</td>
+            <td><ul><li>第1保單年度：年繳保險費總和×1.06（給付後契約終止）</li>
+              <li>第2保單年度(含)起：<br>①「需終身治療之全身性自體免疫症候群」「慢性精神病」：保額×30%（給付後契約<b>不終止</b>）<br>②其他重大傷病：MAX(保額, 年繳保險費總和×1.06)，扣除已領之重大傷病保險金（給付後契約終止）</li></ul></td>
+            <td><ul><li>第1保單年度：年繳保險費總和×1.06（給付後契約終止）</li>
+              <li>第2保單年度(含)起：<br>①自體免疫／慢性精神病：保額×30%（給付後契約<b>不終止</b>）<br>②其他重大傷病：MAX(保額, 年繳保險費總和×1.06)<b>×健康促進係數</b>，扣除已領之重大傷病保險金（給付後契約終止）</li></ul></td></tr>
+          <tr><td>特定疾病保險金<br><span style="font-weight:400;color:var(--muted);font-size:11.5px;">9項，給付後契約終止</span></td>
+            <td>第1保單年度：年繳保險費總和×1.06；第2保單年度(含)起：MAX(保額, 年繳保險費總和×1.06)，扣除已領之重大傷病保險金</td>
+            <td>第1保單年度：年繳保險費總和×1.06；第2保單年度(含)起：MAX(保額, 年繳保險費總和×1.06)<b>×健康促進係數</b>，扣除已領之重大傷病保險金</td></tr>
+          <tr><td>二至六級失能豁免保險費</td>
+            <td colspan="2">因約定之疾病或傷害致成條款附表四所列第二至六級失能程度之一者：自診斷確定翌日起，豁免當期已繳付之未滿期保險費及以後各到期日應繳付之保險費，契約繼續有效；當期已繳付之未滿期保險費按日數比例返還要保人。</td></tr>
+          <tr><td>完全失能保險金<br><span style="font-weight:400;color:var(--muted);font-size:11.5px;">給付後契約終止</span></td>
+            <td>保險年齡未達16歲前完全失能：壽險當年度保險金額＊；保險年齡達16歲(含)以後完全失能：MAX(保額, 年繳保險費總和×1.06)，扣除已領之重大傷病保險金（不分保單年度，第1年即適用）</td>
+            <td>MAX(保額, 年繳保險費總和×1.06)<b>×健康促進係數</b>，扣除已領之重大傷病保險金（不分保單年度，第1年即適用；前2保單年度係數為1.00）</td></tr>
+          <tr><td>祝壽保險金<br><span style="font-weight:400;color:var(--muted);font-size:11.5px;">給付後契約終止</span></td>
+            <td>保險年齡達100歲之保單年度末仍生存且契約有效：MAX(保額, 年繳保險費總和×1.06)，扣除已領之重大傷病保險金</td>
+            <td>保險年齡達100歲之保單年度末仍生存且契約有效：MAX(保額, 年繳保險費總和×1.06)<b>×健康促進係數</b>，扣除已領之重大傷病保險金</td></tr>
+          <tr><td>所繳保險費加計利息的退還或身故保險金或喪葬費用保險金<br><span style="font-weight:400;color:var(--muted);font-size:11.5px;">給付後契約終止</span></td>
+            <td>滿15足歲前身故：退還所繳保險費加計利息；滿15足歲後且保險年齡未達16歲前身故：壽險當年度保險金額＊；其後：MAX(保額, 年繳保險費總和×1.06)，扣除已領之重大傷病保險金（不分保單年度）</td>
+            <td>MAX(保額, 年繳保險費總和×1.06)<b>×健康促進係數</b>，扣除已領之重大傷病保險金（不分保單年度，第1年即適用；前2保單年度係數為1.00）</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">
+      ＊壽險當年度保險金額：被保險人滿15足歲之日起至保險年齡達16歲前身故，或保險年齡達16歲前致成附表一所列完全失能等級之一者，以「所繳保險費加計利息」（年利率2%）計算之金額。<br>
+      年繳保險費總和＝保單年度數×保險金額×最近一次繳交之保險費適用之年繳費率（以未扣除折扣之費率為準）；保單年度數最多以繳費年限為上限（條款第2條第2款），因此繳費期滿後不再增加。<br>
+      被保險人同時或先後符合「重大傷病保險金」「特定疾病保險金」「祝壽保險金」「身故（或退還保費／喪葬費用）保險金」或「完全失能保險金」之給付條件者，僅給付其中一項（已領自體免疫／慢性精神病之重大傷病保險金後，仍可依條款再領後續給付）。<br>
+      <b>保險年齡與祝壽時點：</b>第 k 保單年度的保險年齡＝投保年齡＋k－1；保險年齡達 100 歲的保單年度為第（101－投保年齡）年，該年度末給付祝壽保險金並終止契約（條款第11條第1項第4款、第19條）。例：保險年齡 35 歲投保，第 66 保單年度末祝壽。<br>
+      <b>資料來源：</b>依 DM（PA-01-481 2026年10月版）整理，並已對照保單條款（南壽研字第1150000115號函備查）第2、14、15、17、19、21、24條；各給付細節仍以保單條款為準。
+    </div>
+  </details>
+
+  <details open>
+    <summary>▸ 保障 22 項重大傷病／9 項特定疾病（DM 第4頁，詳細定義請參閱條款附表二、三）</summary>
+    <div style="font-weight:700;color:#c9860f;font-size:13px;margin:4px 0 6px;">重大傷病 22 項（依全民健康保險重大傷病範圍）<span style="font-weight:400;color:var(--muted);">　點選項目可看會發卡的疾病與證明效期</span></div>
+    <div id="majorList"></div>
+    <div style="font-weight:700;color:#c23b3b;font-size:13px;margin:16px 0 6px;">特定疾病 9 項</div>
+    <div id="specificList"></div>
+  </details>
+
+  <details open>
+    <summary>▸ 重大傷病卡為什麼重要（NCIC 的理賠核心｜資料：健保署、NCIC 商品訓練教材）</summary>
+    <div class="note" style="margin-top:0;">
+      <b>NCIC 的賠付標準，就是健保署核發的「重大傷病證明」（俗稱重大傷病卡）：認卡賠。</b>不是保險公司自己評斷，標準明確、爭議少；理賠後保險金一次給付，可自由運用於治療、收入替代、房貸與生活費、照護。
+    </div>
+
+    <div style="font-family:'Noto Serif TC',serif;color:var(--navy);font-size:15px;margin:14px 0 8px;">① 領證人數逐年增加：國人平均每 23 位健保保戶，就有 1 位是重大傷病患者</div>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>統計時點</th><th>100年</th><th>103年</th><th>114年7月</th><th>115年7月</th></tr></thead>
+        <tbody><tr><td>重大傷病證明有效領證數</td><td>約91.8萬張</td><td>約97.4萬張</td><td>約108萬張</td><td style="font-weight:700;background:#e7f0fb;">約110.6萬張</td></tr></tbody>
+      </table>
+    </div>
+    <div class="table-scroll" style="margin-top:10px;">
+      <table>
+        <thead><tr><th>領證原因 TOP5</th><th>累計有效領證數（截至115年7月）</th><th>占比</th></tr></thead>
+        <tbody>
+          <tr><td style="text-align:left;">需積極或長期治療之癌症</td><td>521,686 張</td><td>47.2%</td></tr>
+          <tr><td style="text-align:left;">慢性精神病</td><td>188,982 張</td><td>17.1%</td></tr>
+          <tr><td style="text-align:left;">需終身治療之全身性自體免疫症候群</td><td>149,960 張</td><td>13.6%</td></tr>
+          <tr><td style="text-align:left;">慢性腎衰竭（尿毒症），必須接受定期透析治療者</td><td>89,934 張</td><td>8.1%</td></tr>
+          <tr><td style="text-align:left;">先天性畸型及染色體異常（<b>NCIC 不承保</b>，屬除外類別）</td><td>39,373 張</td><td>3.6%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">資料來源：健保署全民健康保險重大傷病證明有效領證統計表；NCIC 商品訓練教材。</div>
+
+    <div style="font-family:'Noto Serif TC',serif;color:var(--navy);font-size:15px;margin:18px 0 8px;">② 保障範圍最廣：重大傷病險 ＞ 重大疾病險 ＞ 癌症險</div>
+    <div class="table-scroll">
+      <table class="bt">
+        <thead><tr><th class="left">項目</th><th class="left">癌症險</th><th class="left">重大疾病險</th><th class="left" style="color:#e3a635;">重大傷病險（NCIC）</th></tr></thead>
+        <tbody>
+          <tr><td>保障範圍</td><td>癌症</td><td>7 項重大疾病</td><td><b>22 大類 300 多項＋9 項特定疾病</b></td></tr>
+          <tr><td>理賠依據</td><td>診斷證明＋檢驗報告</td><td>診斷證明＋檢驗報告</td><td><b>健保重大傷病證明，標準最明確</b></td></tr>
+          <tr><td>給付方式</td><td>定額或一次給付</td><td>一次給付</td><td>一次給付（慢性精神病、自體免疫為保額 30%）</td></tr>
+          <tr><td>等待期</td><td>90 天</td><td>30 或 90 天</td><td>重大傷病 30 日（癌症 90 日）；第 1 保單年度僅給付年繳保費×1.06</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">癌症險、重大疾病險欄位為一般市場商品概況，各商品以條款為準。NCIC 贏在<b>範圍與標準</b>：涵蓋精神、免疫、罕病，理賠看健保署認定；急性心肌梗塞、冠狀動脈繞道等，則由 NCIC 的 9 項特定疾病補上。</div>
+
+    <div style="font-family:'Noto Serif TC',serif;color:var(--navy);font-size:15px;margin:18px 0 8px;">③ 保障範圍會「長大」：從新從優（條款第 5 條）</div>
+    <div class="note" style="margin-top:0;">
+      承保範圍包含「訂立時」及「有效期間內被保險人診斷確定當時」中央衛生主管機關公告之重大傷病項目——<b>兩份清單（投保當年的公告項目、診斷當時的公告項目），有一份列就算</b>：健保日後新增項目自動納入保障；日後刪除的項目，仍依投保當年清單理賠。新增項目若屬除外的 8 大類，仍以條款附表為準。
+    </div>
+
+    <div style="font-family:'Noto Serif TC',serif;color:var(--navy);font-size:15px;margin:18px 0 8px;">④ 理賠 30% 的兩大類，也是領卡大宗（健保署領證張數）</div>
+    <div class="table-scroll">
+      <table class="bt">
+        <thead><tr><th class="left" style="width:200px;">類別（保額 30%，給付後契約不終止）</th><th class="left">常見疾病與領證張數</th></tr></thead>
+        <tbody>
+          <tr><td>慢性精神病</td><td>思覺失調症 98,460 張｜情感性疾患（躁鬱症、重度憂鬱）56,256 張｜自閉性疾患 11,890 張｜失智症★ 9,724 張</td></tr>
+          <tr><td>全身性自體免疫</td><td>類風濕關節炎★ 54,723 張｜乾燥症 45,348 張｜全身性紅斑狼瘡★ 26,040 張｜慢性潰瘍性結腸炎 6,216 張</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">★ 惡化可升級 100%：嚴重阿茲海默氏症、嚴重全身性紅斑性狼瘡腎病變、嚴重類風濕性關節炎屬 NCIC 特定疾病，符合條款定義時再補足至保額（扣除已領 30%）。</div>
+
+    <div style="font-family:'Noto Serif TC',serif;color:var(--navy);font-size:15px;margin:18px 0 8px;">⑤ 要誠實講的但書：不能說「領到重大傷病卡就賠」</div>
+    <div class="table-scroll">
+      <table class="bt">
+        <tbody>
+          <tr><td style="width:150px;">範圍限制</td><td>僅限保單約定的 <b>22 大類</b>（健保共 30 大類）；除外 8 類：遺傳性凝血因子缺乏、先天性新陳代謝異常疾病、先天性畸形及染色體異常、先天性免疫不全症、職業病、先天性肌肉萎縮症、外皮之先天畸形、早產兒所引起之併發症。</td></tr>
+          <tr><td>沒有卡怎麼辦</td><td>無健保身分或來不及領卡，可用<b>區域醫院以上診斷書＋病歷摘要</b>申請（條款第 16 條）。</td></tr>
+          <tr><td>正確說法</td><td><b>「罹患保單約定的 22 大類重大傷病並取得證明，就一次給付。」</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="font-family:'Noto Serif TC',serif;color:var(--navy);font-size:15px;margin:18px 0 8px;">⑥ 發生、沒發生，保戶都受益</div>
+    <div class="table-scroll">
+      <table class="bt">
+        <thead><tr><th class="left">重大傷病發生</th><th class="left">重大傷病沒發生</th></tr></thead>
+        <tbody><tr>
+          <td>應付工作空轉、收入中斷；支付醫藥費與自費治療；支付房貸與生活費</td>
+          <td>壽險保障：身故給付 MAX(保額, 總繳×1.06)（×健康促進係數）；活到保險年齡 100 歲領祝壽金；提高身價、滿足責任重大期需求</td>
+        </tr></tbody>
+      </table>
+    </div>
+  </details>
+
+  <details open>
+    <summary>▸ NCIC vs 南山 TED：差在哪？（金額依您左側輸入的保額即時換算）</summary>
+    <div class="note" style="margin-top:0;">
+      <b>一句話：TED 幫你處理早期輕症，NCIC 接住健保認定的重症，還有精神、免疫與罕病。兩張互補。</b>
+    </div>
+    <div class="table-scroll">
+      <table class="bt">
+        <thead><tr><th class="left" style="width:110px;">項目</th><th class="left">南山 TED</th><th class="left" style="color:#e3a635;">NCIC</th></tr></thead>
+        <tbody>
+          <tr><td>保障到幾歲</td><td>保險年齡 84 歲</td><td><b>保險年齡 100 歲（終身）</b></td></tr>
+          <tr><td>理賠依據</td><td>依條款之疾病定義與診斷</td><td><b>認卡賠</b>：健保署重大傷病證明（第 2 保單年度起）</td></tr>
+          <tr><td>給付方式</td><td>依嚴重程度分次：5%／10%／100%</td><td>一次給付（慢性精神病、自體免疫 30%）</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="font-family:'Noto Serif TC',serif;color:var(--navy);font-size:15px;margin:18px 0 8px;">同一個病，誰賠比較多？</div>
+    <div class="note" style="margin-top:0;" id="cmpIntro"></div>
+    <div class="table-scroll">
+      <table class="bt">
+        <thead><tr><th class="left">系統</th><th class="left">情況</th><th>TED</th><th>NCIC</th><th>誰賠比較多</th></tr></thead>
+        <tbody id="cmpRows"></tbody>
+      </table>
+    </div>
+    <div class="note" id="cmpNote"></div>
+
+    <div style="font-family:'Noto Serif TC',serif;color:var(--navy);font-size:15px;margin:18px 0 8px;">保費比較（20 年期・保額 100 萬・年繳，單位：元）</div>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>性別／投保年齡</th><th style="color:#e3a635;">NCIC</th><th>TED35（精選傷病定期保險，16～55歲）</th><th>TED（精選傷病定期保險(2)，0～50歲）</th></tr></thead>
+        <tbody>
+          <tr><td>女 30 歲</td><td style="font-weight:700;">41,500</td><td>41,000（差 500）</td><td>35,300</td></tr>
+          <tr><td>女 40 歲</td><td style="font-weight:700;">50,500</td><td>45,500（差 5,000）</td><td>43,800</td></tr>
+          <tr><td>女 50 歲</td><td style="font-weight:700;">75,000</td><td>61,400（差 13,600）</td><td>61,400</td></tr>
+          <tr><td>男 30 歲</td><td style="font-weight:700;">45,000</td><td>42,000（差 3,000）</td><td>38,300</td></tr>
+          <tr><td>男 40 歲</td><td style="font-weight:700;">53,000</td><td>47,500（差 5,500）</td><td>45,800</td></tr>
+          <tr><td>男 50 歲</td><td style="font-weight:700;">95,000</td><td>78,800（差 16,200）</td><td>78,800</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">越早買越划算：30 歲保費幾乎一樣，50 歲明顯拉開（女性 30 歲買 NCIC 只比 TED35 每年多 500 元；50 歲再買，每月多付約 2,948 元）。費率依 NCIC 與 TED35／TED 年繳費率表（每萬元保額×100）；本頁與 TED 比較之差額以 TED35 費率為準，另列 TED(2) 供對照。</div>
+
+    <div style="background:#0b2e5c;color:#fff;border-radius:10px;padding:14px 18px;margin-top:14px;">
+      <div style="color:#e3a635;font-size:12px;font-weight:700;margin-bottom:6px;">給已有 TED 的客戶</div>
+      <div style="font-size:12.5px;margin-top:8px;color:#cdd7e6;"><b style="color:#e3a635;">加保規則：</b>已有 TED 500 萬仍可再投保 NCIC 至 500 萬；兩者都計入「累計重大疾病給付保額 ≦ 2,500 萬」。</div>
+    </div>
+  </details>
+
+  <details open>
+    <summary>▸ 與業界重大傷病險比較（友商名稱已部分遮蔽｜來源：六大壽險橫向評比儀表板）</summary>
+    <div style="font-family:'Noto Serif TC',serif;color:var(--navy);font-size:15px;margin-bottom:8px;">六家旗艦重大傷病險：NCIC 保費最高，加碼也最多</div>
+    <div class="table-scroll">
+      <table class="bt">
+        <thead><tr><th class="left">公司／商品</th><th>保到</th><th>加碼</th><th>第 1 年</th><th>第 2 年精神病</th><th>領精神病／自體免疫後</th><th>身故／滿期</th><th>30 歲 男／女（元）</th></tr></thead>
+        <tbody>
+          <tr style="background:#0b2e5c;color:#fff;"><td style="background:#0b2e5c;color:#e3a635;">★ 南山 NCIC</td><td>100 歲</td><td>9 項</td><td>保費 × 1.06</td><td>30%</td><td><b>保障持續</b></td><td>× 1.06</td><td>45,000／41,500</td></tr>
+          <tr><td>富○ 醫○安心</td><td>100 歲</td><td>4 項</td><td>保費 × 1.06</td><td>20%</td><td>保障終止</td><td>× 1.06</td><td>39,100／38,600</td></tr>
+          <tr><td>新○ 卡○心</td><td>85 歲</td><td>5 項</td><td>保費 × 1.05</td><td>30%</td><td>保障終止</td><td>× 1.05</td><td>39,600／38,100</td></tr>
+          <tr><td>全○ 醫○好</td><td>100 歲</td><td>無</td><td>保額 20%</td><td>20%</td><td>保障終止</td><td>× 1.02</td><td>39,100／39,000</td></tr>
+          <tr><td>國○ 新○心○福</td><td>90 歲</td><td>4 項</td><td>保費 × 1.05</td><td>20%</td><td>保障終止</td><td>× 1.05</td><td>42,800／39,800</td></tr>
+          <tr><td>凱○ 醫○心安</td><td>100 歲</td><td>無</td><td>保費 × 1.06</td><td>30%</td><td>保障終止</td><td>× 1.06</td><td>39,100／38,600</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">保額 100 萬、繳費 20 年；身故／滿期為「保額或總繳 × 倍數」擇高。<b>南山 NCIC：加碼 9 項最多，同時保到 100 歲、回饋 1.06。</b></div>
+
+    <div style="font-family:'Noto Serif TC',serif;color:var(--navy);font-size:15px;margin:18px 0 8px;">加碼特定疾病逐項比</div>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th style="text-align:left;">加碼特定疾病</th><th style="color:#e3a635;">★ 南山</th><th>富○</th><th>新○</th><th>全○</th><th>國○</th><th>凱○</th></tr></thead>
+        <tbody>
+          <tr><td style="text-align:left;">急性心肌梗塞（重度）</td><td>有</td><td>有</td><td>有</td><td>—</td><td>有</td><td>—</td></tr>
+          <tr><td style="text-align:left;">冠狀動脈繞道手術</td><td>有</td><td>有</td><td>有</td><td>—</td><td>有</td><td>—</td></tr>
+          <tr><td style="text-align:left;">心臟瓣膜開心手術</td><td>有</td><td>—</td><td>有</td><td>—</td><td>有</td><td>—</td></tr>
+          <tr><td style="text-align:left;">主動脈外科置換手術</td><td>有</td><td>有</td><td>有</td><td>—</td><td>有</td><td>—</td></tr>
+          <tr style="background:#e7f0fb;"><td style="text-align:left;">經導管心臟瓣膜置換術（TAVI）</td><td style="font-weight:700;">★ 獨有</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+          <tr style="background:#e7f0fb;"><td style="text-align:left;">嚴重阿茲海默氏症</td><td style="font-weight:700;">★ 獨有</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+          <tr style="background:#e7f0fb;"><td style="text-align:left;">嚴重巴金森氏症</td><td style="font-weight:700;">★ 獨有</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+          <tr style="background:#e7f0fb;"><td style="text-align:left;">嚴重全身性紅斑性狼瘡腎病變</td><td style="font-weight:700;">★ 獨有</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+          <tr style="background:#e7f0fb;"><td style="text-align:left;">嚴重類風濕性關節炎</td><td style="font-weight:700;">★ 獨有</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+          <tr><td style="text-align:left;">嚴重原發性肺動脈高血壓</td><td>—</td><td>有</td><td>有</td><td>—</td><td>—</td><td>—</td></tr>
+          <tr style="background:#0b2e5c;color:#fff;font-weight:700;"><td style="text-align:left;background:#0b2e5c;color:#fff;">合計</td><td style="background:#0b2e5c;color:#e3a635;">9 項</td><td style="background:#0b2e5c;color:#fff;">4 項</td><td style="background:#0b2e5c;color:#fff;">5 項</td><td style="background:#0b2e5c;color:#fff;">0</td><td style="background:#0b2e5c;color:#fff;">4 項</td><td style="background:#0b2e5c;color:#fff;">0</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">「獨有」指六家旗艦重大傷病險中僅 NCIC 列入（南山 TED 亦含 TAVI）。TAVI 健保為有條件給付（4 項條件全符合），不符合者需自費約 100 多萬；傳統重大疾病只認開心手術，NCIC 特定疾病則按保額 100% 給付。</div>
+
+    <div style="font-family:'Noto Serif TC',serif;color:var(--navy);font-size:15px;margin:18px 0 8px;">先領 30%，保障不中斷</div>
+    <div class="table-scroll">
+      <table class="bt">
+        <thead><tr><th class="left" style="width:120px;">情境</th><th class="left">NCIC</th><th class="left">給付後契約終止的商品</th></tr></thead>
+        <tbody>
+          <tr><td>中年領慢性精神病（如重度憂鬱）的卡，之後罹癌</td><td><b>先領保額 30%，保單繼續；罹癌再領 70%，合計 100%</b></td><td>先領約 20% 起，契約即終止，之後罹癌已無保障（合計約 20%）</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">也要講清楚：NCIC 領 30% 後須繼續繳費，保價金可能歸零；自體免疫在他家可能直接賠 100%。他家給付後契約是否終止，請以各家條款確認。</div>
+
+    <div style="font-family:'Noto Serif TC',serif;color:var(--navy);font-size:15px;margin:18px 0 8px;">多付約 15%，買到三件事</div>
+    <div class="table-scroll">
+      <table class="bt">
+        <tbody>
+          <tr><td style="width:150px;">① 加碼最多：9 項</td><td>其中 5 項為六家中僅南山列入（見上方逐項比較）。</td></tr>
+          <tr><td>② 保到 100 歲、回饋 1.06</td><td>其他家有的只保到 85 歲、90 歲，重症偏偏集中在晚年。</td></tr>
+          <tr><td>③ 外溢 1.05 倍</td><td>健檢 S 級，給付再乘 1.05（評比表上沒有列）。</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note"><b>被問到價格時別愣住：</b>只比價格的客戶，把話題帶回「保到幾歲、加碼幾項」。（全○醫○好第 1 年賠保額 20%，其他家只退保費。）依法令不得以漲價、停售為招攬訴求。</div>
+  </details>
+
+  <details open>
+    <summary>▸ 重大疾病治療費用高昂，不是醫不好，而是花不起</summary>
+    <div style="font-family:'Noto Serif TC',serif;color:var(--navy);font-size:15px;margin:16px 0 8px;">常見癌症標靶藥物／新式手術，自費負擔沉重</div>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>項目</th><th>適用症</th><th>自費行情（新台幣）</th></tr></thead>
+        <tbody>
+          <tr><td>賀癌平 Herceptin</td><td>乳癌</td><td>6～8萬／月</td></tr>
+          <tr><td>癌思停 Avastin</td><td>轉移性大腸直腸癌、轉移性乳癌、肝癌、卵巢癌</td><td>8～10萬／月</td></tr>
+          <tr><td>蕾莎瓦 Nexavar</td><td>肝癌、腎細胞癌、分化型甲狀腺癌</td><td>12萬／月</td></tr>
+          <tr><td>吉舒達 Keytruda</td><td>肝癌、乳癌、晚期非小細胞肺癌</td><td>16萬／月</td></tr>
+          <tr><td>保疾伏 Nivolumab</td><td>非小細胞肺癌、腎細胞癌、肝癌</td><td>20萬／月</td></tr>
+          <tr><td>經導管主動脈瓣膜置換術（健保給付有條件）</td><td>不符合4項健保給付條件者需自費</td><td>98～134萬（一次性）</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">標靶藥物費用為各家醫院公告參考行情，實際價格依各醫院收費為準；經導管瓣膜置換套組行情引用自衛生福利部資料。以上皆為 NCIC 重大傷病一次金可協助補足的自費醫療風險範例。</div>
+    <div style="height:8px;"></div>
+    <div style="font-family:'Noto Serif TC',serif;color:var(--navy);font-size:15px;margin-bottom:8px;">達文西手術：不同手術部位自費約 14～30 萬</div>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>手術部位</th><th>費用</th></tr></thead>
+        <tbody>
+          <tr><td>肺部</td><td>15～18萬</td></tr>
+          <tr><td>心臟</td><td>15～30萬</td></tr>
+          <tr><td>腸道</td><td>14～16萬</td></tr>
+          <tr><td>胃部</td><td>14～20萬</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="font-family:'Noto Serif TC',serif;color:var(--navy);font-size:15px;margin:18px 0 8px;">質子／重粒子治療：每一療程自費約 30～140 萬</div>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>治療方式</th><th>每療程費用</th></tr></thead>
+        <tbody>
+          <tr><td>質子治療</td><td>30～120萬</td></tr>
+          <tr><td>重粒子治療</td><td>60～140萬</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="font-family:'Noto Serif TC',serif;color:var(--navy);font-size:15px;margin:18px 0 8px;">免疫細胞治療：自費約 80～180 萬</div>
+    <div class="note" style="margin-top:0;">流程：抽血 → 自血液中分離出免疫細胞（自然殺手細胞）→ 加入特定細胞激素培養 → 擴增免疫細胞 → 將擴增後的免疫細胞輸注回人體內。</div>
+
+    <div class="note">以上費用為市場公開行情區間，實際價格依各醫療院所、治療部位與療程數而異；單位：新台幣元。搭配 NCIC 重大傷病保險金（確診符合即一次給付），可協助補足這類新式治療的自費缺口。</div>
+  </details>
+
+  <details open>
+    <summary>▸ 南山人壽實際理賠經驗（115年4月份理賠統計｜資料提供：理賠部）</summary>
+    <div style="font-family:'Noto Serif TC',serif;color:var(--navy);font-size:15px;margin-bottom:8px;">【重大疾病】4月份給付件數與金額（依年齡層）</div>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>年齡層</th><th>件數</th><th>件數占比</th><th>給付金額（元）</th><th>金額占比</th></tr></thead>
+        <tbody>
+          <tr><td>20歲以下</td><td>32</td><td>0.9%</td><td>12,705,169</td><td>1.4%</td></tr>
+          <tr><td>21～30歲</td><td>87</td><td>2.3%</td><td>29,699,197</td><td>3.3%</td></tr>
+          <tr><td>31～40歲</td><td>262</td><td>7.0%</td><td>70,560,863</td><td>7.8%</td></tr>
+          <tr><td>41～50歲</td><td>696</td><td>18.7%</td><td>164,145,434</td><td>18.3%</td></tr>
+          <tr><td>51～60歲</td><td>1,018</td><td>27.3%</td><td>241,099,162</td><td>26.8%</td></tr>
+          <tr style="background:#e7f0fb;font-weight:700;"><td>61～70歲</td><td>1,120</td><td>30.0%</td><td>264,163,531</td><td>29.4%</td></tr>
+          <tr><td>71～80歲</td><td>479</td><td>12.8%</td><td>108,967,640</td><td>12.1%</td></tr>
+          <tr><td>81歲以上</td><td>36</td><td>1.0%</td><td>7,753,667</td><td>0.9%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">61～70歲是重大疾病理賠最集中的年齡層，件數占比達 30%、金額占比 29.4%；NCIC 為終身型保障（至保險年齡100歲），可完整涵蓋這段理賠高峰期。</div>
+    <div style="font-family:'Noto Serif TC',serif;color:var(--navy);font-size:15px;margin:18px 0 8px;">南山保戶（重大疾病／完全失能／身故）理賠原因排名 vs 113年國人死因</div>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>排名</th><th>發生原因</th><th>件數</th><th>件數占比</th><th>金額（新台幣）</th><th>金額占比</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>惡性腫瘤</td><td>4,063</td><td>70.8%</td><td>1,249,764,543</td><td>64.4%</td></tr>
+          <tr><td>2</td><td>心臟疾病(高血壓性疾病除外)</td><td>228</td><td>4.0%</td><td>103,528,758</td><td>5.3%</td></tr>
+          <tr><td>3</td><td>肺炎</td><td>166</td><td>2.9%</td><td>90,902,337</td><td>4.7%</td></tr>
+          <tr><td>4</td><td>腦血管疾病</td><td>95</td><td>1.6%</td><td>48,064,578</td><td>2.5%</td></tr>
+          <tr><td>5</td><td>糖尿病</td><td>24</td><td>0.4%</td><td>9,620,516</td><td>0.5%</td></tr>
+          <tr><td>6</td><td>高血壓性疾病</td><td>44</td><td>0.8%</td><td>14,043,245</td><td>0.7%</td></tr>
+          <tr><td>7</td><td>事故傷害</td><td>74</td><td>1.3%</td><td>73,828,411</td><td>3.8%</td></tr>
+          <tr><td>8</td><td>慢性下呼吸道疾病</td><td>14</td><td>0.2%</td><td>3,712,252</td><td>0.2%</td></tr>
+          <tr><td>9</td><td>腎炎、腎病症候群及腎病變</td><td>56</td><td>1.0%</td><td>13,839,705</td><td>0.7%</td></tr>
+          <tr><td>10</td><td>慢性肝病及肝硬化</td><td>40</td><td>0.7%</td><td>13,163,339</td><td>0.7%</td></tr>
+          <tr style="background:#e7f0fb;font-weight:700;"><td colspan="2">小計</td><td>4,804</td><td>83.7%</td><td>1,620,467,684</td><td>83.5%</td></tr>
+          <tr><td colspan="2">其他疾病</td><td>933</td><td>16.3%</td><td>320,617,640</td><td>16.5%</td></tr>
+          <tr style="font-weight:700;"><td colspan="2">合計</td><td>5,737</td><td>100%</td><td>1,941,085,324</td><td>100%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">惡性腫瘤在南山實際理賠中占了7成件數、超過6成金額，與衛福部114年死因統計「癌症居首」的趨勢一致，且集中程度更高。（113年國人死因排名為衛福部所公布資料並參考調整）</div>
+  </details>
+
+  <details open>
+    <summary>▸ 投保規範與重要提醒（DM 第7～8頁）</summary>
+    <div class="table-scroll">
+      <table class="bt">
+        <tbody>
+          <tr><td>繳費管道與折扣</td><td>金融機構自動轉帳、南山人壽聯名卡／信用卡、自行繳費。金融機構自動轉帳／南山人壽聯名卡享 <b>1% 折扣</b>；集體投保彙繳另有費率。<br>本計算機的保費為<b>未扣除折扣</b>之費率；「年繳保險費總和」亦以未扣除折扣之費率計算。</td></tr>
+          <tr><td>健康促進係數</td><td>僅限投保當時保險年齡16歲(含)以上適用。於第2保單年度第8個月起至通知單所載期間屆滿前完成身體健康檢查，第3保單年度起依體位適用：<b>S 級 1.05／A 級 1.00</b>（S 級須 BMI、血壓、總膽固醇、高密度膽固醇、腰圍、空腹血糖、三酸甘油酯七項皆符合；數值依年齡層與性別而異，詳見條款第14條）。逾期未完成者適用 A 級；前2保單年度一律適用 A 級。</td></tr>
+          <tr><td>等待期</td><td>疾病、特定疾病、重大傷病（不含需積極或長期治療之癌症）：<b>30 日</b>；需積極或長期治療之癌症：<b>90 日</b>。</td></tr>
+          <tr><td>投保前已有證明者</td><td>投保前已取得（或投保時正在申請）全民健保重大傷病證明，或投保前曾符合免部分負擔之認定資格，或曾經區域醫院層級以上醫師診斷符合重大傷病項目者，本公司不負給付「重大傷病保險金」責任。</td></tr>
+          <tr><td>給付 30% 後的保單價值</td><td>罹患「自體免疫症候群」或「慢性精神病」並給付重大傷病保險金後，保單價值準備金、解約金改依給付後之金額計算，可能出現為零之情形。</td></tr>
+          <tr><td>其他</td><td>本保險為不分紅保險單；健康險部分因費率計算考慮脫退率，無解約金；可能發生累積所繳保險費超出身故保險金給付之情形。預定附加費用率最高 39.26%、最低 13.93%。以受監護宣告尚未撤銷者為被保險人者，身故保險金變更為喪葬費用保險金。</td></tr>
+          <tr><td>備查資訊</td><td>南壽研字第1150000115號函備查（PA-01-481／2026年10月版）；受保險安定基金保障，非存款項目。</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">投保後解約或不繼續繳費可能不利消費者，請慎選符合需求之保險商品。本內容僅供參考，詳細內容請參閱保單條款之規定；南山人壽保留最終承保與否之權利。</div>
+  </details>
+</div>
+
+<footer>南山人壽 NCIC 安心溢百重大傷病終身保險 試算 · 內部試算工具，僅供業務員參考說明使用，不得作為正式要保文件<br>本資料由 順可通訊處 吳約翰主任 製作</footer>
+
+<script>
+// ============================================================
+// NCIC 安心溢百重大傷病終身保險｜試算核心
+// 資料來源：南山人壽 PA-01-481 2026年10月版（年繳費率表／給付項目／投保規範）
+// 費率單位：新台幣元／每萬元保險金額（未扣除折扣之費率）
+// ==CORE_START==
+const MATURITY_AGE = 100;                 // 祝壽保險金：保險年齡達100歲之保單年度末（條款第11條、第19條）
+const AGE_MAX_BY_TERM = { 10:60, 20:50 }; // 投保年齡：10年期 0～60歲、20年期 0～50歲
+const AGE_MIN_COEF = 16;                  // 健康促進係數僅適用投保當時保險年齡16歲(含)以上
+
+// 年齡 0～30 與 31～60 兩段表格接續而成
+const M10 = [455,464,472,481,489,498,506,515,523,532,540,553,565,578,590,603,615,628,640,653,665,677,689,701,713,725,737,749,761,773,785,
+             801,817,833,849,865,881,897,913,929,945,970,995,1019,1044,1069,1094,1119,1143,1168,1193,1380,1568,1755,1942,2130,2317,2504,2691,2879,3066];
+const F10 = [435,444,452,461,469,478,486,495,503,512,520,531,542,553,564,575,586,597,608,619,630,641,652,663,674,685,696,707,718,729,740,
+             756,771,787,802,818,833,849,864,880,895,912,929,946,963,980,996,1013,1030,1047,1064,1152,1239,1327,1414,1502,1589,1677,1764,1852,1939];
+const M20 = [250,255,260,265,270,275,280,285,290,295,300,307,314,321,328,335,342,349,356,363,370,378,386,394,402,410,418,426,434,442,450,
+             458,466,474,482,490,498,506,514,522,530,572,614,656,698,740,782,824,866,908,950];
+const F20 = [240,245,250,255,260,265,270,275,280,285,290,296,302,308,314,320,326,332,338,344,350,357,363,370,376,383,389,396,402,409,415,
+             424,433,442,451,460,469,478,487,496,505,530,554,579,603,628,652,677,701,726,750];
+const RATES = { male:{10:M10, 20:M20}, female:{10:F10, 20:F20} };
+
+function rateOf(gender, term, age){
+  const arr = RATES[gender] && RATES[gender][term];
+  return (arr && arr[age]) || 0;
+}
+
+// 核心試算：n ＝ 保單年度（0 視為第1保單年度剛生效）
+function ncicCalc(st){
+  const age = st.age, term = st.term, amount = st.amount;
+  const has = amount > 0;
+  const rate = has ? rateOf(st.gender, term, age) : 0;
+  const premium = rate * amount;                 // 元／年（未扣折扣）
+  const annualWan = premium / 10000;             // 萬元／年
+  const useCoef = age >= AGE_MIN_COEF ? st.coef : 1;
+  // 保險年齡（條款第2條第18款）＝投保時足歲（零數超過6個月加算一歲），以後每經過一個保單年度加算一歲；
+  // 第 k 保單年度的保險年齡＝投保年齡＋k－1，故保險年齡達100歲的保單年度為第 (101－投保年齡) 年，其年度末即祝壽時點
+  const span = MATURITY_AGE + 1 - age;           // 投保後到祝壽（保險年齡100歲之保單年度末）的年數
+  const cum = n => annualWan * Math.min(Math.max(n,0), term);   // 年繳保險費總和（萬）：保單年度數×年繳保費，繳費期滿後不再增加
+  const coefAt = k => k >= 3 ? useCoef : 1;      // 第3保單年度起適用健康促進係數；前2年一律 ×1.00
+  const firstYear = annualWan * 1.06;            // 第1保單年度：年繳保險費總和×1.06
+  const basis = k => Math.max(amount, cum(k) * 1.06);
+  const value = n => {
+    if(!has || n > span) return 0;
+    const k = Math.max(n, 1);
+    return k <= 1 ? firstYear : basis(k) * coefAt(k);
+  };
+  const maturity = has ? basis(span) * useCoef : 0;  // 祝壽保險金（100歲）
+  return { age, term, amount, has, rate, premium, annualWan, useCoef, span, cum, coefAt, firstYear, basis, value, maturity,
+           gender: st.gender };
+}
+// ==CORE_END==
+
+let state = { age:35, gender:'male', term:20, amount:500, coef:1, policyYear:0 };
+let playTimer = null;
+
+function setText(id, txt){ const el = document.getElementById(id); if(el) el.textContent = txt; }
+function fmt(n){ return Math.round(n).toLocaleString('en-US'); }
+function fmtW(n){ const r = Math.round(n*100)/100; return r.toLocaleString('en-US', {maximumFractionDigits:2}); }
+function textW(str, cjk, other){
+  let w = 0;
+  for(const ch of str){ w += /[　-鿿＀-￯]/.test(ch) ? cjk : other; }
+  return w;
+}
+
+function calc(){ return ncicCalc(state); }
+
+function clampAge(){
+  const maxAge = AGE_MAX_BY_TERM[state.term];
+  if(state.age > maxAge) state.age = maxAge;
+  if(state.age < 0) state.age = 0;
+  const ageInput = document.getElementById('age');
+  ageInput.min = 0; ageInput.max = maxAge; ageInput.value = state.age;
+  document.getElementById('ageVal').textContent = state.age;
+}
+function syncCoefControls(){
+  const young = state.age < AGE_MIN_COEF;
+  document.querySelectorAll('#coefToggle button').forEach(b=>{
+    b.disabled = young;
+    b.style.opacity = young ? .45 : 1;
+    b.style.cursor = young ? 'not-allowed' : 'pointer';
+  });
+  document.getElementById('coefHint').textContent = young
+    ? '投保當時保險年齡未達16歲者不適用健康促進係數，一律以 ×1.00 計算。'
+    : '依條款：給付＝MAX(保額, 年繳保險費總和×1.06)×健康促進係數；第 3 保單年度起適用（前 2 保單年度一律 A 級 ×1.00）。須於第 2 保單年度第 8 個月起依通知完成身體健康檢查，逾期未完成者適用 A 級。';
+}
+function syncPolicyYearMax(c){
+  const cc = c || calc();
+  const py = document.getElementById('policyYear');
+  const maxSpan = cc.has ? cc.span : 0;
+  py.max = maxSpan;
+  py.disabled = maxSpan <= 0;
+  document.getElementById('playBtn').disabled = maxSpan <= 0;
+  if(state.policyYear > maxSpan){ state.policyYear = maxSpan; }
+  py.value = state.policyYear;
+}
+
+function setupToggle(id, key, parse){
+  document.querySelectorAll('#'+id+' button').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      if(btn.disabled) return;
+      document.querySelectorAll('#'+id+' button').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      state[key] = parse ? parse(btn.dataset.v) : btn.dataset.v;
+      if(key === 'term'){ clampAge(); syncCoefControls(); }
+      syncPolicyYearMax();
+      render();
+    });
+  });
+}
+setupToggle('genderToggle', 'gender');
+setupToggle('termToggle', 'term', v=>parseInt(v));
+setupToggle('coefToggle', 'coef', v=>parseFloat(v));
+
+document.getElementById('age').addEventListener('input', e=>{
+  state.age = parseInt(e.target.value);
+  document.getElementById('ageVal').textContent = state.age;
+  syncCoefControls();
+  syncPolicyYearMax();
+  render();
+});
+document.getElementById('amount').addEventListener('input', e=>{
+  state.amount = parseFloat(e.target.value) || 0;
+  syncPolicyYearMax();
+  render();
+});
+document.getElementById('policyYear').addEventListener('input', e=>{
+  stopPlay();
+  state.policyYear = parseInt(e.target.value);
+  render();
+});
+document.getElementById('playBtn').addEventListener('click', ()=>{
+  const c = calc();
+  if(!c.has) return;
+  if(playTimer){ stopPlay(); return; }
+  if(state.policyYear >= c.span){ state.policyYear = 0; }
+  document.getElementById('playBtn').textContent = '⏸ 暫停';
+  playTimer = setInterval(()=>{
+    state.policyYear++;
+    if(state.policyYear >= c.span){ state.policyYear = c.span; stopPlay(); }
+    document.getElementById('policyYear').value = state.policyYear;
+    render();
+  }, 120);
+});
+function stopPlay(){
+  if(playTimer){ clearInterval(playTimer); playTimer = null; }
+  document.getElementById('playBtn').textContent = '▶ 播放';
+}
+
+// 責任重大期 + 資產累積期 統一落在繳費期間內；65+ 歸類為退休養老期，直到 100 歲
+function stageBoundaries(start, term, end){
+  const payEnd = start + term;
+  let b1 = start + Math.round(term/2);
+  b1 = Math.max(start+1, Math.min(b1, 64));
+  let b2 = Math.min(65, end-1);
+  if(b2 <= b1) b2 = Math.min(b1+1, end-1);
+  if(b2 <= b1) b2 = end;
+  return [b1, b2, payEnd];
+}
+
+function buildStatsGrid(c){
+  if(!c.has){
+    return `<div class="stat" style="grid-column:1/-1;background:linear-gradient(160deg,#3a4a63 0%,#243347 100%);">
+      <div class="label">尚未輸入投保金額</div>
+      <div class="num" style="font-size:15px;color:#cdd7e6;">請輸入 NCIC 投保金額（萬元）</div>
+      <div class="sub">最低 10 萬，最高 500 萬</div>
+    </div>`;
+  }
+  return `
+    <div class="stat gold">
+      <div class="label">重大傷病保險金額（第 2 保單年度起）</div>
+      <div class="num" id="rCoverage">—</div>
+      <div class="sub">第 1 保單年度：年繳保險費總和×1.06；第 2 年起提高為 MAX(保額, 保費總和×1.06)</div>
+    </div>
+    <div class="stat gold">
+      <div class="label">目前給付金額（隨滑桿變動）</div>
+      <div class="num" id="rValueNow">—</div>
+      <div class="sub">第 <span id="rValueWhen">0</span> 保單年度｜重大傷病／特定疾病一般項目</div>
+    </div>
+    <div class="stat statN">
+      <div class="label">年繳保險費</div>
+      <div class="num" id="rPremium">—</div>
+      <div class="sub">每萬元費率 <span id="rRate">—</span> 元（未扣折扣）｜轉帳／聯名卡 1% 折扣</div>
+    </div>
+    <div class="stat statN">
+      <div class="label">總繳保費（<span id="rTermLabel">20</span> 年）</div>
+      <div class="num" id="rTotalPaid">—</div>
+      <div class="sub">繳費期滿年齡 <span id="rPayEndAge">—</span> 歲</div>
+    </div>
+    <div class="stat">
+      <div class="label">自體免疫／慢性精神病（第 2 年起）</div>
+      <div class="num" id="rThirty">—</div>
+      <div class="sub">保額×30%，給付後契約不終止，後續仍保有其他保障</div>
+    </div>
+    <div class="stat">
+      <div class="label">祝壽保險金（保險年齡 100 歲）</div>
+      <div class="num" id="rMaturity">—</div>
+      <div class="sub">100 歲之保單年度末仍生存且契約有效時給付，給付後契約終止</div>
+    </div>`;
+}
+
+function render(){
+  const c = calc();
+  const warn = document.getElementById('amountWarn');
+  if(state.amount > 500){ warn.textContent = '超過單張最高投保金額 500 萬（累計 NCIC 需 ≦ 500 萬），以下仍依輸入值試算。'; }
+  else if(state.amount > 0 && state.amount < 10){ warn.textContent = '低於最低投保金額 10 萬，以下仍依輸入值試算。'; }
+  else { warn.textContent = ''; }
+
+  document.getElementById('statsGrid').innerHTML = buildStatsGrid(c);
+  syncPolicyYearMax(c);
+  const py = state.policyYear;
+
+  const chip = document.getElementById('statusChip');
+  if(!c.has){
+    chip.className = 'status-chip paying';
+    chip.textContent = '請先輸入 NCIC 投保金額';
+    document.getElementById('pyVal').textContent = 0;
+    document.getElementById('pyAge').textContent = '—';
+    document.getElementById('legendBox').innerHTML = '';
+    document.getElementById('chartHint').textContent = '';
+    document.getElementById('stageNote').textContent = '責任重大期／資產累積期 統一落在繳費期間內；65 歲之後歸類為退休養老期。';
+    document.getElementById('chart').innerHTML = `<rect width="900" height="470" fill="#ffffff"/><text x="450" y="235" text-anchor="middle" font-family="'Noto Sans TC',sans-serif" font-size="16" fill="#a9bcd6">請輸入投保金額以顯示試算圖表</text>`;
+    renderCompare(c);
+    return;
+  }
+
+  setText('rCoverage', fmtW(c.amount) + ' 萬元');
+  setText('rValueNow', fmtW(c.value(py)) + ' 萬元');
+  setText('rValueWhen', py);
+  setText('rPremium', fmt(c.premium) + ' 元');
+  setText('rRate', fmt(c.rate));
+  setText('rTermLabel', c.term);
+  setText('rTotalPaid', fmt(c.premium * c.term) + ' 元');
+  setText('rPayEndAge', c.age + c.term);
+  setText('rThirty', fmtW(c.amount * 0.3) + ' 萬元');
+  setText('rMaturity', fmtW(c.maturity) + ' 萬元');
+
+  document.getElementById('pyVal').textContent = py;
+  document.getElementById('pyAge').textContent = Math.min(c.age + py, MATURITY_AGE);
+  document.getElementById('legendBox').innerHTML = [
+    '<span><span class="dot" style="background:var(--gold)"></span>重大傷病／特定疾病給付金額（終身，至100歲）</span>',
+    '<span><span class="dot" style="background:var(--blue)"></span>已繳保費合計（同一縱軸）</span>',
+    '<span><span class="dot" style="background:var(--coral)"></span>祝壽保險金領回點</span>'
+  ].join('');
+  document.getElementById('chartHint').textContent =
+    '縱軸最高刻度為祝壽保險金的 115%，僅為視覺邊界，並非另有加成給付。第 1 保單年度給付為年繳保險費總和×1.06（圖左側低階），第 2 保單年度起垂直提高至保額' +
+    (c.useCoef !== 1 ? '；S 級體位於第 3 保單年度起生效，圖上再垂直調高 5%。' : '。') +
+    ' 藍色虛線為已繳保費；繳費期滿後不再增加。2-6級失能可豁免保費；一般重大傷病／特定疾病給付後契約終止，無須再繳（自體免疫、慢性精神病領30%後契約繼續，保費照繳）。';
+
+  const end = c.age + c.span;
+  const [b1, b2] = stageBoundaries(c.age, c.term, end);
+  document.getElementById('stageNote').textContent =
+    `責任重大期 ${c.age}–${b1} 歲、資產累積期 ${b1}–${b2} 歲（皆落在繳費期間內），退休養老期自 ${b2} 歲起，直到保險年齡 ${MATURITY_AGE} 歲之保單年度末（投保後第 ${c.span} 年末）祝壽為止（終身型保障）。`;
+
+  const paid = c.premium * Math.min(py, c.term);
+  if(py >= c.span){
+    chip.className = 'status-chip mature';
+    chip.textContent = `保險年齡 ${MATURITY_AGE} 歲之保單年度末（第 ${c.span} 保單年度末）：祝壽保險金 ${fmtW(c.maturity)} 萬元入帳，契約終止`;
+  } else if(py >= c.term){
+    chip.className = 'status-chip paidup';
+    chip.textContent = `繳費完成，累計已繳 ${fmt(paid)} 元，保障持續有效至保險年齡 ${MATURITY_AGE} 歲之保單年度末（目前給付 ${fmtW(c.value(py))} 萬）`;
+  } else if(py >= 2){
+    chip.className = 'status-chip paying';
+    chip.textContent = `繳費中：累計已繳 ${fmt(paid)} 元（第 ${py}／${c.term} 年），目前給付 ${fmtW(c.value(py))} 萬`;
+  } else if(py === 1){
+    chip.className = 'status-chip paying';
+    chip.textContent = `第 1 保單年度：重大傷病／特定疾病給付＝年繳保費×1.06＝${fmtW(c.firstYear)} 萬；第 2 保單年度起提高為保額`;
+  } else {
+    chip.className = 'status-chip paying';
+    chip.textContent = `保單剛生效：第 1 保單年度給付為年繳保費×1.06（${fmtW(c.firstYear)} 萬），第 2 保單年度起享完整保額`;
+  }
+
+  drawChart(c);
+  renderCompare(c);
+}
+
+function drawChart(c){
+  const svg = document.getElementById('chart');
+  const start = c.age, N = c.span, end = start + N, payEnd = start + c.term;
+  const py = state.policyYear;
+  const playheadAge = start + py;
+  const [b1, b2] = stageBoundaries(start, c.term, end);
+
+  const peak = c.maturity;
+  const scaleMax = Math.max(peak, c.amount, 1) * 1.15;
+
+  const W = 900, H = 470, padL = 72, padR = 62, padT = 30, padB = 132;
+  const plotW = W - padL - padR, plotH = H - padT - padB;
+  const x = a => padL + (a - start) / (end - start) * plotW;
+  const baseY = padT + plotH;
+  const y = wan => baseY - (baseY - padT - 6) * (wan / scaleMax);
+  const revealX = x(playheadAge);
+
+  // 給付金額線：逐年取樣；第1→2保單年度、第2→3保單年度（S級）以相同 x 的雙點呈現垂直跳升
+  const pts = [];
+  for(let n = 0; n <= N; n++){
+    pts.push([start + n, c.value(n)]);
+    if(n === 1) pts.push([start + 1, c.value(2)]);
+    if(n === 2 && c.coefAt(3) !== 1) pts.push([start + 2, c.value(3)]);
+  }
+  const linePath = pts.map((p,i)=>`${i===0?'M':'L'}${x(p[0])},${y(p[1])}`).join(' ');
+  const areaPath = linePath + ` L${x(end)},${baseY} L${x(start)},${baseY} Z`;
+  const premPts = Array.from({length:N+1}, (_,n)=>[start + n, c.cum(n)]);
+  const premPath = premPts.map((p,i)=>`${i===0?'M':'L'}${x(p[0])},${y(p[1])}`).join(' ');
+  const premEndVal = c.cum(c.term);
+  const topYNow = y(c.value(py));
+  const startVal = c.value(0);
+
+  let s = `
+  <defs>
+    <linearGradient id="goldFill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e3a635" stop-opacity="0.55"/>
+      <stop offset="55%" stop-color="#c9860f" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#c9860f" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="blueFill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#5b9bd5" stop-opacity="0.20"/>
+      <stop offset="100%" stop-color="#5b9bd5" stop-opacity="0.02"/>
+    </linearGradient>
+    <linearGradient id="goldStroke2" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#a8710c"/><stop offset="50%" stop-color="#e3a635"/><stop offset="100%" stop-color="#c9860f"/>
+    </linearGradient>
+    <filter id="glowStrong" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="8" result="b1"/>
+      <feGaussianBlur stdDeviation="3" result="b2"/>
+      <feMerge><feMergeNode in="b1"/><feMergeNode in="b2"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <clipPath id="reveal"><rect x="${padL}" y="0" width="${Math.max(0, revealX - padL)}" height="${H}"/></clipPath>
+  </defs>`;
+
+  s += `<rect x="${padL}" y="${padT}" width="${plotW}" height="${plotH}" fill="#ffffff"/>`;
+
+  [0, 0.25, 0.5, 0.75, 1].forEach(f=>{
+    const gy = y(scaleMax * f);
+    s += `<line x1="${padL}" y1="${gy}" x2="${W-padR}" y2="${gy}" stroke="#e7f0fb" stroke-width="1"/>`;
+    s += `<text class="axis-label" x="${padL-8}" y="${gy+3}" text-anchor="end">${fmt(scaleMax * f)}萬</text>`;
+  });
+  // 原保額（虛線）；標籤放在右側留白區（祝壽領回點的右邊），避免被圓點／被裁切
+  const gy0 = y(c.amount);
+  s += `<line x1="${padL}" y1="${gy0}" x2="${W-padR}" y2="${gy0}" stroke="#d8e0ec" stroke-width="1.5" stroke-dasharray="4,4"/>`;
+  s += `<text class="axis-label" x="${x(end)+22}" y="${gy0+4}" fill="#71809a">原保額</text>`;
+  s += `<text class="axis-label" x="18" y="${(padT+baseY)/2}" text-anchor="middle" transform="rotate(-90 18 ${(padT+baseY)/2})" fill="#c9860f" font-weight="700">保障／給付金額（萬元）</text>`;
+
+  s += `<rect x="${x(start)}" y="${padT}" width="${x(b1)-x(start)}" height="${plotH}" fill="#f6ecd3" opacity="0.4"/>`;
+  s += `<rect x="${x(b1)}" y="${padT}" width="${x(b2)-x(b1)}" height="${plotH}" fill="#eaf1e6" opacity="0.4"/>`;
+  s += `<rect x="${x(b2)}" y="${padT}" width="${x(end)-x(b2)}" height="${plotH}" fill="#e8eef7" opacity="0.5"/>`;
+
+  s += `<line x1="${padL}" y1="${baseY}" x2="${W-padR}" y2="${baseY}" stroke="#8a97ab" stroke-width="1.5"/>`;
+  const marks = [start, payEnd, end].filter((v,i,arr)=>arr.indexOf(v)===i && v>=start && v<=end).sort((a,b)=>a-b);
+  marks.forEach(a=>{
+    s += `<line x1="${x(a)}" y1="${baseY}" x2="${x(a)}" y2="${baseY+6}" stroke="#8a97ab" stroke-width="1.5"/>`;
+  });
+  const tickGroups = [];
+  marks.forEach(a=>{
+    const last = tickGroups[tickGroups.length-1];
+    if(last && (x(a) - x(last[last.length-1])) < 34){ last.push(a); } else { tickGroups.push([a]); }
+  });
+  tickGroups.forEach(grp=>{
+    const cx = grp.reduce((t,a)=>t + x(a), 0) / grp.length;
+    const txt = grp.map(a => a === end ? `${MATURITY_AGE}歲末` : `${a}歲`).join('/');
+    s += `<text class="age-label" x="${cx}" y="${baseY+20}" text-anchor="middle">${txt}</text>`;
+  });
+  if(65 > start && 65 < end && !marks.includes(65)){
+    s += `<line x1="${x(65)}" y1="${baseY}" x2="${x(65)}" y2="${baseY+6}" stroke="#1c63b3" stroke-width="1.5"/>`;
+    s += `<text class="age-label" x="${x(65)}" y="${baseY+20}" text-anchor="middle" style="fill:#1c63b3" font-weight="700">65歲</text>`;
+  }
+
+  const annoY = baseY + 40;
+  s += `<rect x="${x(payEnd)-38}" y="${annoY-13}" width="76" height="19" rx="9.5" fill="#5b9bd5"/>`;
+  s += `<text class="age-label" x="${x(payEnd)}" y="${annoY+1}" text-anchor="middle" style="fill:#ffffff" font-weight="700">繳費期滿</text>`;
+  s += `<rect x="${x(end)-34}" y="${annoY-13}" width="68" height="19" rx="9.5" fill="#c23b3b"/>`;
+  s += `<text class="age-label" x="${x(end)}" y="${annoY+1}" text-anchor="middle" style="fill:#ffffff" font-weight="700">祝壽領回</text>`;
+
+  const trackY = baseY + 66;
+  const stages = [
+    {from:start, to:b1, label:'責任重大期', color:'#c9860f'},
+    {from:b1, to:b2, label:'資產累積期', color:'#3f9e6d'},
+    {from:b2, to:end, label:'退休養老期', color:'#1c63b3'}
+  ];
+  stages.forEach(z=>{
+    if(x(z.to) - x(z.from) < 1) return;
+    s += `<rect x="${x(z.from)}" y="${trackY}" width="${x(z.to)-x(z.from)}" height="8" rx="4" fill="${z.color}"/>`;
+    if(x(z.to) - x(z.from) >= 66){
+      s += `<text class="zone-label" x="${(x(z.from)+x(z.to))/2}" y="${trackY+24}" text-anchor="middle" fill="${z.color}">${z.label}</text>`;
+    }
+  });
+
+  // 給付金額面積與線
+  s += `<g clip-path="url(#reveal)">`;
+    s += `<path d="${areaPath}" fill="url(#goldFill)"/>`;
+    s += `<path d="${linePath}" fill="none" stroke="url(#goldStroke2)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>`;
+  s += `</g>`;
+
+  s += `<circle cx="${x(start)}" cy="${y(startVal)}" r="7" fill="#fff" stroke="#c9860f" stroke-width="4"/>`;
+  if(py > 0 && py < N){
+    s += `<circle cx="${revealX}" cy="${topYNow}" r="10" fill="#fff" stroke="#e3a635" stroke-width="5" filter="url(#glowStrong)"/>`;
+    s += `<circle cx="${revealX}" cy="${topYNow}" r="15" fill="none" stroke="#e3a635" stroke-width="2" opacity="0.55"><animate attributeName="r" values="10;17;10" dur="2.2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.5;0.15;0.5" dur="2.2s" repeatCount="indefinite"/></circle>`;
+  }
+  // 保額提示牌（兩行：保額／第1年說明）：放在其涵蓋範圍內給付線的最高點之上，避免和上升的線、保費斜線重疊
+  {
+    const line1 = `保障 ${fmtW(c.amount)} 萬（第2保單年度起）`;
+    const line2 = `第1保單年度：年繳保費×1.06＝${fmtW(c.firstYear)} 萬`;
+    const pillW = Math.round(Math.max(textW(line1, 13, 7.4), textW(line2, 11, 6.3))) + 26;
+    const pillH = 42;
+    const pillX = x(start) + 6;
+    const nSpan = Math.min(N, Math.ceil((pillW + 16) / plotW * N));
+    let topVal = c.amount;
+    for(let n = 0; n <= nSpan; n++){ topVal = Math.max(topVal, c.value(n)); }
+    const pillBottom = y(topVal) - 12;
+    s += `<rect x="${pillX}" y="${pillBottom-pillH}" width="${pillW}" height="${pillH}" rx="14" fill="#e3a635" filter="url(#glowStrong)"/>`;
+    s += `<text class="callout" x="${pillX+13}" y="${pillBottom-pillH+18}" fill="#2a1900" font-size="13">${line1}</text>`;
+    s += `<text class="axis-label" x="${pillX+13}" y="${pillBottom-pillH+34}" fill="#4a3000" font-size="11">${line2}</text>`;
+  }
+
+  // 已繳保費合計（藍色虛線，同一縱軸）
+  s += `<g clip-path="url(#reveal)">`;
+    s += `<path d="${premPath} L${x(end)},${baseY} L${x(start)},${baseY} Z" fill="url(#blueFill)"/>`;
+    s += `<path d="${premPath}" fill="none" stroke="#5b9bd5" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="1,5"/>`;
+  s += `</g>`;
+  if(py > 0){
+    s += `<circle cx="${revealX}" cy="${y(c.cum(py))}" r="5" fill="#fff" stroke="#5b9bd5" stroke-width="2.5"/>`;
+    s += `<line x1="${revealX}" y1="${padT}" x2="${revealX}" y2="${baseY}" stroke="#c9860f" stroke-width="1.5" stroke-dasharray="2,4" opacity="0.55"/>`;
+  }
+
+  // 豁免保費提示牌（2-6級失能豁免保險費）：優先沿已繳保費斜線放在線的下方（右下方是空白區，不會壓到給付線）；
+  // 放不下（斜線太短／太陡）就改放斜線上方，再不行就橫放在繳費期滿後、藍色區塊內的空白處
+  {
+    const dxS = x(payEnd) - x(start), dyS = y(premEndVal) - baseY;   // dyS 為負值（往上）
+    const slopeLen = Math.hypot(dxS, dyS);
+    const theta = Math.atan2(dyS, dxS);
+    const cosT = Math.cos(theta), sinT = Math.sin(theta);
+    const angleDeg = theta * 180 / Math.PI;
+    const plateauY = y(premEndVal);
+    const wPillW = Math.round(Math.min(246, Math.max(228, slopeLen * 0.82)));
+    const half = wPillW / 2, wPillH = 30;
+    const waiverText = '失能2-6級／領重大傷病 免繳保費';
+    const fits = (f, ly0) => {
+      const wax = x(start) + dxS * f, way = baseY + dyS * f;
+      let minX = 1e9, maxY = -1e9, minY = 1e9;
+      for(const lx of [-half, half]) for(const ly of [ly0, ly0 + wPillH]){
+        const gx = wax + lx * cosT - ly * sinT, gy = way + lx * sinT + ly * cosT;
+        minX = Math.min(minX, gx); maxY = Math.max(maxY, gy); minY = Math.min(minY, gy);
+      }
+      return minX >= x(start) + 6 && maxY <= baseY - 6 && minY >= plateauY + 6;
+    };
+    let placed = null;
+    for(const sd of ['below', 'above']){
+      const ly0 = sd === 'below' ? 16 : -46;
+      for(let f = 0.40; f <= 0.70001 && !placed; f += 0.02){
+        if(fits(f, ly0)) placed = { sd, f, ly0 };
+      }
+      if(placed) break;
+    }
+    if(placed){
+      if(py >= placed.f * c.term && c.term > 0){
+        const wax = x(start) + dxS * placed.f, way = baseY + dyS * placed.f;
+        const ry = way + placed.ly0;
+        s += `<g transform="rotate(${angleDeg} ${wax} ${way})">`;
+          s += `<rect x="${wax-half}" y="${ry}" width="${wPillW}" height="${wPillH}" rx="15" fill="#5b9bd5" filter="url(#glowStrong)"/>`;
+          s += `<text class="callout" x="${wax}" y="${ry+19}" text-anchor="middle" font-size="13" fill="#fff" font-weight="900">${waiverText}</text>`;
+        s += `</g>`;
+      }
+    } else if(py >= c.term && c.term > 0){
+      // 橫放備案：繳費期滿點右側、藍色區塊（保費水平線之下）的空白處
+      const hw = 246, hx = x(payEnd) + 16;
+      const hy = baseY - (baseY - plateauY) / 2 - wPillH / 2;
+      if(hx + hw <= x(end) - 8){
+        s += `<rect x="${hx}" y="${hy}" width="${hw}" height="${wPillH}" rx="15" fill="#5b9bd5" filter="url(#glowStrong)"/>`;
+        s += `<text class="callout" x="${hx+hw/2}" y="${hy+19}" text-anchor="middle" font-size="13" fill="#fff" font-weight="900">${waiverText}</text>`;
+      }
+    }
+  }
+
+  // 祝壽保險金領回點（100歲）
+  const mature = py >= N;
+  const mx = x(end), my = y(peak);
+  if(mature){
+    s += `<circle cx="${mx}" cy="${my}" r="16" fill="none" stroke="#e0453f" stroke-width="2.5"><animate attributeName="r" values="12;19;12" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.55;0.1;0.55" dur="2s" repeatCount="indefinite"/></circle>`;
+    s += `<circle cx="${mx}" cy="${my}" r="10" fill="#e0453f" filter="url(#glowStrong)"/>`;
+    s += `<rect x="${mx-226}" y="${my-42}" width="220" height="30" rx="15" fill="#c23b3b" filter="url(#glowStrong)"/>`;
+    s += `<text class="callout" x="${mx-16}" y="${my-22}" text-anchor="end" font-size="14" fill="#fff" font-weight="900">已領祝壽金 ${fmtW(peak)} 萬</text>`;
+  } else {
+    s += `<circle cx="${mx}" cy="${my}" r="4" fill="#fff6da" stroke="#c9860f" stroke-width="1.5"/>`;
+    s += `<rect x="${mx-226}" y="${my-28}" width="220" height="22" rx="11" fill="#fff6da"/>`;
+    s += `<text class="callout" x="${mx-16}" y="${my-12}" text-anchor="end" font-size="12" fill="#c9860f" font-weight="900">${MATURITY_AGE}歲祝壽金 ${fmtW(peak)} 萬</text>`;
+  }
+
+  svg.innerHTML = s;
+}
+
+function renderCompare(c){
+  const rows = document.getElementById('cmpRows');
+  const intro = document.getElementById('cmpIntro');
+  const note = document.getElementById('cmpNote');
+  if(!rows) return;
+  const base = (c && c.has) ? c.amount : 100;
+  const A = p => p === null ? '不賠' : fmtW(base * p) + ' 萬';
+  const R = [
+    ['癌症','原位癌',0.05,null],
+    ['癌症','第一期乳癌／大腸直腸癌（有領卡）',0.10,1],
+    ['心臟','輕度心肌梗塞',0.10,null],
+    ['重症','重度癌症／心梗／繞道／TAVI',1,1],
+    ['腦','輕度中風',0.10,1],
+    ['腦','初期失智 CDR1',0.10,0.3],
+    ['腦','中重度失智 CDR2以上',1,0.3,'*'],
+    ['精神','思覺失調症',0.05,0.3],
+    ['精神','重度憂鬱／躁鬱',null,0.3],
+    ['其他','漢生病／重症肌無力症',0.10,1]
+  ];
+  const pill = p => p===null?'p0':(p>=1?'p100':(p>=0.3?'p30':'p5'));
+  rows.innerHTML = R.map(r=>{
+    const t=r[2], n=r[3];
+    const tv = t===null?-1:t, nv = n===null?-1:n;
+    const w = nv>tv ? 'win-ncic' : (tv>nv ? 'win-ted' : '');
+    const tag = nv>tv ? 'NCIC 多' : (tv>nv ? 'TED 多' : '一樣');
+    return `<tr><td>${r[0]}</td><td style="text-align:left;">${r[1]}</td><td><span class="pill ${t===null?'p0':(t>=1?'t100':'p5')}">${A(t)}</span></td><td><span class="pill ${pill(n)}">${A(n)}${r[4]||''}</span></td><td class="${w}">${tag}</td></tr>`;
+  }).join('');
+  intro.innerHTML = `以保額 <b>${fmtW(base)} 萬</b>試算${(c&&c.has)?'':'（尚未輸入，暫以 100 萬示意）'}：同樣是第一期乳癌／大腸直腸癌，TED 賠 10%＝${fmtW(base*0.1)} 萬，NCIC 一次賠 ${fmtW(base)} 萬，前提是取得「需積極或長期治療之癌症」重大傷病卡（效期 3 年）。`;
+  note.innerHTML = `反過來，原位癌通常領不到重大傷病卡：TED 賠 5%（${fmtW(base*0.05)} 萬），NCIC 不賠。*中重度失智若符合嚴重阿茲海默氏症定義，NCIC 亦賠 100%。TED 以《南山人壽精選傷病定期保險(2)》為準；NCIC 須領卡，第 2 保單年度起適用，係數以 1 計。`;
+}
+
+// ---- 重大傷病22項／特定疾病9項（DM 第4頁）----
+const MAJOR22 = [
+  '需積極或長期治療之癌症',
+  '嚴重溶血性及再生不良性貧血',
+  '慢性腎衰竭（尿毒症），必須接受定期透析治療者',
+  '需終身治療之全身性自體免疫症候群',
+  '慢性精神病',
+  '燒燙傷面積達全身20%以上；或顏面燒燙傷合併五官功能障礙者',
+  '接受器官移植',
+  '小兒麻痺、腦性麻痺所引起之併發症者（身心障礙等級中度以上）',
+  '重大創傷且創傷嚴重程度分數16分以上（ISS≧16）',
+  '因呼吸衰竭需長期使用呼吸器符合其條件者',
+  '嚴重營養不良（需全靜脈營養超過30天且病情穩定，口攝飲食仍無法提供足量營養）',
+  '重症肌無力症',
+  '嚴重型減壓病或空氣栓塞症（潛水或減壓不當所致，且需長期治療）',
+  '脊髓損傷或病變所引起之併發症者（身心障礙等級中度以上）',
+  '急性腦血管疾病（限急性發作後一個月內）',
+  '多發性硬化症',
+  '漢生病',
+  '肝硬化症，併有符合其情形者',
+  '砷及其化合物之毒性作用（烏腳病）',
+  '運動神經元疾病（身心障礙等級中度以上或須使用呼吸器；經診斷為ALS者不受限制）',
+  '庫賈氏病',
+  '經中央主管機關公告之罕見疾病'
+];
+const SPECIFIC9 = [
+  '急性心肌梗塞（重度）','冠狀動脈繞道手術','心臟瓣膜開心手術','主動脈外科置換手術','經導管心臟瓣膜置換術',
+  '嚴重阿茲海默氏症','嚴重巴金森氏症','嚴重全身性紅斑性狼瘡腎病變','嚴重類風濕性關節炎'
+];
+const MAJOR_DETAIL = {
+ 0:'會發卡的癌症：甲狀腺惡性腫瘤、口腔／口咽／下咽惡性腫瘤（第一期）、乳房惡性腫瘤（第一期）、子宮頸惡性腫瘤（第一期）、其他惡性腫瘤（肺、大腸直腸、肝、胃、攝護腺、血癌、淋巴瘤等；不含 C73、C94.4、C94.6）。<br><b>證明效期：</b>前四類 3 年，其他惡性腫瘤 5 年。<br><b>注意：</b>原位癌不會核發重大傷病卡，因此 NCIC 不理賠。',
+ 1:'遺傳性溶血性貧血、後天性溶血性貧血、再生不良性貧血（血紅素未經治療，成人經常低於 8 gm/dl、新生兒經常低於 12 gm/dl）。<br><b>證明效期：</b>5 年。',
+ 2:'慢性腎臟疾病、高血壓性慢性腎臟病伴第五期或末期腎病、高血壓性心臟及慢性腎臟病伴第五期或末期腎病，且必須定期透析（洗腎）。<br><b>證明效期：</b>申請時已確定需定期透析者永久；尚無法確定者 3 個月。',
+ 3:'全身性紅斑狼瘡、全身性硬化症、類風濕關節炎（含青年型）、多發性肌炎、皮多肌炎、血管炎（結節狀多動脈炎、過敏性血管炎、韋格納氏肉芽腫、巨細胞動脈炎、血栓閉鎖性血管炎、主動脈弓症候群、貝賽特氏病）、天疱瘡、乾燥症、克隆氏症、慢性潰瘍性結腸炎、川崎病（冠狀動脈有一定程度狹窄或瘤者）。<br><b>證明效期：</b>多數永久；川崎病 5 年或 3 年。',
+ 4:'失智症（具器質性病態）、生理狀況所致之譫妄、其他生理狀況所致之精神疾患、思覺失調症、情感性疾患（躁鬱症、重度憂鬱）、妄想性疾患、廣泛性發展疾患（自閉性疾患、其他兒童期崩解疾患、亞斯伯格症候群等），且病情已慢性化。<br><b>證明效期：</b>思覺失調症、失智症永久；情感性疾患、妄想性疾患首次 2 年、續發永久；自閉性疾患首次 5 年、續發永久；譫妄 6 個月。',
+ 5:'體表面積大於 20% 的燒傷；或顏面燒燙傷（眼及附屬器官燒傷，或臉及頭深三度燒傷伴身體部位損害）合併五官功能障礙。<br><b>證明效期：</b>1 年。',
+ 6:'腎臟、心臟、肺臟、肝臟、骨髓、胰臟、小腸移植（手術當次由醫師逕行認定免申請），以及移植後的追蹤治療與併發症。<br><b>證明效期：</b>多數永久；骨髓移植 5 年。',
+ 7:'急性脊髓灰白質炎（小兒麻痺）併有其他麻痺者、嬰兒腦性麻痺、其他麻痺性徵候群（小兒麻痺後期影響），且身心障礙等級中度以上。<br><b>證明效期：</b>永久。',
+ 8:'重大創傷且創傷嚴重程度分數 ISS≧16（植物人狀態不以 ISS 計算）。<br><b>證明效期：</b>首次 1 年、續發 3 年。',
+ 9:'因呼吸衰竭需長期使用呼吸器，符合任一：①侵襲性呼吸輔助器 21 天以上；②侵襲性改非侵襲性陽壓呼吸治療，合計 21 天以上；③侵襲性改負壓呼吸輔助器，合計 21 天以上；④末期心衰竭、慢性呼吸道疾病、原發性神經原肌肉病變、慢性換氣不足症候群需非侵襲性陽壓呼吸治療合計 21 天以上（須連續使用）。<br><b>證明效期：</b>首次 42 日、續發 3 個月、第三次以後 1 年。',
+ 10:'腸道大量切除或失去功能，或其他慢性疾病所致嚴重營養不良，給予全靜脈營養超過 30 天且病情穩定，口攝飲食仍無法提供足量營養者。<br><b>證明效期：</b>首次 3 個月、續發 3 年。',
+ 11:'重症肌無力症。<br><b>證明效期：</b>3 年。',
+ 12:'因潛水或減壓不當引起的嚴重型減壓病（永久）、空氣栓塞症（3 年），伴有呼吸、循環或神經系統併發症且需長期治療者。',
+ 13:'脊柱骨折伴脊髓病灶、無明顯脊椎損傷之脊髓傷害、其他脊髓病變，所引起之神經、肌肉、皮膚、骨骼、心肺、泌尿及腸胃等併發症，且身心障礙等級中度以上。<br><b>證明效期：</b>永久。',
+ 14:'蜘蛛膜下腔出血、腦內出血、腦梗塞、其他腦血管疾病，限急性發作後一個月內。<br><b>申請方式：</b>由醫師逕行認定，免申請證明。',
+ 15:'多發性硬化症。<br><b>證明效期：</b>5 年。',
+ 16:'漢生病（痲瘋病）。<br><b>證明效期：</b>永久。',
+ 17:'肝硬化併有下列情形之一：腹水無法控制、食道或胃靜脈曲張出血、肝昏迷或肝代償不全。<br><b>證明效期：</b>5 年。',
+ 18:'砷及其化合物之毒性作用（烏腳病）。<br><b>證明效期：</b>永久。',
+ 19:'運動神經元疾病，身心障礙等級中度以上或須使用呼吸器者；經神經內科專科醫師診斷為肌萎縮性側索硬化症（ALS，漸凍症）者不受限制。<br><b>證明效期：</b>永久。',
+ 20:'庫賈氏病。<br><b>證明效期：</b>永久。',
+ 21:'經中央主管機關依罕見疾病防治及藥物法公告之罕見疾病。<br><b>證明效期：</b>永久。'
+};
+(function renderLists(){
+  const g30 = '<span class="bdg g30">給付保額30%・保障持續</span>';
+  const SP_NOTE = {
+   5:['up','原僅給付30%，現可直接理賠100%'],
+   7:['up','原僅給付30%，現可直接理賠100%'],
+   8:['up','原僅給付30%，現可直接理賠100%']
+  };
+  const spd = {
+   0:'健保重大傷病沒有，NCIC 補上：急性心肌梗塞達重度。',
+   1:'健保重大傷病沒有，NCIC 補上：冠狀動脈繞道手術。',
+   2:'健保重大傷病沒有，NCIC 補上：心臟瓣膜開心手術。',
+   3:'健保重大傷病沒有，NCIC 補上：主動脈外科置換手術。',
+   4:'健保重大傷病沒有，NCIC 補上：經導管心臟瓣膜置換術（TAVI），免開胸、高齡者常見的主動脈瓣狹窄治療。',
+   5:'失智症屬慢性精神病，原只領 30%；惡化到條款定義的「嚴重阿茲海默氏症」，補足至保額（扣除已領 30%）。',
+   6:'健保重大傷病沒有，NCIC 補上：嚴重巴金森氏症（須符合條款定義）。',
+   7:'紅斑性狼瘡屬自體免疫，原只領 30%；惡化到「嚴重狼瘡腎病變」，補足至保額（扣除已領 30%）。',
+   8:'類風濕關節炎屬自體免疫，原只領 30%；惡化到「嚴重類風濕性關節炎」，補足至保額（扣除已領 30%）。'
+  };
+  const maj = MAJOR22.map((n,i)=>{
+    const badge = (i===3||i===4) ? g30 : '';
+    return `<button type="button" class="chip" data-i="${i}"><b class="n">${i+1}</b>${n}${badge}</button>`;
+  }).join('');
+  const sp = SPECIFIC9.map((n,i)=>{
+    const t = SP_NOTE[i];
+    const badge = t ? `<span class="bdg ${t[0]}">${t[1]}</span>` : '';
+    return `<button type="button" class="chip sp" data-i="${i}"><b class="n">${i+1}</b>${n}${badge}</button>`;
+  }).join('');
+  const wire = (id, html, detailOf)=>{
+    const el = document.getElementById(id);
+    el.innerHTML = `<div class="chips">${html}</div><div class="chipdetail"></div>`;
+    const panel = el.querySelector('.chipdetail');
+    el.querySelectorAll('.chip').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const on = btn.classList.contains('on');
+        el.querySelectorAll('.chip').forEach(x=>x.classList.remove('on'));
+        if(on){ panel.classList.remove('show'); return; }
+        btn.classList.add('on');
+        panel.innerHTML = detailOf(+btn.dataset.i);
+        panel.classList.add('show');
+      });
+    });
+  };
+  wire('majorList', maj, i=>`<b>${i+1}. ${MAJOR22[i]}</b><br>${MAJOR_DETAIL[i]}<br><span style="color:#8a97ad;">依全民健保重大傷病項目表（114年1月1日起適用）整理；是否理賠以領有有效重大傷病卡及保單條款為準。</span>`);
+  wire('specificList', sp, i=>`<b>${i+1}. ${SPECIFIC9[i]}</b><br>${spd[i]}<br><span style="color:#8a97ad;">須符合條款附表三定義，自第 31 日起生效。</span>`);
+})();
+
+// 資料完整性檢查（費率表筆數）
+if(M10.length !== 61 || F10.length !== 61 || M20.length !== 51 || F20.length !== 51){
+  console.error('NCIC 費率表筆數異常', M10.length, F10.length, M20.length, F20.length);
+}
+
+clampAge();
+syncCoefControls();
+syncPolicyYearMax();
+render();
+
+</script>
+</body>
+</html>

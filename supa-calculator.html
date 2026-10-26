@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>長享平安 SUPA 保費與保障比較表 | 南山人壽</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;600;700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* 南山人壽 CI：藍為主色，黃(溫暖)、綠(活力)為輔助色 */
+    --ns-blue-900:#0b2e5c;
+    --ns-blue-700:#134a8c;
+    --ns-blue-500:#1c63b3;
+    --ns-blue-100:#e7f0fb;
+    --ns-gold-600:#c9860f;
+    --ns-gold-400:#e3a635;
+    --ns-gold-100:#fdf1dc;
+    --ns-green-600:#1f7a4d;
+    --ns-green-400:#3f9e6d;
+    --ns-green-100:#e6f6ee;
+    --ink-900:#101826;
+    --ink-600:#3d4a5f;
+    --ink-400:#71809a;
+    --line:#d8e0ec;
+    --bg:#f3f6fb;
+    --card:#ffffff;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;background:var(--bg);color:var(--ink-900);
+    font-family:'Noto Sans TC',sans-serif;min-height:100vh;padding:0 0 60px;
+  }
+  .wrap{max-width:960px;margin:0 auto;padding:32px 20px 0;}
+
+  header{
+    text-align:center;margin-bottom:26px;background:linear-gradient(135deg,var(--ns-blue-900),var(--ns-blue-700));
+    border-radius:18px;padding:30px 22px;position:relative;overflow:hidden;
+  }
+  header::after{
+    content:'';position:absolute;right:-40px;top:-40px;width:180px;height:180px;border-radius:50%;
+    background:radial-gradient(circle,rgba(227,166,53,.35),transparent 70%);
+  }
+  header::before{
+    content:'';position:absolute;left:-30px;bottom:-50px;width:160px;height:160px;border-radius:50%;
+    background:radial-gradient(circle,rgba(63,158,109,.3),transparent 70%);
+  }
+  .eyebrow{
+    font-family:'DM Mono',monospace;letter-spacing:.22em;font-size:11px;
+    color:var(--ns-gold-400);text-transform:uppercase;margin-bottom:10px;position:relative;
+  }
+  h1{
+    font-family:'Noto Serif TC',serif;font-weight:700;font-size:clamp(22px,4vw,30px);
+    margin:0 0 8px;color:#fff;letter-spacing:.02em;position:relative;
+  }
+  .sub{color:#c9d9ef;font-size:13.5px;letter-spacing:.02em;position:relative;}
+
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:16px;
+    padding:24px 22px;margin-bottom:20px;box-shadow:0 12px 30px -18px rgba(11,46,92,.25);
+  }
+
+  .field-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+  @media(max-width:520px){.field-grid{grid-template-columns:1fr;}}
+
+  .field label{
+    display:block;font-size:12px;color:var(--ns-blue-700);
+    letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;
+    font-family:'DM Mono',monospace;font-weight:500;
+  }
+  .seg{display:flex;background:var(--ns-blue-100);border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+  .seg button{
+    flex:1;padding:10px 4px;border:none;background:none;color:var(--ink-600);
+    font-family:'Noto Sans TC';font-size:14px;font-weight:500;cursor:pointer;transition:.15s;
+  }
+  .seg button.on{background:var(--ns-blue-700);color:#fff;font-weight:700;}
+
+  .multi{display:flex;gap:8px;flex-wrap:wrap;}
+  .multi button{
+    padding:9px 16px;border-radius:20px;border:1.5px solid var(--line);
+    background:#fff;color:var(--ink-400);font-family:'Noto Sans TC';font-size:13.5px;font-weight:500;cursor:pointer;transition:.15s;
+  }
+  .multi button.on{background:var(--ns-blue-100);border-color:var(--ns-blue-500);color:var(--ns-blue-700);font-weight:700;}
+  .multi button.on::before{content:'✓ ';color:var(--ns-blue-500);}
+
+  .age-row{display:flex;align-items:center;gap:14px;background:var(--ns-blue-100);border:1px solid var(--line);border-radius:10px;padding:8px 14px;}
+  .age-row input[type=range]{flex:1;accent-color:var(--ns-blue-500);}
+  .age-row input[type=number]{
+    width:56px;background:none;border:none;color:var(--ns-blue-900);
+    font-family:'DM Mono',monospace;font-size:17px;font-weight:700;text-align:right;
+  }
+  .age-row input[type=number]:focus{outline:none;}
+  .age-row span.unit{color:var(--ink-400);font-size:13px;}
+
+  .cmp-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px;}
+  .cmp-head h3{font-family:'Noto Serif TC',serif;font-size:16px;margin:0;color:var(--ns-blue-900);}
+  .badge{
+    display:inline-block;background:var(--ns-blue-900);color:var(--ns-gold-400);
+    font-size:11.5px;padding:4px 12px;border-radius:20px;font-family:'DM Mono',monospace;letter-spacing:.05em;
+  }
+
+  .scroll{overflow-x:auto;}
+  table.cmp{width:100%;border-collapse:collapse;font-size:13.5px;}
+  table.cmp th{
+    font-family:'DM Mono',monospace;font-weight:700;color:#fff;
+    text-align:center;padding:10px 8px;font-size:12px;letter-spacing:.03em;
+    background:var(--ns-blue-700);white-space:nowrap;
+  }
+  table.cmp th:first-child{border-radius:8px 0 0 0;}
+  table.cmp th:last-child{border-radius:0 8px 0 0;}
+  table.cmp td{padding:9px 8px;text-align:center;border-bottom:1px solid var(--line);font-family:'DM Mono',monospace;white-space:nowrap;}
+  table.cmp td:first-child{font-family:'Noto Sans TC';color:var(--ink-600);white-space:normal;}
+  #benefit-100 th:first-child,#benefit-90 th:first-child,#benefit-100 td:first-child,#benefit-90 td:first-child{text-align:left;min-width:190px;}
+  table.cmp tbody tr:nth-child(odd){background:#fbfcfe;}
+  table.cmp tr.total-row td{font-weight:700;background:var(--ns-gold-100)!important;color:var(--ns-blue-900);}
+  table.cmp tr:hover td{background:var(--ns-blue-100);}
+
+  /* 依繳費期間分色（藍＝十年期、綠＝二十年期） */
+  td.per-10{background:rgba(28,99,179,.07);}
+  td.per-20{background:rgba(63,158,109,.09);}
+  th.per-10{background:var(--ns-blue-700)!important;}
+  th.per-20{background:var(--ns-green-600)!important;}
+
+  .bar{height:6px;border-radius:3px;background:#e5eaf3;margin-top:5px;overflow:hidden;}
+  .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--ns-blue-500),var(--ns-blue-700));}
+
+  .trophy{margin-left:4px;}
+  .cheapest-val{color:var(--ns-blue-700);font-weight:700;}
+
+  .stage-tag{
+    font-family:'DM Mono',monospace;font-size:11px;color:var(--ns-blue-700);letter-spacing:.1em;
+    margin:22px 0 8px;padding:4px 10px;background:var(--ns-blue-100);display:inline-block;border-radius:6px;
+  }
+
+  details.fx{margin-top:22px;border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:#fbfcfe;}
+  details.fx summary{cursor:pointer;font-family:'Noto Serif TC',serif;font-weight:600;color:var(--ns-blue-900);font-size:14.5px;}
+  details.fx[open] summary{margin-bottom:12px;}
+
+
+  /* 骨折部位對照人體圖 */
+  .t1{--tc:#5b6b86;} .t2{--tc:#1c63b3;} .t3{--tc:#1f7a4d;} .t4{--tc:#a86d08;} .t5{--tc:#b4461f;}
+  .bodymap{max-width:700px;margin:6px auto 22px;min-width:0;}
+  .bm-stage{position:relative;}
+  .bm-pop{position:absolute;z-index:5;width:min(272px,calc(100% - 16px));background:#fff;border:1.5px solid var(--tc);border-radius:14px;padding:12px 14px 10px;box-shadow:0 14px 34px -10px rgba(11,46,92,.45);font-size:12.5px;animation:pp-in .14s ease-out;}
+  @keyframes pp-in{from{opacity:0;transform:translateY(4px) scale(.97);}to{opacity:1;transform:none;}}
+  @media (prefers-reduced-motion:reduce){.bm-pop{animation:none;}}
+  .pp-head{display:flex;align-items:center;gap:8px;padding-right:20px;}
+  .pp-head strong{font-size:14.5px;color:var(--ink-900);}
+  .pp-head em{margin-left:auto;font-style:normal;font-family:'DM Mono',monospace;font-weight:700;color:#fff;background:var(--tc);border-radius:10px;padding:1px 8px;font-size:11.5px;}
+  .pp-x{position:absolute;top:7px;right:9px;border:none;background:none;font-size:19px;line-height:1;color:var(--ink-400);cursor:pointer;padding:0 2px;}
+  .pp-x:hover{color:var(--ink-900);}
+  .pp-back{margin-top:4px;font-size:10.5px;color:var(--ns-blue-700);}
+  .pp-amt{margin:10px 0 0;font-family:'DM Mono',monospace;font-size:11px;font-weight:700;color:var(--ns-blue-700);letter-spacing:.06em;}
+  .pp-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:6px 0;border-bottom:1px dashed var(--line);line-height:1.35;}
+  .pp-row small{display:block;color:var(--ink-400);font-size:10.5px;}
+  .pp-row b{font-family:'DM Mono',monospace;font-size:14px;white-space:nowrap;color:var(--ink-900);}
+  .pp-row i{font-style:normal;font-weight:400;font-size:11px;color:var(--ink-400);}
+  .pp-row.main b{font-size:17px;color:var(--tc);}
+  .pp-foot{margin-top:7px;font-size:10.5px;color:var(--ink-400);}
+  .pp-arrow{position:absolute;left:var(--ax,50%);bottom:-7px;width:12px;height:12px;background:#fff;border-right:1.5px solid var(--tc);border-bottom:1.5px solid var(--tc);transform:translateX(-50%) rotate(45deg);}
+  .bm-pop.below .pp-arrow{bottom:auto;top:-7px;border-right:none;border-bottom:none;border-left:1.5px solid var(--tc);border-top:1.5px solid var(--tc);}
+  .bm-scroll{overflow-x:auto;border-radius:16px;border:1px solid var(--line);}
+  .bodymap svg{display:block;width:100%;min-width:560px;height:auto;}
+  .bm-panel{fill:url(#bm-panel-g);}
+  .bm-part{cursor:pointer;}
+  .bm-lead{fill:none;stroke:var(--tc);stroke-width:1.3;opacity:.5;}
+  .bm-part.back .bm-lead{stroke-dasharray:3 3;}
+  .bm-lab-bg{fill:#fff;stroke:var(--tc);stroke-width:1.3;}
+  .bm-lab-name{font-family:'Noto Sans TC',sans-serif;font-size:12.5px;font-weight:700;fill:var(--ink-900);dominant-baseline:central;}
+  .bm-lab-pct-bg{fill:var(--tc);}
+  .bm-lab-pct{font-family:'DM Mono',monospace;font-size:11px;font-weight:700;fill:#fff;text-anchor:middle;dominant-baseline:central;}
+  .bm-part.hl .bm-lead{opacity:1;stroke-width:2.2;}
+  .bm-part.hl .bm-lab-bg{fill:var(--ns-gold-100);stroke:var(--ns-gold-600);stroke-width:2;}
+  .bm-sil{fill:url(#bm-sil-g);stroke:#a9c0e0;stroke-width:1.6;stroke-linejoin:round;}
+  .bm-sil,#bm-bones-l *,.bm-bone>*{vector-effect:non-scaling-stroke;}
+  .bm-bone{stroke:#8fb0dc;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;opacity:.9;}
+  .bm-dot{cursor:pointer;outline:none;}
+  .bm-dot .bm-c{fill:var(--tc);stroke:#fff;stroke-width:1.8;filter:drop-shadow(0 1px 1.5px rgba(11,46,92,.35));}
+  .bm-dot text{font-family:'DM Mono',monospace;font-size:9px;font-weight:700;fill:#fff;text-anchor:middle;dominant-baseline:central;pointer-events:none;}
+  .bm-dot .bm-halo{fill:none;stroke:var(--ns-gold-400);stroke-width:3.5;opacity:0;}
+  .bm-dot.back .bm-c{stroke:var(--ns-blue-900);stroke-dasharray:3 2;}
+  .bm-dot.hl .bm-c{stroke:var(--ink-900);stroke-width:2.5;stroke-dasharray:none;}
+  .bm-dot.hl .bm-halo{opacity:1;}
+  .bm-dot:focus-visible .bm-halo{opacity:1;}
+  #bm-readout{min-height:4.2em;margin:10px auto 0;max-width:640px;text-align:center;padding:8px 10px;border-radius:8px;background:var(--ns-blue-100);font-size:12.5px;line-height:1.65;color:var(--ink-900);}
+  .bm-legend{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 14px;margin-top:10px;font-size:11.5px;color:var(--ink-600);}
+  .bm-legend span::before{content:'';display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--tc);margin-right:4px;vertical-align:-1px;}
+  #fracture-table th{white-space:normal;vertical-align:bottom;padding-left:6px;padding-right:6px;}
+  #fracture-table thead tr:first-child th[rowspan]{white-space:nowrap;}
+  #fracture-table th small{display:block;font-weight:400;font-size:10.5px;opacity:.85;margin-top:2px;}
+  #fracture-table thead tr.sub th{text-align:center;border-radius:0;min-width:100px;font-size:11.5px;background:var(--ns-blue-500);}
+  #fracture-table th.grp,#fracture-table td.grp{border-left:1px solid var(--line);}
+  #fracture-table thead th.grp{border-left-color:rgba(255,255,255,.4);}
+  #fracture-table thead tr:first-child th[colspan]{text-align:center;}
+  #fracture-table th:first-child{text-align:center;}
+  #fracture-table td:first-child{min-width:0;text-align:center;padding-left:6px;padding-right:6px;}
+  #fracture-table td{padding-left:6px;padding-right:6px;font-size:13px;}
+  #fracture-table thead tr:first-child th[rowspan]{font-size:15px;letter-spacing:.06em;padding-left:10px;padding-right:10px;}
+  #fracture-table td:first-child .chip{width:28px;height:28px;font-size:13.5px;}
+  #fracture-table td:nth-child(2){font-size:16px;font-weight:500;min-width:150px;}
+  #fracture-table td:nth-child(3){font-size:16px;font-weight:700;color:var(--ns-blue-900);}
+  #fracture-table td:nth-child(2) .bk{font-size:11px;}
+  #fracture-table th:nth-child(2){text-align:left;}
+  #fracture-table td:nth-child(2){text-align:left;font-family:'Noto Sans TC';white-space:normal;min-width:118px;color:var(--ink-900);}
+  tr.frow{cursor:pointer;}
+  tr.frow.hl td{background:var(--ns-gold-100)!important;}
+  .chip{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--tc);color:#fff;font-size:11px;font-weight:700;font-family:'DM Mono',monospace;}
+  .bk{display:inline-block;margin-left:4px;padding:0 6px;border:1px dashed var(--ns-blue-700);border-radius:10px;font-size:10.5px;color:var(--ns-blue-700);}
+
+  .note{font-size:11.5px;color:var(--ink-400);text-align:center;margin-top:22px;line-height:1.7;}
+  .note b{color:var(--ink-600);}
+  .note.left{text-align:left;}
+
+  ::selection{background:var(--ns-gold-400);color:var(--ink-900);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Nan Shan Life · 順可通訊處</div>
+    <h1>南山人壽長享平安終身傷害保險（SUPA）</h1>
+    <div class="sub" style="margin-top:6px;color:var(--ns-gold-400);font-weight:700;">⚠ 保險金額累計最高100萬（10年期＋20年期合計）</div>
+  </header>
+
+  <div class="card">
+    <div class="field-grid">
+      <div class="field">
+        <label>性別</label>
+        <div class="seg" id="gender-seg">
+          <button data-v="male" class="on">男性</button>
+          <button data-v="female">女性</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>投保年齡（10年期 50~80歲、20年期 50~70歲）</label>
+        <div class="age-row">
+          <input type="range" id="age-slider" min="50" max="80" value="60" style="flex:1;">
+          <input type="number" id="age-input" min="50" max="80" value="60">
+          <span class="unit">歲</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="field-grid" style="margin-top:16px;">
+      <div class="field">
+        <label>選擇繳費期間(可複選)</label>
+        <div class="multi" id="period-multi">
+          <button data-v="10">十年期</button>
+          <button data-v="20" class="on">二十年期</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>選擇保險金額(可複選)</label>
+        <div class="multi" id="amount-multi">
+          <button data-v="50">50萬</button>
+          <button data-v="60">60萬</button>
+          <button data-v="70">70萬</button>
+          <button data-v="80">80萬</button>
+          <button data-v="90">90萬</button>
+          <button data-v="100" class="on">100萬</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="cmp-head" style="margin-top:26px;">
+      <h3 id="cmp-title">同齡・保費比較</h3>
+      <span class="badge" id="cmp-badge">—</span>
+    </div>
+    <div class="scroll">
+      <table class="cmp">
+        <thead>
+          <tr><th>繳費期間</th><th>保險金額</th><th>年繳保費</th><th>總繳保費估算</th></tr>
+        </thead>
+        <tbody id="cmp-body"></tbody>
+      </table>
+    </div>
+    <div class="note left" style="margin-top:14px;">
+      <span class="cheapest-val">●</span> 年繳保費最低。同一保險金額下，期別愈短年繳愈高、但總繳愈低。至少選擇一個期別與一個保險金額。職業等級1~4級享相同費率。
+    </div>
+
+    <div class="cmp-head" style="margin-top:32px;">
+      <h3>保障內容比較（依保險金額，給付金額為保險金額換算）</h3>
+    </div>
+
+    <div class="stage-tag">意外身故／失能 · 保障至保險年齡100歲（含）前</div>
+    <div class="scroll"><table class="cmp" id="benefit-100"></table></div>
+
+    <div class="stage-tag">意外骨折／住院／特定保障 · 保障至保險年齡90歲（含）前（保單年度末）</div>
+    <div class="scroll"><table class="cmp" id="benefit-90"></table></div>
+
+    <details class="fx" open>
+      <summary>骨折部位對照人體圖與給付比例（開放性骨折）</summary>
+      <div class="bodymap">
+          <div class="bm-stage" id="bm-stage"><div class="bm-scroll"><svg id="bodymap" viewBox="-8 0 664 632" role="img" aria-label="人體前視示意圖，標示22個骨折部位的名稱、給付比例與序號">
+            <defs>
+              <linearGradient id="bm-panel-g" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#f7faff"/><stop offset="1" stop-color="#e6eefa"/>
+              </linearGradient>
+              <radialGradient id="bm-glow" cx=".5" cy=".5" r=".5">
+                <stop offset="0" stop-color="#ffffff" stop-opacity=".95"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+              </radialGradient>
+                            <linearGradient id="bm-sil-g" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#eef4fc"/><stop offset="1" stop-color="#d3e2f5"/>
+              </linearGradient>
+              <g id="bm-bones-l">
+      <path d="M147 108 Q128 106 106 116"/>
+      <path d="M150 136 C140 130 124 134 118 150"/><path d="M150 148 C140 142 124 146 118 162"/><path d="M150 160 C140 154 124 158 118 174"/><path d="M150 172 C140 166 124 170 118 186"/><path d="M150 184 C140 178 124 182 118 198"/>
+      <path d="M101 134 L92 210"/>
+      <path d="M92 218 L74 294"/><path d="M87 219 L68 294"/>
+      <path d="M72 298 L59 344"/><path d="M72 299 L63 364"/><path d="M73 299 L68 368"/><path d="M74 299 L76 350"/>
+      <circle cx="134" cy="298" r="5"/>
+      <path d="M134 301 L123 318 L126 428"/>
+      <ellipse cx="126" cy="432" rx="6.5" ry="7.5"/>
+      <path d="M125 442 L122 556"/><path d="M115 446 L116 552" stroke-width="2.5"/>
+      <path d="M122 560 L110 604"/><path d="M122 560 L116 608"/><path d="M122 560 L122 608"/><path d="M122 560 L128 606"/>
+    </g>
+            </defs>
+            <rect class="bm-panel" x="-8" y="0" width="664" height="632"/>
+            <ellipse cx="324" cy="320" rx="150" ry="320" fill="url(#bm-glow)"/>
+            <g id="bm-art" transform="translate(174 0) translate(150 0) scale(1.18 1) translate(-150 0)">
+            <ellipse cx="150" cy="620" rx="62" ry="5" fill="#0b2e5c" opacity=".08"/>
+            <path class="bm-sil" d="M139 80 C139 87 139 94 139 100 C126 104 112 106 102 112 C95 116 92 126 94 132 C90 160 84 190 80 212 C75 240 68 270 62 296 C57 310 54 330 55 346 C56 358 58 368 64 370 C70 372 76 364 77 350 C78 334 79 314 79 298 C85 270 92 240 96 216 C100 196 108 170 113 152 C115 180 119 205 118 230 C117 252 107 272 105 298 C103 340 108 395 111 436 C106 466 103 500 111 530 C113 542 114 552 113 562 C108 574 102 590 104 604 C105 614 122 616 133 610 C136 598 134 578 133 562 C133 520 139 470 143 436 C145 400 147 350 149 318 C149 316 150 315 150 314 C150 315 151 316 151 318 C153 350 155 400 157 436 C161 470 167 520 167 562 C166 578 164 598 167 610 C178 616 195 614 196 604 C198 590 192 574 187 562 C186 552 187 542 189 530 C197 500 194 466 189 436 C192 395 197 340 195 298 C193 272 183 252 182 230 C181 205 185 180 187 152 C192 170 200 196 204 216 C208 240 215 270 221 298 C221 314 222 334 223 350 C224 364 230 372 236 370 C242 368 244 358 245 346 C246 330 243 310 238 296 C232 270 225 240 220 212 C216 190 210 160 206 132 C208 126 205 116 198 112 C188 106 174 104 161 100 C161 94 161 87 161 80 Z"/>
+            <ellipse class="bm-sil" cx="124" cy="52" rx="4" ry="8"/>
+            <ellipse class="bm-sil" cx="176" cy="52" rx="4" ry="8"/>
+            <ellipse class="bm-sil" cx="150" cy="50" rx="25" ry="31"/>
+            <g class="bm-bone" fill="none">
+              <use href="#bm-bones-l"/>
+              <use href="#bm-bones-l" transform="translate(300 0) scale(-1 1)"/>
+              <path d="M150 102 L150 266" stroke-dasharray="5 3.5" stroke-width="4"/>
+              <path d="M150 268 C130 262 108 270 106 292 C106 304 118 312 134 310 C144 306 148 296 150 288 C152 296 156 306 166 310 C182 312 194 304 194 292 C192 270 170 262 150 268 Z"/>
+              <ellipse cx="150" cy="47" rx="19" ry="24"/>
+              <circle cx="143" cy="46" r="3.5"/><circle cx="157" cy="46" r="3.5"/>
+              <path d="M134 62 C136 80 164 80 166 62"/>
+            </g>
+            </g>
+            <g id="bm-parts"></g>
+            <g id="bm-dots"></g>
+          </svg></div>
+          <div id="bm-pop" class="bm-pop" hidden role="dialog" aria-label="部位理賠金"></div></div>
+          <div id="bm-readout" aria-live="polite"></div>
+          <div class="bm-legend">
+            <span class="t1">2%</span><span class="t2">8~12%</span><span class="t3">15~20%</span><span class="t4">25%</span><span class="t5">30~35%</span>
+          </div>
+          <div class="note left" style="margin-top:6px;">人體前視示意圖，圓圈內編號對應下表序號；顏色代表開放性骨折給付比例，虛線為背側部位（肩胛骨、椎骨）。點選任一部位會跳出該部位的理賠金，指向則先預覽。手機可左右滑動圖面。</div>
+        </div>
+        <div class="scroll"><table class="cmp" id="fracture-table"></table></div>
+      <div class="note left" style="margin-top:10px;">
+        閉鎖性骨折並施行見血復位術，按上列金額之75%給付；閉鎖性骨折但未施行見血復位術，按25%給付。同一意外傷害事故蒙受二項以上骨折時，僅給付一項較高百分比之意外骨折保險金。
+      </div>
+    </details>
+
+    <div class="note left" style="margin-top:14px;">
+      🏆 所選保險金額中<b>意外醫療累計給付上限</b>最高者（該排整列以粗體＋淺金底色標示）。
+      <br>意外住院日額保險金每次事故最高給付90日；骨折未住院或住院未達骨折別表日數者，未住院部分按保險金額×0.2%×1/2×日數計給，詳見保單條款。
+      <br>加護病房暨燒燙傷中心每日金額為「意外住院日額保險金＋加護病房暨燒燙傷中心醫療保險金」合計。
+      <br>大眾運輸／行人交通／天然災害所致意外身故及一至六級失能，給付1.5倍（已含一般意外事故1倍保障）。
+      <br>失能保險金依失能等級對應之失能比例（50%~100%）給付，上表以區間呈現。
+    </div>
+  </div>
+
+  <div class="note">
+    資料來源：南山人壽長享平安終身傷害保險（SUPA）商品簡介 PA-01-480（2026年10月版）年繳費率表，每萬元保險金額費率，一般繳費件。<b>集體投保彙繳</b>費率與<b>金融機構自動轉帳／南山人壽聯名卡1%折扣</b>未包含於本工具。試算結果僅供參考，詳細給付內容與條件請以保單條款為準，實際保費以南山人壽核保及要保書為準。
+    <br>本比較表由 <b>吳約翰</b> 業務主任製作 · 順可通訊處
+  </div>
+
+</div>
+
+<script>
+// DATA-START
+// 每萬元保險金額年繳費率（元），職業等級1~4級。資料來源：SUPA 商品簡介 PA-01-480（2026年10月版）
+const RATE_START_AGE = 50;
+const RATES = {
+  "10": {
+    male:   [330,332,334,336,338,340,342,344,346,348,350,352,354,356,358,360,362,364,366,368,370,371,372,373,374,375,376,377,378,379,380],
+    female: [435,440,445,450,455,460,464,468,472,476,480,482,484,486,488,490,492,494,496,498,500,501,502,503,504,505,506,507,508,509,510]
+  },
+  "20": {
+    male:   [180,182,184,186,188,190,191,192,193,194,195,197,199,201,203,205,206,207,208,209,210],
+    female: [235,238,241,244,247,250,252,254,256,258,260,262,264,266,268,270,272,274,276,278,280]
+  }
+};
+const MAX_AGE = { "10": 80, "20": 70 };
+// DATA-END
+
+const periodLabel = { "10":"十年期", "20":"二十年期" };
+function fmt(n){ return Math.round(n).toLocaleString('en-US'); }
+
+function ratePerWan(period, gender, age){
+  if(age > MAX_AGE[period] || age < RATE_START_AGE) return null;
+  return RATES[period][gender][age - RATE_START_AGE];
+}
+
+// ---------- STATE ----------
+const state = { gender:'male', age:60, periods:['20'], amounts:['100'] };
+
+document.querySelectorAll('#gender-seg button').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('#gender-seg button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+    state.gender = b.dataset.v;
+    render();
+  });
+});
+document.getElementById('age-slider').addEventListener('input', e=>{
+  state.age = parseInt(e.target.value);
+  document.getElementById('age-input').value = state.age;
+  render();
+});
+document.getElementById('age-input').addEventListener('input', e=>{
+  let v = parseInt(e.target.value||50);
+  if(isNaN(v)) v = 50;
+  v = Math.max(50, Math.min(80, v));
+  state.age = v;
+  document.getElementById('age-slider').value = v;
+  render();
+});
+
+function multiSetup(id, key){
+  document.querySelectorAll('#'+id+' button').forEach(b=>{
+    b.addEventListener('click',()=>{
+      const v = b.dataset.v;
+      const arr = state[key];
+      const idx = arr.indexOf(v);
+      if(idx>-1){
+        if(arr.length===1) return; // 至少保留一個
+        arr.splice(idx,1);
+        b.classList.remove('on');
+      } else {
+        arr.push(v);
+        b.classList.add('on');
+      }
+      render();
+    });
+  });
+}
+multiSetup('period-multi','periods');
+multiSetup('amount-multi','amounts');
+
+function sortedPeriods(){ return ['10','20'].filter(p=>state.periods.includes(p)); }
+function sortedAmounts(){ return state.amounts.map(Number).sort((a,b)=>a-b); }
+
+// ---------- 保費比較表 ----------
+function renderPremium(){
+  const periods = sortedPeriods();
+  const amounts = sortedAmounts();
+  const body = document.getElementById('cmp-body');
+  body.innerHTML = '';
+  document.getElementById('cmp-badge').textContent = `${state.gender==='male'?'男性':'女性'} · ${state.age}歲`;
+  document.getElementById('cmp-title').textContent = `同齡・${periods.length}種期別 × ${amounts.length}種保險金額 保費比較`;
+
+  const rows = [];
+  periods.forEach(p=>{
+    const r = ratePerWan(p, state.gender, state.age);
+    amounts.forEach(a=>{
+      const premium = r===null ? null : r * a;
+      rows.push({ p, a, premium, total: premium===null ? null : premium*parseInt(p) });
+    });
+  });
+
+  const valid = rows.filter(r=>r.premium!==null).map(r=>r.premium);
+  if(valid.length===0){
+    body.innerHTML = `<tr><td colspan="4" style="color:var(--ink-400);">此年齡在所選期別下超出投保年齡範圍</td></tr>`;
+    return;
+  }
+  const minPremium = Math.min(...valid);
+  const maxPremium = Math.max(...valid);
+
+  rows.forEach(r=>{
+    const tr = document.createElement('tr');
+    if(r.premium===null){
+      tr.innerHTML = `<td>${periodLabel[r.p]}</td><td class="per-${r.p}" style="font-weight:700;">${r.a}萬</td><td colspan="2" style="color:var(--ink-400);">超出投保年齡範圍（${r.p}年期：50~${MAX_AGE[r.p]}歲）</td>`;
+      body.appendChild(tr);
+      return;
+    }
+    const isMin = r.premium===minPremium;
+    tr.innerHTML = `
+      <td>${periodLabel[r.p]}</td>
+      <td class="per-${r.p}" style="font-weight:700;">${r.a}萬</td>
+      <td class="per-${r.p}" style="${isMin?'color:var(--ns-blue-700);font-weight:700;':''}">${fmt(r.premium)}${isMin?' ●':''}
+        <div class="bar"><i style="width:${(r.premium/maxPremium*100).toFixed(0)}%"></i></div>
+      </td>
+      <td class="per-${r.p}">${fmt(r.total)}</td>`;
+    body.appendChild(tr);
+  });
+}
+
+// ---------- 保障內容 ----------
+// 每項：label、calc(保險金額元) → 數字 或 [下限, 上限] 或 文字
+const BENEFIT_100 = [
+  { label:'意外身故保險金（或喪葬費用保險金）', calc:m=>m },
+  { label:'大眾運輸／行人交通／天然災害 意外身故（合計，含一般意外1倍）', calc:m=>m*1.5 },
+  { label:'意外一至六級失能保險金（依失能比例50%~100%）', calc:m=>[m*0.5, m] },
+  { label:'大眾運輸／行人交通／天然災害 意外一至六級失能（合計，依失能比例）', calc:m=>[m*0.75, m*1.5] },
+  { label:'意外一至六級失能心理關懷保險金（失能保險金×5%）', calc:m=>[m*0.025, m*0.05] },
+  { label:'意外一至六級失能豁免保險費', calc:()=>'豁免未滿期及以後各期保費' },
+];
+const BENEFIT_90 = [
+  { label:'意外骨折保險金－開放性骨折（依部位2%~35%）', calc:m=>[m*0.02, m*0.35] },
+  { label:'意外骨折保險金－閉鎖性並施行見血復位術（×75%）', calc:m=>[m*0.015, m*0.2625] },
+  { label:'意外骨折保險金－閉鎖性未施行見血復位術（×25%）', calc:m=>[m*0.005, m*0.0875] },
+  { label:'意外骨折關懷保險金（骨折保險金×10%，以開放性骨折計）', calc:m=>[m*0.002, m*0.035] },
+  { label:'意外住院日額保險金 / 日（每次事故最高90日）', calc:m=>m*0.002 },
+  { label:'加護病房暨燒燙傷中心 / 日（合計，含住院日額；最高90日）', calc:m=>m*0.004 },
+  { label:'意外內臟或腦損傷手術保險金（每次事故1次）', calc:m=>m*0.15 },
+  { label:'特定交通事故重大創傷保險金（每保單年度1次）', calc:m=>m*0.15 },
+  { label:'意外醫療累計給付上限（以保險金額為限）', calc:m=>m, total:true },
+];
+
+function showVal(v){
+  if(typeof v==='string') return v;
+  if(Array.isArray(v)) return `${fmt(v[0])} ~ ${fmt(v[1])} 元`;
+  return `${fmt(v)} 元`;
+}
+
+function renderBenefit(elId, defs){
+  const el = document.getElementById(elId);
+  const amounts = sortedAmounts();
+  let html = '<thead><tr><th style="text-align:left;">給付項目</th>' + amounts.map(a=>`<th>${a}萬</th>`).join('') + '</tr></thead><tbody>';
+  defs.forEach(d=>{
+    // 🏆 只加在「累計給付上限」列，且各金額不同時才顯示
+    const nums = amounts.map(a=>d.calc(a*10000));
+    const canTrophy = d.total && amounts.length>1;
+    const maxVal = canTrophy ? Math.max(...nums) : null;
+    html += `<tr class="${d.total?'total-row':''}"><td>${d.label}</td>`;
+    nums.forEach(v=>{
+      const isMax = canTrophy && v===maxVal;
+      html += `<td>${showVal(v)}${isMax?' <span class="trophy">🏆</span>':''}</td>`;
+    });
+    html += '</tr>';
+  });
+  el.innerHTML = html + '</tbody>';
+}
+
+// ---------- 骨折部位對照圖 ----------
+// 座標為前視示意圖（身體以 300 寬為基準，再平移到 viewBox 648 的中線）；左右成對的部位標示兩側，back=true 表示位於背側。
+const SIDE = pts => pts.flatMap(([x,y]) => [[x,y],[300-x,y]]);
+const FRACTURES = [
+  { id:1,  name:'指骨', pct:2, pts:SIDE([[67,350]]) },
+  { id:2,  name:'趾骨', pct:2, pts:SIDE([[119,603]]) },
+  { id:3,  name:'鼻骨、眶骨（含顴骨）', pct:8, pts:[[150,48]] },
+  { id:4,  name:'掌骨', pct:8, pts:SIDE([[67,322]]) },
+  { id:5,  name:'蹠骨', pct:8, pts:SIDE([[119,581]]) },
+  { id:6,  name:'肋骨', pct:8, pts:SIDE([[130,158]]) },
+  { id:7,  name:'鎖骨', pct:10, pts:SIDE([[127,116]]) },
+  { id:8,  name:'下顎（齒槽醫療除外）', pct:12, pts:[[150,73]] },
+  { id:9,  name:'橈骨或尺骨', pct:15, pts:SIDE([[82,238]]) },
+  { id:10, name:'膝蓋骨', pct:15, pts:SIDE([[126,432]]) },
+  { id:11, name:'肩胛骨', pct:20, pts:SIDE([[113,136]]), back:true },
+  { id:12, name:'椎骨（包括胸椎、腰椎或尾骨）', pct:25, pts:[[150,205]], back:true },
+  { id:13, name:'骨盤（包括腸骨、恥骨、坐骨或薦骨）', pct:25, pts:SIDE([[134,282]]) },
+  { id:14, name:'頭蓋骨', pct:30, pts:[[150,28]] },
+  { id:15, name:'臂骨', pct:25, pts:SIDE([[98,172]]) },
+  { id:16, name:'橈骨及尺骨', pct:25, pts:SIDE([[78,263]]) },
+  { id:17, name:'腕骨', pct:25, pts:SIDE([[73,289]]) },
+  { id:18, name:'脛骨或腓骨', pct:25, pts:SIDE([[122,470]]) },
+  { id:19, name:'踝骨', pct:25, pts:SIDE([[122,558]]) },
+  { id:20, name:'股骨', pct:30, pts:SIDE([[126,372]]) },
+  { id:21, name:'脛骨及腓骨', pct:30, pts:SIDE([[122,520]]) },
+  { id:22, name:'大腿骨頸', pct:35, pts:SIDE([[119,319]]) },
+];
+function tier(p){ return p<=2 ? 1 : p<=12 ? 2 : p<=20 ? 3 : p===25 ? 4 : 5; }
+
+const CX = 324;                       // 人體中線（viewBox 648 寬）
+const AX = x => +(CX + (x - 150) * 1.18).toFixed(1);
+// 圖上標籤：[標籤放左(L)/右(R)側, 標籤中心 y, 簡稱]
+const LAB = {
+  14:['L',30,'頭蓋骨'],      3:['R',48,'鼻骨、眶骨'],  8:['R',80,'下顎'],
+  7:['L',112,'鎖骨'],        11:['L',144,'肩胛骨'],    6:['R',158,'肋骨'],
+  15:['L',176,'臂骨'],       12:['L',208,'椎骨（胸腰椎、尾骨）'],
+  9:['R',238,'橈骨或尺骨'],  16:['L',252,'橈骨及尺骨'], 13:['R',278,'骨盤（腸恥坐薦骨）'],
+  17:['L',292,'腕骨'],       22:['R',316,'大腿骨頸'],  4:['R',350,'掌骨'],
+  20:['L',372,'股骨'],       1:['R',382,'指骨'],       10:['R',432,'膝蓋骨'],
+  18:['R',472,'脛骨或腓骨'], 21:['L',520,'脛骨及腓骨'], 19:['L',560,'踝骨'],
+  5:['R',584,'蹠骨'],        2:['R',614,'趾骨'],
+};
+function dotsSvg(){
+  return FRACTURES.map(f => f.pts.map(([x,y], i) =>
+    `<g class="bm-dot t${tier(f.pct)}${f.back?' back':''}${i===(LAB[f.id][0]==='L'?0:(f.pts[1]?1:0))?' anc':''}" data-id="${f.id}"${i===0?' tabindex="0"':''} role="button" aria-label="${f.id} ${f.name} ${f.pct}%" transform="translate(${AX(x)} ${y})"><title>${f.id} ${f.name}｜${f.pct}%</title><circle class="bm-halo" r="14"></circle><circle class="bm-c" r="9.5"></circle><text>${f.id}</text></g>`
+  ).join('')).join('');
+}
+function partsSvg(){
+  const W = 184, H = 26;
+  return FRACTURES.map(f => {
+    const [side, ly, short] = LAB[f.id];
+    const dot = side === 'L' ? f.pts[0] : (f.pts[1] || f.pts[0]);
+    const dx = AX(dot[0]), dy = dot[1];
+    const lx = side === 'L' ? 2 : 462;
+    const ex = side === 'L' ? 198 : 450;
+    const edge = side === 'L' ? lx + W : lx;
+    return `<g class="bm-part t${tier(f.pct)}${f.back?' back':''}" data-id="${f.id}"><title>${f.id} ${f.name}｜${f.pct}%</title>`
+         + `<path class="bm-lead" d="M${edge} ${ly} L${ex} ${ly} L${dx} ${dy}"/>`
+         + `<g transform="translate(${lx} ${ly - H/2})"><rect class="bm-lab-bg" width="${W}" height="${H}" rx="13"/>`
+         + `<text class="bm-lab-name" x="12" y="${H/2 + .5}">${short}</text>`
+         + `<rect class="bm-lab-pct-bg" x="${W-46}" y="3" width="43" height="20" rx="10"/>`
+         + `<text class="bm-lab-pct" x="${W-24.5}" y="${H/2 + .5}">${f.pct}%</text></g></g>`;
+  }).join('');
+}
+document.getElementById('bm-parts').innerHTML = partsSvg();
+document.getElementById('bm-dots').innerHTML = dotsSvg();
+
+let hoverId = null, pinnedId = null;
+function applyHl(){
+  const id = hoverId !== null ? hoverId : pinnedId;
+  document.querySelectorAll('#bm-dots .bm-dot, #bm-parts .bm-part').forEach(g => g.classList.toggle('hl', id !== null && g.dataset.id === String(id)));
+  document.querySelectorAll('#fracture-table tr.frow').forEach(tr => tr.classList.toggle('hl', id !== null && tr.dataset.id === String(id)));
+  const out = document.getElementById('bm-readout');
+  if(id === null){ out.textContent = '指向或點選人體圖上的任一部位，查看給付金額。'; return; }
+  const f = FRACTURES.find(x => x.id === Number(id));
+  const lines = sortedAmounts().map(a => `<b>${a}萬</b>　` + FRACTURE_TYPES.map(t => `${t.short} ${fmt(a*10000*f.pct/100*t.k)}`).join('｜')).join('<br>');
+  out.innerHTML = `<b>${f.id}　${f.name}</b>｜${f.pct}%${f.back?'（背側）':''}<br>${lines}`;
+}
+function idFrom(e){
+  const el = e.target.closest ? e.target.closest('.bm-dot, .bm-part, tr.frow') : null;
+  return el ? el.dataset.id : null;
+}
+['bodymap','fracture-table'].forEach(elId => {
+  const el = document.getElementById(elId);
+  el.addEventListener('mouseover', e => { const id = idFrom(e); if(id !== hoverId){ hoverId = id; applyHl(); } });
+  el.addEventListener('mouseleave', () => { hoverId = null; applyHl(); });
+  el.addEventListener('focusin', e => { const id = idFrom(e); if(id){ hoverId = id; applyHl(); } });
+  el.addEventListener('focusout', () => { hoverId = null; applyHl(); });
+  el.addEventListener('click', e => {
+    const id = idFrom(e);
+    if(elId === 'bodymap'){ mapSelect(id); return; }
+    if(id === null) return;
+    pinnedId = (pinnedId === id) ? null : id; hoverId = null; hidePop(); applyHl();
+  });
+  el.addEventListener('keydown', e => {
+    if(e.key === 'Enter' || e.key === ' '){
+      const id = idFrom(e);
+      if(id){ e.preventDefault(); if(elId === 'bodymap'){ mapSelect(id); } else { pinnedId = (pinnedId === id) ? null : id; hidePop(); applyHl(); } }
+    }
+  });
+});
+
+// ---------- 點選部位 → 跳出理賠金小標籤 ----------
+const pop = document.getElementById('bm-pop');
+const stage = document.getElementById('bm-stage');
+let popId = null;
+function popHtml(f){
+  const rows = sortedAmounts().map(a =>
+    `<div class="pp-amt">保險金額 ${a}萬</div>` +
+    FRACTURE_TYPES.map((t, i) => `<div class="pp-row${i===0?' main':''}"><span>${t.label}<small>給付${Math.round(t.k*100)}%</small></span><b>${fmt(a*10000*f.pct/100*t.k)}<i> 元</i></b></div>`).join('')
+  ).join('');
+  return `<button type="button" class="pp-x" aria-label="關閉">×</button>`
+       + `<div class="pp-head"><span class="chip t${tier(f.pct)}">${f.id}</span><strong>${f.name}</strong><em>${f.pct}%</em></div>`
+       + (f.back ? '<div class="pp-back">背側部位</div>' : '')
+       + rows
+       + `<div class="pp-foot">開放性骨折＝保險金額×${f.pct}%</div><span class="pp-arrow"></span>`;
+}
+function placePop(){
+  if(popId === null) return;
+  const dot = document.querySelector(`#bm-dots .bm-dot.anc[data-id="${popId}"] .bm-c`);
+  if(!dot){ return; }
+  const sr = stage.getBoundingClientRect(), dr = dot.getBoundingClientRect();
+  const cx = dr.left + dr.width/2 - sr.left, cy = dr.top + dr.height/2 - sr.top;
+  const w = pop.offsetWidth, h = pop.offsetHeight;
+  const left = Math.min(Math.max(8, cx - w/2), Math.max(8, sr.width - w - 8));
+  const above = cy - h - 20 >= 4;
+  let top = above ? cy - h - 16 : cy + 16;
+  top = Math.max(4, Math.min(top, sr.height - h - 4));
+  pop.style.left = left + 'px'; pop.style.top = top + 'px';
+  pop.style.setProperty('--ax', Math.min(Math.max(16, cx - left), w - 16) + 'px');
+  pop.classList.toggle('below', !above);
+}
+function showPop(id){
+  const f = FRACTURES.find(x => x.id === Number(id)); if(!f) return;
+  popId = String(id);
+  pop.className = 'bm-pop t' + tier(f.pct);
+  pop.innerHTML = popHtml(f);
+  pop.hidden = false;
+  placePop();
+}
+function hidePop(){ popId = null; pop.hidden = true; }
+function mapSelect(id){
+  if(id === null || (popId === String(id) && pinnedId === String(id))){ pinnedId = null; hidePop(); }
+  else { pinnedId = String(id); showPop(id); }
+  hoverId = null; applyHl();
+}
+pop.addEventListener('click', e => { if(e.target.closest('.pp-x')){ pinnedId = null; hidePop(); applyHl(); } });
+document.addEventListener('keydown', e => { if(e.key === 'Escape' && popId !== null){ pinnedId = null; hidePop(); applyHl(); } });
+document.addEventListener('click', e => { if(popId !== null && !e.target.closest('#bm-stage')){ pinnedId = null; hidePop(); applyHl(); } });
+document.querySelector('.bm-scroll').addEventListener('scroll', placePop);
+window.addEventListener('resize', placePop);
+
+// 三種給付型態：開放性 100%、閉鎖性並施行見血復位術 75%、閉鎖性未施行見血復位術 25%
+const FRACTURE_TYPES = [
+  { key:'open',   label:'開放性骨折',           short:'開放性',       k:1 },
+  { key:'closed', label:'閉鎖性並施行見血復位術', short:'閉鎖性＋復位術', k:0.75 },
+  { key:'plain',  label:'閉鎖性未施行見血復位術', short:'閉鎖性未復位',   k:0.25 },
+];
+function renderFracture(){
+  const amounts = sortedAmounts();
+  let html = '<thead><tr><th rowspan="2">序號</th><th rowspan="2">骨折部位</th><th rowspan="2">比例</th>'
+           + amounts.map(a => `<th colspan="3" class="grp">${a}萬</th>`).join('') + '</tr>'
+           + '<tr class="sub">' + amounts.map(() => FRACTURE_TYPES.map((t, i) => `<th class="${i===0?'grp':''}">${t.label}<small>${t.k===1?'給付100%':'給付'+t.k*100+'%'}</small></th>`).join('')).join('') + '</tr></thead><tbody>';
+  FRACTURES.forEach(f => {
+    html += `<tr class="frow" data-id="${f.id}"><td><span class="chip t${tier(f.pct)}">${f.id}</span></td><td>${f.name}${f.back?' <span class="bk">背側</span>':''}</td><td>${f.pct}%</td>`
+          + amounts.map(a => FRACTURE_TYPES.map((t, i) => `<td class="${i===0?'grp':''}">${fmt(a*10000*f.pct/100*t.k)} 元</td>`).join('')).join('') + '</tr>';
+  });
+  document.getElementById('fracture-table').innerHTML = html + '</tbody>';
+  applyHl();
+  if(popId !== null) showPop(popId);
+}
+
+function render(){
+  renderPremium();
+  renderBenefit('benefit-100', BENEFIT_100);
+  renderBenefit('benefit-90', BENEFIT_90);
+  renderFracture();
+}
+render();
+</script>
+</body>
+</html>
