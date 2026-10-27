@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>南山人壽 樂健康祥定期健康保險 10TDD 試算系統</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+
+  :root{
+    --navy:#0b2e5c;
+    --navy-2:#134a8c;
+    --navy-3:#1c63b3;
+    --gold:#c9860f;
+    --gold-hi:#e3a635;
+    --gold-deep:#a8710c;
+    --cream:#f3f6fb;
+    --paper:#ffffff;
+    --ink:#101826;
+    --muted:#71809a;
+    --line:#d8e0ec;
+    --blue:#5b9bd5;
+    --teal:#2f9e9e;
+    --coral:#c23b3b;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:"Noto Sans TC",sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  header{
+    background:linear-gradient(135deg,var(--navy) 0%, var(--navy-3) 100%);
+    color:var(--gold-hi);
+    padding:36px 28px 30px;
+    text-align:center;
+    border-bottom:3px solid var(--gold);
+  }
+  header .eyebrow{ font-family:"DM Mono",monospace; letter-spacing:.2em; font-size:12px; color:#a9bcd6; text-transform:uppercase; }
+  header h1{ font-family:"Noto Serif TC",serif; font-weight:900; font-size:clamp(24px,3.6vw,36px); margin:8px 0 6px; }
+  header p{ color:#cdd7e6; font-size:14px; margin:0; }
+
+  .wrap{max-width:1140px;margin:0 auto;padding:28px 20px 60px;}
+  .grid{ display:grid; grid-template-columns:340px 1fr; gap:22px; }
+  @media (max-width:860px){ .grid{grid-template-columns:1fr;} }
+
+  .card{
+    background:var(--paper); border:1px solid var(--line); border-radius:14px;
+    padding:22px; box-shadow:0 4px 18px rgba(11,31,58,.06);
+  }
+  .card h2{
+    font-family:"Noto Serif TC",serif; font-size:18px; color:var(--navy); margin:0 0 16px;
+    padding-bottom:10px; border-bottom:2px solid var(--gold); display:flex; align-items:center; gap:8px;
+  }
+  .field{margin-bottom:18px;}
+  .field label{ display:block; font-size:13px; color:var(--muted); margin-bottom:8px; font-weight:500; }
+  .field .val{ font-family:"DM Mono",monospace; color:var(--navy); font-weight:500; }
+  input[type=range]{ width:100%; accent-color:var(--gold); }
+  input[type=number]{
+    width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:8px;
+    font-family:"DM Mono",monospace; font-size:15px; color:var(--navy); background:#e7f0fb;
+  }
+  .toggle-group{ display:flex; border:1px solid var(--line); border-radius:8px; overflow:hidden; }
+  .toggle-group button{
+    flex:1; padding:10px 6px; border:none; background:#ffffff; color:var(--navy);
+    font-family:"Noto Sans TC",sans-serif; font-size:13.5px; cursor:pointer; transition:.15s; border-right:1px solid var(--line);
+  }
+  .toggle-group button:last-child{border-right:none;}
+  .toggle-group button.active{ background:var(--navy); color:var(--gold-hi); font-weight:700; }
+  .hint{font-size:11.5px;color:var(--muted);margin-top:6px;line-height:1.55;}
+
+  .results{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-bottom:20px; }
+  .stat{ background:linear-gradient(160deg,var(--navy) 0%,var(--navy-2) 100%); border-radius:10px; padding:14px 16px; color:#e9eef6; }
+  .stat .label{font-size:11.5px;color:#9fb2ce;margin-bottom:5px;}
+  .stat .num{ font-family:"DM Mono",monospace; font-size:19px; font-weight:500; color:var(--gold-hi); }
+  .stat .sub{font-size:10.5px;color:#8fa2bd;margin-top:4px;}
+  .stat.gold{ background:linear-gradient(160deg,var(--gold-deep) 0%, var(--gold) 100%); }
+  .stat.gold .label{color:#fff0d0;} .stat.gold .num{color:#fff;font-size:21px;} .stat.gold .sub{color:#fff0d0;}
+  .stat.split{ background:linear-gradient(160deg,#0d3a6b 0%,#155a9e 100%); }
+  .stat.stat35{ background:linear-gradient(160deg,#0d5c5c 0%,#1a8a8a 100%); }
+  .stat.stat35 .num{ color:#c9f5f5; }
+  .stat.statTED{ background:linear-gradient(160deg,#7a5a12 0%,#a8710c 100%); }
+  .stat.statTED .num{ color:#ffe9b8; }
+  .stat .tag35{color:#7fd6d6;font-weight:700;}
+  .stat .tagTED{color:var(--gold-hi);font-weight:700;}
+
+  .product-block{ border-radius:10px; padding:14px 14px 4px; margin-bottom:16px; }
+  .product-block.pb35{ background:#fdf6e6; border:1.5px solid #e3c176; }
+  .product-block.pbTED{ background:#e8f8f8; border:1.5px solid #7ecece; }
+  .product-block .ptitle{
+    font-family:"Noto Serif TC",serif; font-weight:700; font-size:14px; margin-bottom:10px;
+    display:flex; align-items:center; gap:7px;
+  }
+  .product-block.pb35 .ptitle{ color:#1f7a7a; }
+  .product-block.pbTED .ptitle{ color:var(--gold-deep); }
+  .product-block .pdot{ width:10px; height:10px; border-radius:50%; display:inline-block; }
+  .product-block .field{ margin-bottom:14px; }
+  .product-block.pb35 input[type=number]{ border-color:#7ecece; background:#f2fdfd; }
+  .product-block.pb35 input[type=number]:focus{ outline:2px solid var(--teal); }
+  .product-block.pbTED input[type=number]{ border-color:#e3c176; background:#fffaf0; }
+  .product-block.pbTED input[type=number]:focus{ outline:2px solid var(--gold-hi); }
+
+  .scrubber{ background:var(--navy); border-radius:12px; padding:16px 20px 18px; margin-bottom:18px; color:#e9eef6; }
+  .scrubber-top{ display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; flex-wrap:wrap; gap:8px; }
+  .scrubber-top .ttl{ font-family:"Noto Serif TC",serif; font-size:15px; color:var(--gold-hi); }
+  .scrubber-top .now{ font-family:"DM Mono",monospace; font-size:13px; color:#cdd7e6; }
+  .scrubber-top .now b{color:var(--gold-hi); font-size:15px;}
+  #playBtn{
+    background:var(--gold); color:#2a1900; border:none; border-radius:20px;
+    padding:6px 16px; font-size:12.5px; font-weight:700; cursor:pointer; font-family:"Noto Sans TC",sans-serif;
+  }
+  #playBtn:hover{ background:var(--gold-hi); }
+  input[type=range]#policyYear{ accent-color:var(--gold-hi); }
+  .status-chip{ display:inline-block; margin-top:8px; padding:4px 12px; border-radius:20px; font-size:11.5px; font-weight:700; }
+  .status-chip.paying{ background:#5b9bd533; color:#c3ccd9; }
+  .status-chip.paidup{ background:#c9860f33; color:var(--gold-hi); }
+  .status-chip.partial{ background:#2f9e9e33; color:#9fe3e3; }
+  .status-chip.mature{ background:#c23b3b33; color:#ffb199; }
+
+  .chart-shell{ background:#ffffff; border:1px solid var(--line); border-radius:12px; padding:8px 4px 4px; }
+  svg{width:100%;height:auto;display:block;}
+  .zone-label{font-family:"Noto Sans TC",sans-serif;font-size:12px;font-weight:700;}
+  .age-label{font-family:"DM Mono",monospace;font-size:11px;fill:#1c63b3;}
+  .axis-label{font-family:"DM Mono",monospace;font-size:10.5px;fill:#1c63b3;}
+  .callout{font-family:"Noto Sans TC",sans-serif;font-size:13px;font-weight:700;}
+
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:12px;font-size:12px;color:var(--muted);}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .dot{width:10px;height:10px;border-radius:50%;display:inline-block;}
+
+  details{margin-top:22px;}
+  summary{ cursor:pointer; font-family:"Noto Serif TC",serif; color:var(--navy); font-size:15px; padding:10px 0; }
+  table{ width:100%; border-collapse:collapse; font-family:"DM Mono",monospace; font-size:12.5px; margin-top:10px; }
+  th,td{ padding:6px 8px; text-align:center; border-bottom:1px solid var(--line); }
+  th{ background:var(--navy); color:var(--gold-hi); font-family:"Noto Sans TC",sans-serif; font-weight:500; position:sticky; top:0; }
+  tr.current-row td{background:#fff0d0;font-weight:700;}
+  .table-scroll{max-height:340px;overflow:auto;border:1px solid var(--line);border-radius:8px;}
+  .tag-wrap{display:flex;flex-wrap:wrap;gap:7px;}
+  .tag{
+    background:#f3f6fb; border:1px solid var(--line); border-left:3px solid var(--tag-color,var(--line)); border-radius:8px;
+    padding:5px 10px; font-size:12px; color:var(--ink); white-space:nowrap;
+  }
+  .tag b{color:var(--navy);font-family:"DM Mono",monospace;margin-right:4px;}
+  .note{ font-size:12px; color:var(--muted); line-height:1.7; margin-top:16px; padding:12px 14px; background:#eef4fc; border-left:3px solid var(--gold); border-radius:4px; }
+  footer{text-align:center;color:var(--muted);font-size:11.5px;padding:20px;}
+  .stat.statN{ background:linear-gradient(160deg,#7a5a12 0%,#a8710c 100%); }
+  .stat.statN .num{ color:#ffe9b8; }
+  .product-block.pbN{ background:#fdf6e6; border:1.5px solid #e3c176; }
+  .product-block.pbN .ptitle{ color:var(--gold-deep); }
+  .product-block.pbN input[type=number]{ border-color:#e3c176; background:#fffaf0; }
+  .product-block.pbN input[type=number]:focus{ outline:2px solid var(--gold-hi); }
+  .toggle-group button:disabled{ background:#f1f4f9; color:#a9b4c6; }
+  .warn{ color:#c23b3b; font-size:11.5px; margin-top:6px; line-height:1.5; }
+  td.left, th.left{ text-align:left; }
+  .bt td{ text-align:left; vertical-align:top; font-family:"Noto Sans TC",sans-serif; font-size:12.5px; line-height:1.65; }
+  .bt td:first-child{ font-weight:700; white-space:nowrap; background:#fdf6e6; }
+  .bt ul{ margin:0; padding-left:16px; }
+  .chip{ cursor:pointer; border:1px solid #e1e6ef; border-left:4px solid #c9860f; background:#fff; border-radius:10px; padding:6px 10px; font-size:13px; color:var(--navy); font-family:inherit; text-align:left; line-height:1.4; }
+  .chip.sp{ border-left-color:#c23b3b; }
+  .chip b.n{ margin-right:6px; }
+  .chip.on{ background:#fff6da; border-color:#c9860f; }
+  .chip.sp.on{ background:#fdecea; border-color:#c23b3b; }
+  .chip .bdg{ margin-left:6px; }
+  .chips{ display:flex; flex-wrap:wrap; gap:6px; }
+  .chipdetail{ display:none; margin-top:8px; padding:10px 14px; border-radius:10px; background:#f4f6fb; border:1px solid #e1e6ef; font-size:13px; color:#33425b; line-height:1.7; }
+  .chipdetail.show{ display:block; }
+  .it{ border:1px solid #e1e6ef; border-left:4px solid #c9860f; border-radius:10px; background:#fff; margin:0 0 6px; }
+  .it.sp{ border-left-color:#c23b3b; }
+  .it > summary{ cursor:pointer; padding:8px 12px; font-size:13.5px; color:var(--navy); list-style:none; display:flex; flex-wrap:wrap; gap:6px 10px; align-items:center; }
+  .it > summary::-webkit-details-marker{ display:none; }
+  .it > summary::after{ content:'＋'; margin-left:auto; color:#8a97ad; font-weight:700; }
+  .it[open] > summary::after{ content:'－'; }
+  .it > summary b.n{ color:#0b2e5c; min-width:20px; }
+  .it .bd{ padding:2px 14px 10px 34px; font-size:13px; color:#33425b; line-height:1.7; }
+  .bdg{ display:inline-block; font-size:11.5px; font-weight:700; padding:1px 8px; border-radius:10px; white-space:nowrap; }
+  .bdg.g30{ background:#f3c32f; color:#0b2e5c; }
+  .bdg.up{ background:#dff3e6; color:#1b7a43; }
+  .bdg.new{ background:#fde6e3; color:#b3322b; }
+  .win-ncic{ color:#1c63b3; font-weight:700; }
+  .win-ted{ color:#c23b3b; font-weight:700; }
+  .pill{ display:inline-block; padding:2px 10px; border-radius:12px; font-weight:700; white-space:nowrap; }
+  .pill.p0{ background:#fff; color:#a9b4c6; border:1px dashed #a9b4c6; }
+  .pill.p5{ background:#e7ebf2; color:#0b2e5c; }
+  .pill.p30{ background:#f3c32f; color:#0b2e5c; }
+  .pill.p100{ background:#1c63b3; color:#fff; }
+  .pill.t100{ background:#a31d5a; color:#fff; }
+
+
+
+  .chip{ cursor:pointer; border:1px solid #e1e6ef; border-left:4px solid #c9860f; background:#fff; border-radius:10px; padding:6px 10px; font-size:13px; color:var(--navy); font-family:inherit; text-align:left; line-height:1.4; }
+  .chip.sp{ border-left-color:#c23b3b; }
+  .chip b.n{ margin-right:6px; }
+  .chip.on{ background:#fff6da; border-color:#c9860f; }
+  .chips{ display:flex; flex-wrap:wrap; gap:6px; }
+  .chipdetail{ display:none; margin-top:8px; padding:10px 14px; border-radius:10px; background:#f4f6fb; border:1px solid #e1e6ef; font-size:13px; color:#33425b; line-height:1.7; }
+  .chipdetail.show{ display:block; }
+  .dot{ display:inline-block; width:10px; height:10px; border-radius:50%; }
+  .ck{ display:flex; align-items:center; gap:8px; font-size:13px; color:var(--navy); }
+  .ck input{ width:auto; }
+  .modal{ display:none; position:fixed; inset:0; background:rgba(15,28,52,.55); z-index:50; align-items:center; justify-content:center; padding:16px; }
+  .modal.show{ display:flex; }
+  .modalbox{ position:relative; background:#fff; border-radius:14px; max-width:640px; width:100%; max-height:88vh; overflow:auto; padding:22px 22px 18px; box-shadow:0 20px 60px rgba(0,0,0,.3); }
+  #mClose{ position:absolute; top:10px; right:12px; border:0; background:#eef1f7; width:30px; height:30px; border-radius:50%; cursor:pointer; font-size:14px; color:var(--navy); }
+  .modalbox h3{ font-family:'Noto Serif TC',serif; color:var(--navy); margin:6px 0 8px; font-size:19px; }
+  .mtag{ display:inline-block; font-size:11.5px; font-weight:700; color:#fff; border-radius:10px; padding:2px 10px; }
+  .mtag.c1{ background:#c23b3b; } .mtag.c2{ background:#c9860f; }
+  .mdef{ font-size:13.5px; line-height:1.75; color:#33425b; background:#f4f6fb; border-radius:10px; padding:10px 12px; margin-bottom:12px; }
+  .mtt{ font-size:13px; color:var(--navy); margin-bottom:6px; }
+  table.mt{ width:100%; border-collapse:collapse; font-size:13px; }
+  table.mt th, table.mt td{ border-bottom:1px solid #e1e6ef; padding:7px 8px; text-align:right; }
+  table.mt th.l, table.mt td.l{ text-align:left; }
+  table.mt .on{ background:#fff6da; }
+  table.mt .s{ font-size:11px; color:var(--muted); }
+  .mnote{ font-size:12px; color:var(--muted); line-height:1.65; margin-top:10px; }
+  .sectitle{ font-family:'Noto Serif TC',serif; color:var(--navy); font-size:15px; margin:18px 0 8px; }
+
+</style>
+</head>
+<body>
+<header>
+  <div class="eyebrow">Nan Shan Life &nbsp;·&nbsp; 順可通訊處</div>
+  <h1>10TDD　樂健康祥定期健康保險<br>保單結構試算</h1>
+  <p>10 年定期｜重度重大疾病整筆給付＋豁免保費｜健檢最高 20% 增額保障｜保證續保</p>
+</header>
+
+<div class="wrap">
+  <div class="grid">
+    <div class="card">
+      <h2>投保條件</h2>
+      <div class="field">
+        <label>投保年齡（保險年齡）　<span class="val" id="ageVal">35</span> 歲</label>
+        <input type="range" id="age" min="0" max="70" value="35">
+        <div class="hint">投保年齡 20～70 歲；繳費 10 年、保障 10 年，期滿保證續保。<br><b>請輸入「保險年齡」</b>：投保時以足歲計算，未滿一歲的零數超過 6 個月者加算一歲，以後每經過一個保單年度加算一歲。</div>
+      </div>
+      <div class="field">
+        <label>性別</label>
+        <div class="toggle-group" id="genderToggle">
+          <button data-v="male" class="active">男性</button>
+          <button data-v="female">女性</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>投保金額（萬元）</label>
+        <input type="number" id="amount" value="100" min="0" step="10">
+        <div class="hint">最低：20～25 歲 100 萬、26～70 歲 50 萬；累計最高 200 萬。<b>留空或輸入 0 代表不試算</b>。</div>
+        <div class="warn" id="amountWarn"></div>
+      </div>
+      <div class="field">
+        <label>健檢體位（第 3 保單年度起適用）</label>
+        <div class="toggle-group" id="clsToggle"><button data-v="A" class="active">A 級 ×1</button><button data-v="A+">A+ 級 ×1.15</button><button data-v="A++">A++ 級 ×1.2</button></div>
+        <div class="hint">前 2 保單年度適用 A 級；其後每 2 年依健檢結果調整，最高 20% 增額。</div>
+      </div>
+
+    </div>
+
+    <div class="card">
+      <h2>保單結構試算</h2>
+      <div class="results" id="statsGrid"></div>
+      <div class="scrubber">
+        <div class="scrubber-top">
+          <div class="ttl">拖曳查看保單進度 ▸</div>
+          <div class="now">第 <b id="pyVal">0</b> 保單年度　·　您 <b id="pyAge">—</b> 歲　<button id="playBtn">▶ 播放</button></div>
+        </div>
+        <input type="range" id="policyYear" min="0" max="10" value="0" step="1">
+        <div id="statusChip" class="status-chip paying">保單剛生效</div>
+      </div>
+      <div class="chart-shell"><svg id="chart" viewBox="0 0 900 470"></svg></div>
+      <div class="legend" id="legendBox"></div>
+      <div class="hint" style="margin-top:8px;" id="chartHint"></div>
+    </div>
+  </div>
+
+  <details open>
+    <summary>▸ 10TDD 給付項目（DM 第3頁）</summary>
+<div class="table-scroll" style="max-height:none;"><table class="bt"><thead><tr><th class="left">保障項目</th><th class="left">給付內容</th></tr></thead><tbody><tr><td>重度重大疾病保險金<br><span style="font-weight:400;color:var(--muted);font-size:11.5px;">以 1 次為限</span></td><td>「保險金額」×「健康促進係數」（1.2、1.15 或 1）</td></tr><tr><td>身故／完全失能保險金<br><span style="font-weight:400;color:var(--muted);font-size:11.5px;">給付後契約終止</span></td><td>壽險當年度保險金額（保險年齡以「年繳應繳保險費」的 10 倍計；曾給付重度重大疾病保險金者，另有加計與按日數比例計算之規定，詳條款）</td></tr><tr><td>重度重大疾病豁免保險費</td><td>經醫師診斷確定罹患重度重大疾病者，豁免保險費，保障持續不中斷</td></tr></tbody></table></div><div class="note"><b>重度重大疾病</b>：自本契約生效日起持續有效第 31 日（癌症為第 91 日）起，經醫師診斷確定符合條款定義之急性心肌梗塞(重度)、冠狀動脈繞道手術、腦中風後障礙(重度)、末期腎病變、癌症(重度)、重大器官移植或造血幹細胞移植。<br>健康促進係數：A++ 級 1.2、A+ 級 1.15、A 級 1。投保生效日起至第 2 保單年度末一律適用 A 級；其後於每個偶數保單年度（第 2、4、6…）第 8 個月起進行健檢，依結果決定次一保單年度起 2 年內適用的係數。</div>
+  </details>
+  <details>
+    <summary>▸ 投保範例（DM 第3頁）</summary>
+<div class="note" style="margin-top:6px;">王先生（25 歲）投保 10TDD，保險金額 200 萬，年繳保險費 2,780 元。偶數保單年度（第 2、4、6…）第 8 個月進行健檢，結果適用次 1 保單年度起 2 個保單年度：<br>
+    第 1～2 年 <b>200 萬</b>（A 級）→ 第 3～4 年 <b>230 萬</b>（A+ 體位）→ 第 5～6 年 <b>240 萬</b>（A++ 體位）→ 第 7～8 年 未健檢 <b>200 萬</b> → 第 9～10 年 <b>240 萬</b>（A++ 體位）。</div>
+  </details>
+  <details>
+    <summary>▸ 保證續保：各期保費（以現行費率試算）</summary>
+<div class="table-scroll" style="max-height:none;"><table id="renewBox" class="bt"></table></div><div class="note">保險期間 10 年，期滿後 30 日內交付續保保費，本公司不得拒絕；每次續保 10 年，續保時被保險人保險年齡不得超過 70 歲，並依續保當時費率及年齡重新計算保費，不得針對個別被保險人身體狀況調整。（若曾給付重度重大疾病保險金或辦理減額繳清，不適用續保規定。）上表以現行費率表示意，實際以續保時費率為準。</div>
+  </details>
+  <details>
+    <summary>▸ 重度重大疾病 7 項定義與除外項目（條款第2、20～24條）</summary>
+<div class="table-scroll" style="max-height:none;"><table class="bt"><thead><tr><th class="left">項目</th><th class="left">定義重點</th></tr></thead><tbody><tr><td>1 急性心肌梗塞（重度）</td><td>冠狀動脈阻塞致部分心肌壞死；發病滿 90 日後左心室射出分率 50% 以下，且具備典型胸痛、心電圖變化、心肌酶／肌鈣蛋白升高三項中至少兩項</td></tr><tr><td>2 冠狀動脈繞道手術</td><td>因冠狀動脈疾病致心絞痛或心衰竭而接受繞道手術；其他手術不含</td></tr><tr><td>3 末期腎病變</td><td>腎臟慢性不可復原衰竭，已開始長期規則透析</td></tr><tr><td>4 腦中風後障礙（重度）</td><td>事故 6 個月後仍有永久神經機能障礙：植物人、一肢三大關節機能完全喪失或肌力 2 分以下、兩肢以上障礙致無法自理、喪失言語或咀嚼機能之一</td></tr><tr><td>5 癌症（重度）</td><td>經病理確定的惡性腫瘤；<b>不含</b>原位癌／零期癌、第一期惡性類癌、第二期以下非惡性黑色素瘤皮膚癌，以及慢性淋巴性白血病第一二期、第一期何杰金氏病、第一期前列腺癌、膀胱乳頭狀癌、甲狀腺微乳頭狀癌、邊緣性卵巢癌、第一期黑色素瘤、乳癌、子宮頸癌、大腸直腸癌（即初期／輕度癌症，本險<b>不給付</b>）</td></tr><tr><td>6 癱瘓（重度）</td><td>兩上肢、兩下肢或一上一下肢，各有三大關節中兩個以上機能障礙，6 個月後仍無法復原</td></tr><tr><td>7 重大器官移植或造血幹細胞移植</td><td>心、肺、肝、胰、腎異體移植；或因造血功能損害／造血系統惡性腫瘤接受造血幹細胞異體移植</td></tr></tbody></table></div><div class="note"><b>本險沒有「初期」「輕度」分類，只有重度重大疾病。</b>須於生效日起滿 31 日（癌症 91 日）後經醫師診斷確定，因意外傷害所致不受 31 日限制。</div><div class="sectitle">除外項目（責任免除，條款第24條）</div><div class="table-scroll" style="max-height:none;"><table class="bt"><thead><tr><th class="left">給付項目</th><th class="left">不給付的情形</th></tr></thead><tbody><tr><td>重度重大疾病保險金／豁免保險費</td><td>被保險人之故意行為（含自殺、自殺未遂）；犯罪行為；非法施用毒品</td></tr><tr><td>身故／喪葬費用／完全失能保險金</td><td>要保人故意致被保險人於死；被保險人故意自殺或故意自傷致完全失能（訂約或復效滿 2 年後自殺致死仍給付身故保險金）；因犯罪被處死、拒捕或越獄致死或完全失能</td></tr></tbody></table></div><div class="note">豁免保險費：繳費期間內經診斷確定罹患重度重大疾病，自診斷確定翌日起豁免以後各期保費，契約繼續有效；若同時符合完全失能並已給付者不適用。</div><div class="note">整理自南山人壽公開條款，文字為摘要；實際認定以保單條款與病理報告為準。</div>
+  </details>
+  <details>
+    <summary>▸ 投保規範與重要提醒</summary>
+<div class="table-scroll" style="max-height:none;"><table class="bt"><thead><tr><th class="left">項目</th><th class="left">內容</th></tr></thead><tbody><tr><td>投保年齡／繳費／保障</td><td>20～70 歲；繳費 10 年、保障 10 年，期滿保證續保（續保時保險年齡不得超過 70 歲）</td></tr><tr><td>投保金額</td><td>最低：20～25 歲 100 萬、26～70 歲 50 萬；累計最高 200 萬</td></tr><tr><td>等待期</td><td>重大疾病（不含癌症）30 日；癌症 90 日</td></tr><tr><td>解約金</td><td>健康險部分因費率計算考慮脫退率，無解約金。DM 揭露：第 5、10 保單年度末解約金與累計生存保險金總和占應繳保險費總和之比例，除 65 歲男性第 5 年末為 4%、65 歲女性為 3% 外，其餘為 0%。依上表顯示，本商品投保後提早解約對保戶是不利的。</td></tr><tr><td>繳費管道與折扣</td><td>金融機構自動轉帳／南山人壽聯名卡／信用卡／自行繳費；自動轉帳／聯名卡享 1% 折扣；集體投保另有彙繳費率。</td></tr><tr><td>預定附加費用率</td><td>最高 72.15%、最低 1.31%。</td></tr><tr><td>備查資訊</td><td>民國 107 年 11 月 5 日(107)南壽研字第114號函備查；113 年 12 月 21 日依金管保壽字第1130427324號函修正（PA-01-386／2026年1月版）；受保險安定基金保障，非存款項目。</td></tr></tbody></table></div><div class="note">投保後解約或不繼續繳費可能不利消費者，請慎選符合需求之保險商品。本內容僅供參考，詳細內容請參閱保單條款之規定；南山人壽保留最終承保與否之權利。</div>
+  </details>
+
+
+  <details>
+    <summary>▸ 年繳費率表（每 10 萬元保險金額｜單位：新台幣元）</summary>
+    <div class="table-scroll"><table id="rateTable"></table></div>
+    <div class="note">費率為未扣除折扣之費率；金融機構自動轉帳／南山人壽聯名卡享 1% 折扣，本計算機之年繳保費與「年繳應繳保險費」皆以未扣折扣之費率計算。</div>
+  </details>
+</div>
+
+<footer>南山人壽 10TDD 樂健康祥定期健康保險 試算 · 內部試算工具，僅供業務員參考說明使用，不得作為正式要保文件<br>本資料由 順可通訊處 吳約翰主任 製作</footer>
+
+<script>
+const RATES = {"male": {"20": 84, "21": 91, "22": 100, "23": 110, "24": 123, "25": 139, "26": 158, "27": 181, "28": 208, "29": 241, "30": 278, "31": 323, "32": 373, "33": 429, "34": 488, "35": 552, "36": 619, "37": 692, "38": 771, "39": 852, "40": 940, "41": 1031, "42": 1131, "43": 1237, "44": 1352, "45": 1475, "46": 1609, "47": 1757, "48": 1919, "49": 2106, "50": 2335, "51": 2576, "52": 2869, "53": 3195, "54": 3481, "55": 3768, "56": 4054, "57": 4341, "58": 4627, "59": 4914, "60": 5200, "61": 5640, "62": 6080, "63": 6520, "64": 6960, "65": 7400, "66": 7840, "67": 8280, "68": 8720, "69": 9160, "70": 9600}, "female": {"20": 92, "21": 105, "22": 115, "23": 118, "24": 161, "25": 180, "26": 210, "27": 240, "28": 271, "29": 306, "30": 342, "31": 379, "32": 420, "33": 461, "34": 507, "35": 554, "36": 606, "37": 662, "38": 719, "39": 776, "40": 830, "41": 879, "42": 927, "43": 974, "44": 1024, "45": 1077, "46": 1134, "47": 1193, "48": 1258, "49": 1331, "50": 1415, "51": 1500, "52": 1601, "53": 1712, "54": 1832, "55": 1961, "56": 2104, "57": 2264, "58": 2447, "59": 2665, "60": 2940, "61": 3226, "62": 3512, "63": 3798, "64": 4084, "65": 4370, "66": 4656, "67": 4942, "68": 5228, "69": 5514, "70": 5800}};
+
+const COEF = {'A':1,'A+':1.15,'A++':1.2};
+const PRODUCT = {
+  afterRender:c => renewTable(c),
+  defAge:35, defAmount:100, terms:[10], ageMax:{10:70}, ageMin:20,
+  rateByTerm:false, rateMul:0.1, rates:RATES,
+  rateCols:[{label:'男（每10萬）',g:'male'},{label:'女（每10萬）',g:'female'}],
+  span:()=>10, renewal:true, pyStep:10, premTag:'累積保費線',
+  amountWarn:s=> { const mn = s.age <= 25 ? 100 : 50; return s.amount>0 && s.amount<mn ? '低於最低投保金額 '+mn+' 萬，以下仍依輸入值試算。' : (s.amount>200 ? '超過累計最高 200 萬，以下仍依輸入值試算。' : ''); },
+  model(c, st){
+    const cf = COEF[st.cls] || 1;
+    const coefAt = k => k >= 3 ? cf : 1;
+    const sev = k => c.amount * coefAt(k);
+    const life = k => c.premAt(k) / 10000 * 10;       // 壽險當年度保險金額＝（該期）年繳應繳保險費的10倍
+    c.series = [
+      { name:'重度重大疾病保險金（以1次為限）', short:'重度重疾', color:'#c9860f', fn:sev },
+      { name:'身故／完全失能保險金（壽險當年度保險金額＝年繳保費×10）', short:'身故／失能', color:'#c23b3b', fn:k => life(k), w:2.6 }
+    ];
+    c.endLabel = '最後一期屆滿（保險年齡 '+(c.age+c.span-1)+' 歲）';
+    c.chartHint = '每 10 年為一期、期滿保證續保，續保時保險年齡不得超過 70 歲，本圖計算到無法續保為止；藍色虛線為各期保費累計；身故／失能金額隨各期年繳保費變動。重度重大疾病保險金＝保險金額×健康促進係數（1.2／1.15／1）；前 2 保單年度適用 A 級，其後依偶數保單年度第 8 個月起之健檢結果，適用次 1 保單年度起 2 年。身故／完全失能金額約為年繳保費之 10 倍。';
+    c.stats = k => { const kk = Math.max(k,1); return [
+      ['年繳保險費（未扣折扣）', fmt(c.premAt(kk))+' 元', '第 '+(Math.floor((kk-1)/10)+1)+' 期（保險年齡 '+c.periods[Math.floor((kk-1)/10)].age+' 歲起）費率 '+c.periods[Math.floor((kk-1)/10)].rate.toLocaleString('en-US')+' 元／10萬', 'gold'],
+      ['累計已繳總保費', fmt(c.cum(kk)*10000)+' 元', '至第 '+kk+' 保單年度；續保到最後一期共 '+fmt(c.cum(c.span)*10000)+' 元'],
+      ['重度重大疾病保險金', fmtW(sev(kk))+' 萬元', '保額×健康促進係數 '+coefAt(kk)+'；以 1 次為限', 'statN'],
+      ['最高可達（A++ 級）', fmtW(c.amount*1.2)+' 萬元', '保額×1.2'],
+      ['身故／完全失能保險金', fmtW(life(kk))+' 萬元', '壽險當年度保險金額（當期年繳保費×10）'],
+      ['重度重大疾病豁免保險費', '有', '經診斷確定罹患重度重大疾病，保障持續不中斷']
+    ]; };
+    c.chip = k => {
+      if(k <= 0) return ['paying','保單剛生效：重大疾病（不含癌症）等待期 30 日、癌症 90 日；拖曳以 10 年為一期查看累計總保費'];
+      if(k >= c.span) return ['mature','最後一期屆滿（保險年齡 '+(c.age+c.span-1)+' 歲）：續保時保險年齡將超過 70 歲，無法再續保；共 '+c.periods.length+' 期，累計總保費 '+fmt(c.cum(c.span)*10000)+' 元'];
+      if(k % 10 === 0) return ['paying','第 '+(k/10)+' 期屆滿，可保證續保：下一期保險年齡 '+(c.age+k)+' 歲，年繳 '+fmt(c.premAt(k+1))+' 元；目前累計已繳 '+fmt(c.cum(k)*10000)+' 元'];
+      return ['paying','第 '+(Math.floor((k-1)/10)+1)+' 期繳費中：累計已繳 '+fmt(c.cum(k)*10000)+' 元（第 '+k+' 年）；健康促進係數 '+coefAt(k)];
+    };
+  }
+};
+
+// ===== 共用試算引擎（各商品設定見 PRODUCT）=====
+function fmt(n){ return Math.round(n).toLocaleString('en-US'); }
+function fmtW(n){ const r = Math.round(n*100)/100; return r.toLocaleString('en-US', {maximumFractionDigits:2}); }
+function setHTML(id, h){ const el = document.getElementById(id); if(el) el.innerHTML = h; }
+function setText(id, t){ const el = document.getElementById(id); if(el) el.textContent = t; }
+function textW(str, cjk, other){ let w = 0; for(const ch of str){ w += /[　-鿿＀-￯]/.test(ch) ? cjk : other; } return w; }
+
+const P = PRODUCT;
+let state = Object.assign({ age:P.defAge, gender:'male', term:P.terms[P.terms.length-1], amount:P.defAmount, cls:P.classes ? P.classes[0].v : null, opt:false, policyYear:0 }, P.defState || {});
+let playTimer = null;
+{ const fb = document.querySelector('#clsToggle button'); if(fb) state.cls = fb.dataset.v; }
+
+function rateOf(g, term, age){
+  const t = P.rates[g]; if(!t) return 0;
+  const a = P.rateByTerm ? (t[String(term)] || {}) : t;
+  return a[age] || 0;
+}
+function maxAgeOf(term){ return P.ageMax[term] !== undefined ? P.ageMax[term] : P.ageMax; }
+
+function calc(){
+  const st = state, age = st.age, term = st.term, amount = st.amount;
+  const has = amount > 0;
+  const rate = rateOf(st.gender, term, age);
+  const premium = has ? rate * amount * P.rateMul : 0;       // 元／年（未扣折扣）
+  const annualWan = premium / 10000;
+  const span = P.span(age, term);
+  const c = { st, age, term, amount, has, rate, premium, annualWan, span,
+    cum: n => annualWan * Math.min(Math.max(n,0), term),     // 已繳保費（萬）
+  };
+  if(P.renewal){
+    // 每10年續保，續保時保險年齡不得超過70歲；計算到無法續保為止
+    c.periods = [];
+    for(let a = age; a <= 70; a += 10) c.periods.push({ age:a, rate:rateOf(st.gender, 0, a), prem: has ? rateOf(st.gender, 0, a) * amount * P.rateMul : 0 });
+    c.span = c.periods.length * 10;
+    c.premAt = k => c.periods[Math.min(c.periods.length-1, Math.max(0, Math.floor((Math.max(k,1)-1)/10)))].prem;   // 元／年
+    c.cum = n => { let t = 0; for(let k = 1; k <= Math.min(Math.max(n,0), c.span); k++) t += c.premAt(k); return t / 10000; };  // 萬
+  }
+  P.model(c, st);
+  return c;
+}
+
+function renewTable(c){
+  const el = document.getElementById('renewBox'); if(!el || !c.periods) return;
+  let h = '<thead><tr><th>期別</th><th>保險年齡</th><th>保障期間</th><th>每10萬年繳費率</th><th>年繳保費（元）</th><th>該期10年保費</th><th>累計總保費</th></tr></thead><tbody>';
+  c.periods.forEach((p, n) => {
+    h += `<tr><td>${n === 0 ? '首期（投保）' : '第 '+n+' 次續保'}</td><td>${p.age}</td><td>${p.age}～${p.age+9} 歲</td><td>${p.rate.toLocaleString('en-US')}</td><td>${fmt(p.prem)}</td><td>${fmt(p.prem*10)}</td><td><b>${fmt(c.cum((n+1)*10)*10000)}</b></td></tr>`;
+  });
+  el.innerHTML = h + '</tbody>';
+}
+
+function clampAge(){
+  const mx = maxAgeOf(state.term), mn = P.ageMin || 0;
+  state.age = Math.max(mn, Math.min(mx, state.age));
+  const el = document.getElementById('age'); el.min = mn; el.max = mx; el.value = state.age;
+  setText('ageVal', state.age);
+}
+function syncPolicyYearMax(c){
+  const el = document.getElementById('policyYear');
+  el.max = c.span; el.step = P.pyStep || 1;
+  if(state.policyYear > c.span) state.policyYear = c.span;
+  if(P.pyStep) state.policyYear = Math.round(state.policyYear / P.pyStep) * P.pyStep;
+  el.value = state.policyYear;
+}
+
+function niceMax(v){
+  const pow = Math.pow(10, Math.floor(Math.log10(v)));
+  const m = v / pow;
+  const n = m <= 1 ? 1 : m <= 2 ? 2 : m <= 2.5 ? 2.5 : m <= 5 ? 5 : 10;
+  return n * pow;
+}
+
+function drawChart(c){
+  const svg = document.getElementById('chart');
+  const W = 900, H = 470, padL = 66, padR = 150, padT = 36, padB = 64;
+  const baseY = H - padB, topY = padT;
+  const span = c.span, py = state.policyYear;
+  const ser = c.series;
+  let maxV = 0;
+  for(const s of ser){ for(let k = 1; k <= span; k++){ maxV = Math.max(maxV, s.fn(k)); } }
+  maxV = Math.max(maxV, c.cum(span));
+  const tgt = maxV * 1.04;
+  let ystep = 1; { const base = Math.pow(10, Math.floor(Math.log10(tgt)) - 1);
+    for(const m of [1,2,2.5,5,10,20,25,50,100]){ ystep = m * base; if(tgt / ystep <= 6) break; } }
+  const yn = Math.max(1, Math.round(Math.ceil(tgt / ystep - 1e-9)));
+  const yTop = ystep * yn;
+  const x = k => padL + (W - padL - padR) * (k / span);
+  const y = v => baseY - (baseY - topY) * (v / yTop);
+  let s = '';
+  s += `<rect width="${W}" height="${H}" fill="#ffffff"/>`;
+  s += `<defs><filter id="gl" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>`;
+  // y grid
+  for(let i = 0; i <= yn; i++){
+    const v = yTop * i / yn, yy = y(v);
+    s += `<line x1="${padL}" y1="${yy}" x2="${W-padR}" y2="${yy}" stroke="#e3e9f2" stroke-width="1"/>`;
+    s += `<text x="${padL-8}" y="${yy+4}" text-anchor="end" font-size="11" fill="#1c63b3" font-family="DM Mono,monospace">${fmtW(v)}萬</text>`;
+  }
+  s += `<text x="16" y="${(topY+baseY)/2}" transform="rotate(-90 16 ${(topY+baseY)/2})" text-anchor="middle" font-size="11.5" fill="#1c63b3" font-weight="700">保障／給付金額（萬元）</text>`;
+  // x axis
+  s += `<line x1="${padL}" y1="${baseY}" x2="${W-padR}" y2="${baseY}" stroke="#7d8fae" stroke-width="1.5"/>`;
+  const stepK = P.pyStep ? P.pyStep : (span <= 12 ? 1 : span <= 30 ? 5 : 10);
+  const ticks = [];
+  for(let k = 0; k <= span; k += stepK) ticks.push(k);
+  if(ticks[ticks.length-1] !== span){ if(span - ticks[ticks.length-1] < span * 0.07) ticks.pop(); ticks.push(span); }
+  for(const k of ticks){
+    const xx = x(k);
+    s += `<line x1="${xx}" y1="${baseY}" x2="${xx}" y2="${baseY+5}" stroke="#7d8fae"/>`;
+    s += `<text x="${xx}" y="${baseY+19}" text-anchor="middle" font-size="11" fill="#1c63b3" font-family="DM Mono,monospace">${k === 0 ? '投保' : '第'+k+'年'}</text>`;
+    s += `<text x="${xx}" y="${baseY+33}" text-anchor="middle" font-size="9.5" fill="#8a97ad">${k === 0 ? c.age : c.age + k - 1}歲</text>`;
+  }
+  // 繳費期滿
+  if(c.term < span && !P.renewal){
+    const xx = x(c.term);
+    s += `<line x1="${xx}" y1="${topY}" x2="${xx}" y2="${baseY}" stroke="#9fb7d8" stroke-dasharray="3,4"/>`;
+    s += `<rect x="${xx-34}" y="${baseY+40}" width="68" height="18" rx="9" fill="#5b9bd5"/><text x="${xx}" y="${baseY+53}" text-anchor="middle" font-size="10.5" fill="#fff" font-weight="700">繳費期滿</text>`;
+  }
+  if(P.renewal && c.periods){
+    c.periods.forEach((p, n) => { if(n === 0) return;
+      const xx = x(n * 10);
+      s += `<line x1="${xx}" y1="${topY}" x2="${xx}" y2="${baseY}" stroke="#9fb7d8" stroke-dasharray="3,4"/>`;
+      s += `<rect x="${xx-38}" y="${baseY+40}" width="76" height="18" rx="9" fill="#5b9bd5"/><text x="${xx}" y="${baseY+53}" text-anchor="middle" font-size="10.5" fill="#fff" font-weight="700">第${n}次續保</text>`;
+    });
+  }
+  // 已繳保費
+  {
+    let d = `M ${x(0)} ${y(0)}`;
+    for(let k = 1; k <= span; k++){ d += ` L ${x(k)} ${y(c.cum(k))}`; }
+    s += `<path d="${d}" fill="none" stroke="#5b9bd5" stroke-width="2.2" stroke-dasharray="4,4"/>`;
+    if(P.premTag && c.cum(P.renewal ? span : c.term) > 0){
+      const kk = Math.max(1, Math.round((P.renewal ? span * 0.45 : c.term * 0.6)));
+      const tx = x(kk), ty = y(c.cum(kk)) - 22, tw = P.premTag.length * 11.5 + 16;
+      s += `<rect x="${tx - tw/2}" y="${ty - 13}" width="${tw}" height="20" rx="10" fill="#fff" stroke="#5b9bd5" stroke-width="1.2"/><text x="${tx}" y="${ty + 1}" text-anchor="middle" font-size="11" fill="#1c63b3" font-weight="700">${P.premTag}</text>`;
+      s += `<line x1="${tx}" y1="${ty + 7}" x2="${tx}" y2="${y(c.cum(kk)) - 2}" stroke="#5b9bd5" stroke-width="1"/>`;
+    }
+  }
+  // 給付線（階梯）
+  const labels = [];
+  for(const se of ser){
+    let d = '';
+    for(let k = 1; k <= span; k++){
+      const v = se.fn(k);
+      if(k === 1) d += `M ${x(0)} ${y(v)} L ${x(1)} ${y(v)}`;
+      else d += ` L ${x(k-1)} ${y(v)} L ${x(k)} ${y(v)}`;
+    }
+    s += `<path d="${d}" fill="none" stroke="${se.color}" stroke-width="${se.w || 3}" stroke-linejoin="round" ${se.dash ? 'stroke-dasharray="'+se.dash+'"' : ''}/>`;
+    labels.push({ y: y(se.fn(span)), text: se.short, color: se.color, v: se.fn(span) });
+  }
+  // 右側標籤（避免重疊）
+  labels.sort((a,b)=>a.y-b.y);
+  for(let i = 1; i < labels.length; i++){ if(labels[i].y - labels[i-1].y < 15) labels[i].y = labels[i-1].y + 15; }
+  for(const l of labels){
+    s += `<text x="${W-padR+8}" y="${l.y+4}" font-size="11.5" font-weight="700" fill="${l.color}">${l.text} ${fmtW(l.v)}萬</text>`;
+  }
+  // 目前保單年度
+  if(py >= 1){
+    const xx = x(Math.min(py, span));
+    s += `<line x1="${xx}" y1="${topY}" x2="${xx}" y2="${baseY}" stroke="#c23b3b" stroke-width="1.4" stroke-dasharray="2,3"/>`;
+    for(const se of ser){ s += `<circle cx="${xx}" cy="${y(se.fn(Math.min(py, span)))}" r="4.5" fill="${se.color}" stroke="#fff" stroke-width="1.5"/>`; }
+    s += `<circle cx="${xx}" cy="${y(c.cum(py))}" r="4" fill="#5b9bd5" stroke="#fff" stroke-width="1.5"/>`;
+  }
+  // 起點、終點
+  s += `<circle cx="${x(0)}" cy="${y(0)}" r="5" fill="#fff" stroke="#c9860f" stroke-width="2.5"/>`;
+  if(c.endLabel){
+    s += `<line x1="${x(span)}" y1="${topY}" x2="${x(span)}" y2="${baseY}" stroke="#d8b46a" stroke-dasharray="3,3"/>`;
+    s += `<text x="${x(span)}" y="${topY-10}" text-anchor="end" font-size="11.5" font-weight="700" fill="#a8710c">${c.endLabel}</text>`;
+  }
+  svg.innerHTML = s;
+}
+
+function legendHTML(c){
+  return c.series.map(se => `<span><span class="dot" style="background:${se.color}"></span>${se.name}</span>`).join('') +
+    `<span><span class="dot" style="background:#5b9bd5"></span>累積保費線：已繳保費合計（同一縱軸，未扣折扣）</span>`;
+}
+
+function render(){
+  clampAge();
+  const c = calc();
+  window.__c = c;
+  syncPolicyYearMax(c);
+  const py = state.policyYear;
+  const warn = P.amountWarn ? P.amountWarn(state) : '';
+  setText('amountWarn', warn);
+  if(!c.has){
+    setHTML('statsGrid', '');
+    setHTML('legendBox', '');
+    setText('statusChip', '請先輸入投保金額');
+    document.getElementById('statusChip').className = 'status-chip paying';
+    setText('pyVal', 0); setText('pyAge', '—');
+    document.getElementById('chart').innerHTML = `<rect width="900" height="470" fill="#fff"/><text x="450" y="235" text-anchor="middle" font-size="16" fill="#a9bcd6">請輸入投保金額以顯示試算圖表</text>`;
+    return;
+  }
+  setText('pyVal', py);
+  setText('pyAge', c.age + py);
+  setHTML('statsGrid', c.stats(py).map(r => `<div class="stat ${r[3]||''}"><div class="label">${r[0]}</div><div class="num">${r[1]}</div><div class="sub">${r[2]||''}</div></div>`).join(''));
+  setHTML('legendBox', legendHTML(c));
+  setHTML('chartHint', c.chartHint || '');
+  const ch = c.chip(py);
+  const chip = document.getElementById('statusChip'); chip.className = 'status-chip ' + ch[0]; chip.textContent = ch[1];
+  drawChart(c);
+  if(P.afterRender) P.afterRender(c);
+}
+
+// ---- 事件 ----
+function toggleGroup(id, cb){
+  const g = document.getElementById(id); if(!g) return;
+  g.addEventListener('click', e => {
+    const b = e.target.closest('button'); if(!b || b.disabled) return;
+    g.querySelectorAll('button').forEach(x => x.classList.remove('active')); b.classList.add('active');
+    cb(b.dataset.v);
+  });
+}
+document.getElementById('age').addEventListener('input', e => { state.age = parseInt(e.target.value, 10) || 0; render(); });
+document.getElementById('amount').addEventListener('input', e => { state.amount = parseFloat(e.target.value) || 0; render(); });
+document.getElementById('policyYear').addEventListener('input', e => { state.policyYear = parseInt(e.target.value, 10) || 0; render(); });
+toggleGroup('genderToggle', v => { state.gender = v; render(); });
+toggleGroup('termToggle', v => { state.term = parseInt(v, 10); render(); });
+toggleGroup('clsToggle', v => { state.cls = v; render(); });
+const optEl = document.getElementById('optBox');
+if(optEl) optEl.addEventListener('change', e => { state.opt = e.target.checked; render(); });
+document.getElementById('playBtn').addEventListener('click', () => {
+  const btn = document.getElementById('playBtn');
+  if(playTimer){ clearInterval(playTimer); playTimer = null; btn.textContent = '▶ 播放'; return; }
+  const c = calc(); if(!c.has) return;
+  if(state.policyYear >= c.span) state.policyYear = 0;
+  btn.textContent = '⏸ 暫停';
+  playTimer = setInterval(() => {
+    const cc = calc();
+    if(state.policyYear >= cc.span){ clearInterval(playTimer); playTimer = null; btn.textContent = '▶ 播放'; return; }
+    state.policyYear = Math.min(cc.span, state.policyYear + (P.pyStep || 1)); render();
+  }, 380);
+});
+
+// 年繳費率表
+(function rateTable(){
+  const el = document.getElementById('rateTable'); if(!el) return;
+  const cols = P.rateCols;            // [{label, g, term}]
+  const ages = new Set();
+  cols.forEach(c => { const t = P.rateByTerm ? P.rates[c.g][c.term] : P.rates[c.g]; Object.keys(t).forEach(a => ages.add(+a)); });
+  const arr = [...ages].sort((a,b)=>a-b);
+  let h = '<thead><tr><th>年齡</th>' + cols.map(c => `<th>${c.label}</th>`).join('') + '</tr></thead><tbody>';
+  for(const a of arr){
+    h += `<tr><td>${a}</td>` + cols.map(c => { const t = P.rateByTerm ? P.rates[c.g][c.term] : P.rates[c.g]; return `<td>${t[a] !== undefined ? t[a].toLocaleString('en-US') : '—'}</td>`; }).join('') + '</tr>';
+  }
+  el.innerHTML = h + '</tbody>';
+})();
+
+if(P.init) P.init();
+render();
+
+</script>
+</body>
+</html>
