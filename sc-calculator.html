@@ -430,7 +430,8 @@ function niceMax(v){
 
 function drawChart(c){
   const svg = document.getElementById('chart');
-  const W = 900, H = 470, padL = 66, padR = 150, padT = 36, padB = 64;
+  const W = 900, H = P.stages ? 530 : 470, padL = 66, padR = 150, padT = 36, padB = P.stages ? 124 : 64;
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
   const baseY = H - padB, topY = padT;
   const span = c.span, py = state.policyYear;
   const ser = c.series;
@@ -478,6 +479,21 @@ function drawChart(c){
       s += `<line x1="${xx}" y1="${topY}" x2="${xx}" y2="${baseY}" stroke="#9fb7d8" stroke-dasharray="3,4"/>`;
       s += `<rect x="${xx-38}" y="${baseY+40}" width="76" height="18" rx="9" fill="#5b9bd5"/><text x="${xx}" y="${baseY+53}" text-anchor="middle" font-size="10.5" fill="#fff" font-weight="700">第${n}次續保</text>`;
     });
+  }
+  if(P.stages){
+    // 責任重大期＋資產累積期落在繳費期間內；65 歲後為退休養老期（比照 TED 計算機）
+    const start = c.age, end = c.age + span, payLen = c.term;
+    let b1 = start + Math.round(payLen/2); b1 = Math.max(start+1, Math.min(b1, 64));
+    let b2 = Math.min(65, end-1); if(b2 <= b1) b2 = Math.min(b1+1, end-1); if(b2 <= b1) b2 = end;
+    const zones = [{f:start,t:b1,l:'責任重大期',col:'#c9860f'},{f:b1,t:b2,l:'資產累積期',col:'#3f9e6d'},{f:b2,t:end,l:'退休養老期',col:'#1c63b3'}];
+    const trackY = baseY + 74;
+    for(const z of zones){
+      const x1 = x(z.f - start), x2 = x(z.t - start);
+      if(x2 - x1 < 1) continue;
+      s += `<rect x="${x1}" y="${topY}" width="${x2-x1}" height="${baseY-topY}" fill="${z.col}" opacity="0.06"/>`;
+      s += `<rect x="${x1}" y="${trackY}" width="${x2-x1}" height="8" rx="4" fill="${z.col}"/>`;
+      s += `<text x="${(x1+x2)/2}" y="${trackY+26}" text-anchor="middle" font-size="12.5" font-weight="700" fill="${z.col}">${z.l}</text>`;
+    }
   }
   // 已繳保費
   {
