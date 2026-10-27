@@ -305,7 +305,7 @@ const RATES = {"male": {"10": {"0": 225, "18": 312, "36": 445, "54": 597, "1": 2
 
 const PRODUCT = {
   defAge:35, defAmount:100, terms:[10,20], ageMax:{10:70,20:65}, ageMin:0,
-  rateByTerm:true, rateMul:1, rates:RATES,
+  rateByTerm:true, rateMul:1, rates:RATES, premTag:'累積保費線',
   rateCols:[{label:'10年期 男',g:'male',term:10},{label:'10年期 女',g:'female',term:10},{label:'20年期 男',g:'male',term:20},{label:'20年期 女',g:'female',term:20}],
   span:(age,term)=>96-age,   // 保障至保險年齡95歲保單年度末
   amountWarn:s=> { const mx = s.age <= 54 ? 300 : 200;
@@ -466,9 +466,9 @@ function drawChart(c){
     s += `<path d="${d}" fill="none" stroke="#5b9bd5" stroke-width="2.2" stroke-dasharray="4,4"/>`;
     if(P.premTag && c.cum(P.renewal ? span : c.term) > 0){
       const kk = Math.max(1, Math.round((P.renewal ? span * 0.45 : c.term * 0.6)));
-      const tx = x(kk), ty = y(c.cum(kk)) - 22, tw = P.premTag.length * 11.5 + 16;
+      const below = !!P.premTagBelow, tx = x(kk) + (below ? 56 : 0), ty = y(c.cum(kk)) + (below ? 34 : -22), tw = P.premTag.length * 11.5 + 16;
       s += `<rect x="${tx - tw/2}" y="${ty - 13}" width="${tw}" height="20" rx="10" fill="#fff" stroke="#5b9bd5" stroke-width="1.2"/><text x="${tx}" y="${ty + 1}" text-anchor="middle" font-size="11" fill="#1c63b3" font-weight="700">${P.premTag}</text>`;
-      s += `<line x1="${tx}" y1="${ty + 7}" x2="${tx}" y2="${y(c.cum(kk)) - 2}" stroke="#5b9bd5" stroke-width="1"/>`;
+      s += `<line x1="${x(kk)}" y1="${y(c.cum(kk)) + 2}" x2="${below ? tx - tw/2 : tx}" y2="${below ? ty : ty + 7}" stroke="#5b9bd5" stroke-width="1"/>`;
     }
   }
   // 給付線（階梯）
