@@ -2,8 +2,8 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<meta name="color-scheme" content="dark">
-<meta name="theme-color" content="#062a57">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#0b2e5c">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>吳約翰｜保險實戰工具箱</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,28 +11,29 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;600;700;900&family=Noto+Sans+TC:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    /* 南山人壽企業識別：藍（主色）· 晨光黃 · 生命綠 */
-    --navy-deep:#062a57;
-    --navy:#0a3570;
-    --navy-card:#0e4285;
-    --ns-blue:#0b6bc0;
-    --gold:#f5b400;
-    --gold-bright:#ffcb3d;
-    --green:#6cc04a;
-    --cream:#f5f8fc;
-    --mist:#a9c3e3;
-    --line: rgba(255,255,255,0.12);
+    /* 配色同 SUPA 試算工具：南山 CI 藍為主色，黃（溫暖）、綠（活力）為輔助色 */
+    --ns-blue-900:#0b2e5c;
+    --ns-blue-700:#134a8c;
+    --ns-blue-500:#1c63b3;
+    --ns-blue-100:#e7f0fb;
+    --ns-gold-600:#c9860f;
+    --ns-gold-400:#e3a635;
+    --ns-gold-100:#fdf1dc;
+    --ns-green-600:#1f7a4d;
+    --ns-green-400:#3f9e6d;
+    --ns-green-100:#e6f6ee;
+    --ink-900:#101826;
+    --ink-600:#3d4a5f;
+    --ink-400:#71809a;
+    --line:#d8e0ec;
+    --bg:#f3f6fb;
+    --card:#ffffff;
   }
   *{box-sizing:border-box; margin:0; padding:0;}
-  html{scroll-behavior:smooth; background:var(--navy-deep); color-scheme:dark;}
+  html{scroll-behavior:smooth; background:var(--bg); color-scheme:light;}
   body{
-    background-color:var(--navy-deep);
-    background-image:
-      radial-gradient(ellipse at 15% 0%, rgba(11,107,192,0.55), transparent 55%),
-      radial-gradient(ellipse at 100% 25%, rgba(245,180,0,0.10), transparent 50%),
-      radial-gradient(ellipse at 0% 90%, rgba(108,192,74,0.10), transparent 50%);
-    background-attachment:fixed;
-    color:var(--cream);
+    background:var(--bg);
+    color:var(--ink-900);
     font-family:'Noto Sans TC', sans-serif;
     font-weight:300;
     line-height:1.75;
@@ -61,37 +62,44 @@
 
   /* ---- Header ---- */
   .portrait{width:168px; height:168px; margin:0 auto 26px; border-radius:50%; padding:4px;
-    background:conic-gradient(from 200deg,var(--ns-blue),var(--gold) 40%,var(--green) 70%,var(--ns-blue));
-    box-shadow:0 12px 40px rgba(0,0,0,.45);}
+    background:conic-gradient(from 200deg,var(--ns-blue-500),var(--ns-gold-400) 40%,var(--ns-green-400) 70%,var(--ns-blue-500));
+    box-shadow:0 12px 34px rgba(0,0,0,.35); position:relative; z-index:1;}
   .portrait img{width:100%; height:100%; border-radius:50%; object-fit:cover; object-position:50% 18%; display:block;}
   @media (max-width:480px){.portrait{width:132px; height:132px;}}
-  header{padding:64px 0 40px; text-align:center; position:relative;}
+  header.wrap{text-align:center; position:relative; overflow:hidden; margin:24px auto 0; padding:40px 22px 34px;
+    background:linear-gradient(135deg,var(--ns-blue-900),var(--ns-blue-700)); border-radius:18px;}
+  header::after{content:''; position:absolute; right:-40px; top:-40px; width:200px; height:200px; border-radius:50%;
+    background:radial-gradient(circle,rgba(227,166,53,.35),transparent 70%);}
+  header::before{content:''; position:absolute; left:-30px; bottom:-50px; width:180px; height:180px; border-radius:50%;
+    background:radial-gradient(circle,rgba(63,158,109,.3),transparent 70%);}
+  header > *{position:relative; z-index:1;}
+  @media(max-width:968px){header.wrap{margin:16px 16px 0;}}
   @keyframes heroFade{from{opacity:0; transform:translateY(14px);} to{opacity:1; transform:translateY(0);}}
   @keyframes lineDraw{from{width:0;} to{width:64px;}}
   .eyebrow{
     font-family:'DM Mono', monospace;
     font-size:12px; letter-spacing:0.35em; text-transform:uppercase;
-    color:var(--gold); margin-bottom:20px;
+    color:var(--ns-gold-400); margin-bottom:20px;
     animation:heroFade .7s cubic-bezier(.2,.7,.2,1) both;
   }
   h1{
     font-family:'Noto Serif TC', serif; font-weight:700;
     font-size:clamp(26px,5vw,42px);
     letter-spacing:0.02em;
-    color:var(--cream);
+    color:#fff;
     margin-bottom:10px;
     animation:heroFade .8s cubic-bezier(.2,.7,.2,1) .12s both;
   }
   h1 .quarter{
-    display:inline-block; color:var(--gold-bright); font-weight:900;
+    display:inline-block; color:var(--ns-gold-400); font-weight:900;
     position:relative; padding:0 4px;
   }
   .subtitle-line{
-    width:64px; height:3px; border-radius:2px; background:linear-gradient(90deg,var(--ns-blue) 0 33%,var(--gold) 33% 66%,var(--green) 66%); margin:24px auto 22px;
+    width:64px; height:3px; border-radius:2px; background:linear-gradient(90deg,#5b9bd5 0 33%,var(--ns-gold-400) 33% 66%,var(--ns-green-400) 66%); margin:24px auto 22px;
     animation:lineDraw .9s cubic-bezier(.2,.7,.2,1) .32s both;
   }
   .members{
-    font-size:13px; color:var(--mist); letter-spacing:0.03em;
+    font-size:13.5px; color:#c9d9ef; letter-spacing:0.03em;
     animation:heroFade .8s cubic-bezier(.2,.7,.2,1) .46s both;
   }
   @media (prefers-reduced-motion: reduce){
@@ -99,19 +107,19 @@
   }
 
   /* ---- Section shell ---- */
-  section{padding:56px 0; border-top:1px solid var(--line);}
+  section.wrap{padding-top:44px; padding-bottom:40px;}
   .section-eyebrow{
     font-family:'DM Mono', monospace; font-size:11px; letter-spacing:0.3em;
-    text-transform:uppercase; color:var(--gold); margin-bottom:14px;
+    text-transform:uppercase; color:var(--ns-gold-600); margin-bottom:14px;
   }
   h2{
     font-family:'Noto Serif TC', serif; font-weight:600;
     font-size:clamp(21px,3.4vw,28px);
-    color:var(--cream); margin-bottom:30px;
+    color:var(--ns-blue-900); margin-bottom:26px;
   }
   h3.sub-label{
     font-family:'DM Mono', monospace; font-weight:500; font-size:12px; letter-spacing:0.2em;
-    color:var(--mist); margin:30px 0 16px; text-transform:uppercase;
+    color:var(--ns-blue-700); margin:30px 0 16px; text-transform:uppercase;
   }
   h3.sub-label:first-of-type{margin-top:0;}
 
@@ -119,16 +127,16 @@
   .pair{display:grid; grid-template-columns:1fr 1fr; gap:20px;}
   @media(max-width:680px){.pair{grid-template-columns:1fr;}}
   .card{
-    background:linear-gradient(180deg, var(--navy-card), var(--navy));
+    background:var(--card);
     border:1px solid var(--line);
-    border-radius:4px;
+    border-radius:16px; box-shadow:0 12px 30px -18px rgba(11,46,92,.25);
     padding:26px 24px;
   }
   .card-label{
     font-family:'DM Mono', monospace; font-size:11px; letter-spacing:0.2em;
-    color:var(--mist); text-transform:uppercase; margin-bottom:12px;
+    color:var(--ns-blue-700); text-transform:uppercase; margin-bottom:12px; font-weight:500;
   }
-  .card p{font-size:15px; color:#e6eef8; font-weight:300;}
+  .card p{font-size:15px; color:var(--ink-600); font-weight:400;}
 
   /* ---- Process (晨會通關機制) ---- */
   .process{display:flex; flex-direction:column; gap:0;}
@@ -138,38 +146,38 @@
   }
   .step:first-child{border-top:none;}
   .step-num{
-    font-family:'DM Mono', monospace; font-size:22px; color:var(--green);
+    font-family:'DM Mono', monospace; font-size:22px; color:var(--ns-green-600);
     font-weight:500;
   }
   .step-title{
     font-family:'Noto Serif TC', serif; font-weight:600; font-size:17px;
-    color:var(--cream); margin-bottom:6px;
+    color:var(--ns-blue-900); margin-bottom:6px;
   }
-  .step-desc{font-size:14.5px; color:#cddbee; font-weight:300;}
+  .step-desc{font-size:14.5px; color:var(--ink-600); font-weight:400;}
 
   /* ---- Resource cards ---- */
   .grid{display:grid; grid-template-columns:repeat(2,1fr); gap:18px;}
   @media(max-width:680px){.grid{grid-template-columns:1fr;}}
   .res-card{
-    background:var(--navy-card); border:1px solid var(--line); border-radius:4px;
+    background:var(--card); border:1px solid var(--line); border-radius:16px; box-shadow:0 12px 30px -18px rgba(11,46,92,.25);
     padding:24px; display:flex; flex-direction:column; gap:12px;
     transition:border-color .2s ease, transform .2s ease;
   }
-  .res-card:hover{border-color:var(--gold); box-shadow:0 10px 30px rgba(0,0,0,.25); transform:translateY(-2px);}
+  .res-card:hover{border-color:var(--ns-blue-500); box-shadow:0 16px 34px -16px rgba(11,46,92,.4); transform:translateY(-2px);}
   .res-top{display:flex; align-items:center; justify-content:space-between;}
   .res-icon{font-size:26px;}
   .res-tag{
     font-family:'DM Mono', monospace; font-size:10px; letter-spacing:0.05em;
     padding:3px 9px; border-radius:20px; font-weight:500;
   }
-  .res-tag.pdf{background:rgba(108,192,74,0.14); color:var(--green); border:1px solid rgba(108,192,74,0.35);}
-  .res-tag.tool{background:rgba(245,180,0,0.14); color:var(--gold-bright); border:1px solid rgba(245,180,0,0.35);}
-  .res-name{font-family:'Noto Serif TC', serif; font-weight:600; font-size:16px; color:var(--cream);}
+  .res-tag.pdf{background:var(--ns-green-100); color:var(--ns-green-600); border:1px solid rgba(31,122,77,.3);}
+  .res-tag.tool{background:var(--ns-blue-900); color:var(--ns-gold-400); border:1px solid var(--ns-blue-900);}
+  .res-name{font-family:'Noto Serif TC', serif; font-weight:600; font-size:16px; color:var(--ns-blue-900);}
   .res-link{
     font-family:'DM Mono', monospace; font-size:12px; letter-spacing:0.05em;
-    color:var(--gold-bright); text-decoration:none; border-bottom:1px solid transparent;
+    color:var(--ns-blue-500); font-weight:500; text-decoration:none; border-bottom:1px solid transparent;
   }
-  .res-link:hover{border-color:var(--gold-bright);}
+  .res-link:hover{border-color:var(--ns-blue-500);}
 
   /* ---- Talk points ---- */
   .talk{display:flex; flex-direction:column; gap:0;}
@@ -178,23 +186,23 @@
     padding:20px 0; border-top:1px solid var(--line);
   }
   .talk-item:first-child{border-top:none;}
-  .talk-num{font-family:'DM Mono', monospace; color:var(--green); font-size:14px;}
-  .talk-text{font-size:15px; color:#e6eef8;}
-  .talk-text b{color:var(--gold-bright); font-weight:500;}
+  .talk-num{font-family:'DM Mono', monospace; color:var(--ns-green-600); font-size:14px; font-weight:500;}
+  .talk-text{font-size:15px; color:var(--ink-600);}
+  .talk-text b{color:var(--ns-blue-900); font-weight:700;}
 
   /* ---- Outlook ---- */
   .outlook-grid{display:grid; grid-template-columns:1fr 1fr; gap:20px;}
   @media(max-width:680px){.outlook-grid{grid-template-columns:1fr;}}
   .outlook-card{padding:24px 0;}
   .outlook-icon{font-size:24px; margin-bottom:10px;}
-  .outlook-title{font-family:'Noto Serif TC', serif; font-weight:600; font-size:16px; color:var(--gold-bright); margin-bottom:8px;}
-  .outlook-desc{font-size:14.5px; color:#cddbee;}
+  .outlook-title{font-family:'Noto Serif TC', serif; font-weight:600; font-size:16px; color:var(--ns-gold-600); margin-bottom:8px;}
+  .outlook-desc{font-size:14.5px; color:var(--ink-600);}
 
   /* ---- Team ---- */
   .team-photo{width:100%; border-radius:4px; border:1px solid var(--line); display:block; margin-bottom:18px;}
-  .team-caption{text-align:center; font-family:'DM Mono', monospace; font-size:12px; letter-spacing:0.15em; color:var(--mist); text-transform:uppercase;}
+  .team-caption{text-align:center; font-family:'DM Mono', monospace; font-size:12px; letter-spacing:0.15em; color:var(--ink-400); text-transform:uppercase;}
 
-  footer{padding:40px 0 60px; text-align:center; font-size:12px; color:var(--mist); border-top:1px solid var(--line);}
+  footer{padding:30px 20px 60px; text-align:center; font-size:12px; color:var(--ink-400);}
 </style>
 </head>
 <body>
