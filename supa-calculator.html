@@ -121,6 +121,14 @@
   th.per-10{background:var(--ns-blue-700)!important;}
   th.per-20{background:var(--ns-green-600)!important;}
 
+  #premium-table th small{display:block;font-weight:400;font-size:10.5px;opacity:.9;margin-top:2px;}
+  #premium-table thead tr:first-child th[colspan]{text-align:center;}
+  #premium-table thead tr.sub th{border-radius:0;background:var(--ns-blue-500);}
+  #premium-table thead tr.sub th.auto{background:var(--ns-gold-600);}
+  #premium-table th.grp,#premium-table td.grp{border-left:1px solid var(--line);}
+  #premium-table thead th.grp{border-left-color:rgba(255,255,255,.4);}
+  #premium-table td.auto{background:var(--ns-gold-100);font-weight:700;color:var(--ns-blue-900);}
+  #premium-table td.auto small{display:block;font-weight:400;font-size:10.5px;color:var(--ns-gold-600);}
   .bar{height:6px;border-radius:3px;background:#e5eaf3;margin-top:5px;overflow:hidden;}
   .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--ns-blue-500),var(--ns-blue-700));}
 
@@ -268,15 +276,16 @@
       <span class="badge" id="cmp-badge">—</span>
     </div>
     <div class="scroll">
-      <table class="cmp">
+      <table class="cmp" id="premium-table">
         <thead>
-          <tr><th>繳費期間</th><th>保險金額</th><th>年繳保費</th><th>總繳保費估算</th></tr>
+          <tr><th rowspan="2">繳費期間</th><th rowspan="2">保險金額</th><th colspan="2" class="grp">年繳保費</th><th colspan="2" class="grp">總繳保費估算</th></tr>
+          <tr class="sub"><th class="grp">一般繳費</th><th class="auto">自動扣款<small>享1%折扣</small></th><th class="grp">一般繳費</th><th class="auto">自動扣款<small>享1%折扣</small></th></tr>
         </thead>
         <tbody id="cmp-body"></tbody>
       </table>
     </div>
     <div class="note left" style="margin-top:14px;">
-      <span class="cheapest-val">●</span> 年繳保費最低。同一保險金額下，期別愈短年繳愈高、但總繳愈低。至少選擇一個期別與一個保險金額。職業等級1~4級享相同費率。
+      <span class="cheapest-val">●</span> 年繳保費最低。同一保險金額下，期別愈短年繳愈高、但總繳愈低。「自動扣款」為金融機構自動扣款／南山人壽聯名卡繳費之1%折扣試算，信用卡（非聯名卡）與自行繳費不適用。至少選擇一個期別與一個保險金額。職業等級1~4級享相同費率。
     </div>
 
     <div class="cmp-head" style="margin-top:32px;">
@@ -360,7 +369,7 @@
   </div>
 
   <div class="note">
-    資料來源：南山人壽長享平安終身傷害保險（SUPA）商品簡介 PA-01-480（2026年10月版）年繳費率表，每萬元保險金額費率，一般繳費件。<b>集體投保彙繳</b>費率與<b>金融機構自動轉帳／南山人壽聯名卡1%折扣</b>未包含於本工具。試算結果僅供參考，詳細給付內容與條件請以保單條款為準，實際保費以南山人壽核保及要保書為準。
+    資料來源：南山人壽長享平安終身傷害保險（SUPA）商品簡介 PA-01-480（2026年10月版）年繳費率表，每萬元保險金額費率，一般繳費件。「自動扣款」欄為<b>金融機構自動扣款／南山人壽聯名卡</b>繳費享1%折扣之試算（折扣後年繳保費四捨五入至元），<b>集體投保彙繳</b>費率未包含於本工具。試算結果僅供參考，詳細給付內容與條件請以保單條款為準，實際保費以南山人壽核保及要保書為準。
     <br>本比較表由 <b>吳約翰</b> 業務主任製作 · 順可通訊處
   </div>
 
@@ -380,6 +389,7 @@ const RATES = {
     female: [235,238,241,244,247,250,252,254,256,258,260,262,264,266,268,270,272,274,276,278,280]
   }
 };
+const AUTO_DISCOUNT = 0.01;   // 金融機構自動扣款／南山人壽聯名卡：1%折扣
 const MAX_AGE = { "10": 80, "20": 70 };
 // DATA-END
 
@@ -454,13 +464,15 @@ function renderPremium(){
     const r = ratePerWan(p, state.gender, state.age);
     amounts.forEach(a=>{
       const premium = r===null ? null : r * a;
-      rows.push({ p, a, premium, total: premium===null ? null : premium*parseInt(p) });
+      const auto = premium===null ? null : Math.round(premium * (1 - AUTO_DISCOUNT));   // 自動扣款 1% 折扣，四捨五入至元
+      const yrs = parseInt(p);
+      rows.push({ p, a, premium, auto, total: premium===null ? null : premium*yrs, autoTotal: auto===null ? null : auto*yrs });
     });
   });
 
   const valid = rows.filter(r=>r.premium!==null).map(r=>r.premium);
   if(valid.length===0){
-    body.innerHTML = `<tr><td colspan="4" style="color:var(--ink-400);">此年齡在所選期別下超出投保年齡範圍</td></tr>`;
+    body.innerHTML = `<tr><td colspan="6" style="color:var(--ink-400);">此年齡在所選期別下超出投保年齡範圍</td></tr>`;
     return;
   }
   const minPremium = Math.min(...valid);
@@ -469,7 +481,7 @@ function renderPremium(){
   rows.forEach(r=>{
     const tr = document.createElement('tr');
     if(r.premium===null){
-      tr.innerHTML = `<td>${periodLabel[r.p]}</td><td class="per-${r.p}" style="font-weight:700;">${r.a}萬</td><td colspan="2" style="color:var(--ink-400);">超出投保年齡範圍（${r.p}年期：50~${MAX_AGE[r.p]}歲）</td>`;
+      tr.innerHTML = `<td>${periodLabel[r.p]}</td><td class="per-${r.p}" style="font-weight:700;">${r.a}萬</td><td colspan="4" style="color:var(--ink-400);">超出投保年齡範圍（${r.p}年期：50~${MAX_AGE[r.p]}歲）</td>`;
       body.appendChild(tr);
       return;
     }
@@ -477,10 +489,12 @@ function renderPremium(){
     tr.innerHTML = `
       <td>${periodLabel[r.p]}</td>
       <td class="per-${r.p}" style="font-weight:700;">${r.a}萬</td>
-      <td class="per-${r.p}" style="${isMin?'color:var(--ns-blue-700);font-weight:700;':''}">${fmt(r.premium)}${isMin?' ●':''}
+      <td class="per-${r.p} grp" style="${isMin?'color:var(--ns-blue-700);font-weight:700;':''}">${fmt(r.premium)}${isMin?' ●':''}
         <div class="bar"><i style="width:${(r.premium/maxPremium*100).toFixed(0)}%"></i></div>
       </td>
-      <td class="per-${r.p}">${fmt(r.total)}</td>`;
+      <td class="auto">${fmt(r.auto)}${isMin?' ●':''}<small>每年省 ${fmt(r.premium - r.auto)}</small></td>
+      <td class="per-${r.p} grp">${fmt(r.total)}</td>
+      <td class="auto">${fmt(r.autoTotal)}<small>共省 ${fmt(r.total - r.autoTotal)}</small></td>`;
     body.appendChild(tr);
   });
 }
