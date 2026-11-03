@@ -115,6 +115,10 @@
   table.cmp td:first-child{text-align:left;font-family:'Noto Sans TC';color:var(--ink-600);}
   table.cmp tbody tr:nth-child(odd){background:#fbfcfe;}
   table.cmp tr.total-row td{font-weight:700;background:var(--ns-gold-100)!important;color:var(--ns-blue-900);}
+  table.cmp thead th[colspan],table.cmp thead tr+tr th{text-align:center!important;border-radius:0!important;}
+  table.cmp thead tr+tr th{background:var(--ns-blue-500);}
+  table.cmp th small{font-weight:400;opacity:.85;}
+  table.cmp .save{font-size:11px;color:var(--ns-green-600,#1f7a4d);font-family:'Noto Sans TC';font-weight:400;}
   table.cmp tr:hover td{background:var(--ns-blue-100);}
 
   /* per-plan column tint for premium comparison */
@@ -210,7 +214,8 @@
     </div>
     <table class="cmp">
       <thead>
-        <tr><th>繳費期間</th><th>投保計劃</th><th>年繳保費</th><th>總繳保費估算</th></tr>
+        <tr><th rowspan="2">繳費期間</th><th rowspan="2">投保計劃</th><th colspan="2">年繳保費</th><th colspan="2">總繳保費估算</th></tr>
+        <tr><th>一般繳費</th><th>自動扣款<br><small>享1%折扣</small></th><th>一般繳費</th><th>自動扣款<br><small>享1%折扣</small></th></tr>
       </thead>
       <tbody id="cmp-body"></tbody>
     </table>
@@ -331,7 +336,7 @@
   </div>
 
   <div class="note">
-    資料來源：南山人壽實健溢百住院醫療終身保險費率表（一般繳費件）與商品簡介。<b>集體投保彙繳</b>與<b>金融機構自動轉帳／信用卡</b>件另有調整費率，未包含於本工具。試算結果僅供參考，實際保費以南山人壽核保及要保書為準。
+    資料來源：南山人壽實健溢百住院醫療終身保險費率表（一般繳費件）與商品簡介。<b>集體投保彙繳</b>與<b>信用卡</b>件另有調整費率，未包含於本工具。<b>自動扣款</b>欄為一般繳費保費扣除1%折扣（四捨五入至元），實際以南山人壽系統為準。試算結果僅供參考，實際保費以南山人壽核保及要保書為準。
     <br>本比較表由 <b>吳約翰</b> 業務主任製作 · 順可通訊處
   </div>
 
@@ -467,6 +472,7 @@ function multiSetup(id, arrKey){
 multiSetup('period-multi','periods');
 multiSetup('plan-multi','plans');
 
+const AUTO_DISCOUNT = 0.01;
 function renderCompare(){
   const periods = ['10','20','30'].filter(p=>cstate.periods.includes(p));
   const plans = ['10','20','30'].filter(p=>cstate.plans.includes(p));
@@ -491,7 +497,7 @@ function renderCompare(){
   const validTotals   = rows.filter(r=>r.total!==null).map(r=>r.total);
 
   if(validPremiums.length===0){
-    body.innerHTML = `<tr><td colspan="5" style="color:var(--ink-400);">此年齡在所選組合下皆超出投保年齡範圍</td></tr>`;
+    body.innerHTML = `<tr><td colspan="6" style="color:var(--ink-400);">此年齡在所選組合下皆超出投保年齡範圍</td></tr>`;
     renderBenefitTable('benefit-pre74','pre74');
     renderBenefitTable('benefit-post74','post74');
     updateHealthHighlight();
@@ -504,10 +510,12 @@ function renderCompare(){
   rows.forEach(r=>{
     const tr = document.createElement('tr');
     if(r.premium===null){
-      tr.innerHTML = `<td>${periodLabel[r.p]}</td><td class="plan-${r.pl}">計劃${r.pl}</td><td colspan="2" style="color:var(--ink-400);">超出投保年齡範圍</td>`;
+      tr.innerHTML = `<td>${periodLabel[r.p]}</td><td class="plan-${r.pl}">計劃${r.pl}</td><td colspan="4" style="color:var(--ink-400);">超出投保年齡範圍</td>`;
       body.appendChild(tr);
       return;
     }
+    const auto = Math.round(r.premium*(1-AUTO_DISCOUNT));
+    const autoTotal = auto*parseInt(r.p);
     const isMinPremium = r.premium===minPremium;
     const isMinTotal = r.total===minTotal;
     tr.innerHTML = `
@@ -516,7 +524,13 @@ function renderCompare(){
       <td class="plan-${r.pl}" style="${isMinPremium?'color:var(--ns-blue-700);font-weight:700;':''}">${fmt(r.premium)}${isMinPremium?' ●':''}
         <div class="bar"><i style="width:${(r.premium/maxPremium*100).toFixed(0)}%"></i></div>
       </td>
+      <td class="plan-${r.pl}" style="${isMinPremium?'color:var(--ns-green-600,#1f7a4d);font-weight:700;':''}">${fmt(auto)}${isMinPremium?' ●':''}
+        <div class="save">每年省 ${fmt(r.premium-auto)}</div>
+      </td>
       <td class="plan-${r.pl}">${fmt(r.total)}</td>
+      <td class="plan-${r.pl}" style="color:var(--ns-green-600,#1f7a4d);">${fmt(autoTotal)}
+        <div class="save">共省 ${fmt(r.total-autoTotal)}</div>
+      </td>
     `;
     body.appendChild(tr);
   });
