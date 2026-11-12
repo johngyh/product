@@ -549,7 +549,7 @@ function cmpCum(key, g, age, amt, k){   // 萬
 }
 function drawChart(c){
   const svg = document.getElementById('chart');
-  const STAIR = (P.renewal && c.periods && c.has) ? 128 : 0;
+  const STAIR = 0;
   const W = 900, H = (P.stages ? 530 : 470) + STAIR, padL = 66, padR = 150, padT = 36, padB = (P.stages ? 124 : 64) + STAIR;
   svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
   const baseY = H - padB, topY = padT;
@@ -618,25 +618,14 @@ function drawChart(c){
   }
   // 已繳保費：續保型改為每 10 年一根累計長條；非續保型維持虛線
   if(P.renewal && c.periods){
-    const N = c.periods.length, bw = Math.min(46, (x(10)-x(0)) * 0.42);
+    const N = c.periods.length, bw = Math.min(30, (x(10)-x(0)) * 0.28);
     const reached = n => py >= (n+1)*10;
     c.periods.forEach((p, n) => {
       const k = (n+1)*10, v = c.cum(k), xx = x(k) - bw/2 - (n === N-1 ? bw*0.15 : 0), yy = y(v), r = reached(n);
-      const fill = r ? (py === k ? '#b4461f' : '#c8603f') : '#c8603f';
-      s += `<rect class="${r && py === k ? 'pvg' : ''}" x="${xx}" y="${yy}" width="${bw}" height="${baseY-yy}" rx="3" fill="${fill}" opacity="${r ? 0.92 : 0.13}"/>`;
-      if(r) s += `<text x="${xx+bw/2}" y="${yy-7}" text-anchor="middle" font-size="13" font-weight="700" fill="#8f3416" font-family="DM Mono,monospace">${fmtW(Math.round(v*10)/10)}萬</text>`;
+      const fill = '#5b9bd5';
+      s += `<rect class="${r && py === k ? 'pvg' : ''}" x="${xx}" y="${yy}" width="${bw}" height="${baseY-yy}" rx="3" fill="${fill}" opacity="${r ? 0.85 : 0.12}"/>`;
+      if(r) s += `<text x="${xx+bw/2}" y="${yy-7}" text-anchor="middle" font-size="11" font-weight="600" fill="#1c63b3" font-family="DM Mono,monospace">${fmtW(Math.round(v*10)/10)}萬</text>`;
     });
-    // 累計保費超過原始保額的交叉點
-    let kx = 0; for(let k = 1; k <= span; k++){ if(c.cum(k) > c.amount){ kx = k; break; } }
-    if(kx && py >= kx){
-      const xx = x(kx), yy = y(c.amount);
-      s += `<circle cx="${xx}" cy="${yy}" r="7" fill="#fff" stroke="#c23b3b" stroke-width="2.5"/>`;
-      const bx = Math.max(padL + 4, xx - 290), by = yy - 92;
-      s += `<rect x="${bx}" y="${by}" width="232" height="42" rx="8" fill="#c23b3b"/>`;
-      s += `<text x="${bx+116}" y="${by+17}" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">第 ${kx} 年（${c.age+kx-1} 歲）起</text>`;
-      s += `<text x="${bx+116}" y="${by+33}" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">累計保費超過原始保額 ${fmtW(c.amount)} 萬</text>`;
-      s += `<line x1="${bx+232}" y1="${by+30}" x2="${xx-6}" y2="${yy-5}" stroke="#c23b3b" stroke-width="1.5"/>`;
-    }
   } else {
     let d = `M ${x(0)} ${y(0)}`;
     for(let k = 1; k <= span; k++){ d += ` L ${x(k)} ${y(c.cum(k))}`; }
@@ -650,15 +639,11 @@ function drawChart(c){
       const lim = Math.max(1, Math.min(py || span, span));
       let d = `M ${x(0)} ${y(0)}`;
       for(let k = 1; k <= lim; k++){ d += ` L ${x(k)} ${y(cmpCum(key, state.gender, c.age, c.amount, k))}`; }
-      s += `<path d="${d}" fill="none" stroke="${p.color}" stroke-width="3" stroke-linejoin="round"/>`;
+      s += `<path d="${d}" fill="none" stroke="${p.color}" stroke-width="2" stroke-linejoin="round" opacity="0.9"/>`;
       const v = cmpCum(key, state.gender, c.age, c.amount, lim);
       s += `<circle cx="${x(lim)}" cy="${y(v)}" r="4.5" fill="${p.color}" stroke="#fff" stroke-width="1.5"/>`;
       if(lim === span) cmpLab.push({ y: y(v), text: p.name, color: p.color, v: Math.round(v*10)/10 });
       else s += `<text x="${x(lim)+8}" y="${y(v)+(key==='ted35'?-8:14)}" font-size="11.5" font-weight="700" fill="${p.color}">${p.name} ${fmtW(Math.round(v*10)/10)}萬</text>`;
-      if(p.span && p.span <= span && lim >= p.span){
-        const xx = x(p.span), yy = y(cmpCum(key, state.gender, c.age, c.amount, p.span));
-        s += `<rect x="${xx-50}" y="${yy-34}" width="100" height="20" rx="10" fill="#fdf1dc" stroke="${p.color}"/><text x="${xx}" y="${yy-20}" text-anchor="middle" font-size="11" font-weight="700" fill="#a8710c">${c.age+p.span-1} 歲期滿領回</text>`;
-      }
     }
   }
   // 給付線（階梯）
@@ -711,7 +696,7 @@ function drawChart(c){
 
 function legendHTML(c){
   return c.series.map(se => `<span><span class="dot" style="background:${se.color}"></span>${se.name}</span>`).join('') +
-    `<span><span class="dot" style="background:#c8603f;border-radius:2px"></span>累計保費長條：每 10 年期滿時已繳保費合計（同一縱軸，未扣折扣）</span>` + (cmpOn ? `<span><span class="dot" style="background:#d9a23a"></span>TED35 累計保費</span><span><span class="dot" style="background:#214f9e"></span>NCIC 累計保費</span>` : '');
+    `<span><span class="dot" style="background:#5b9bd5;border-radius:2px"></span>累計保費長條：每 10 年期滿時已繳保費合計（同一縱軸，未扣折扣）</span>` + (cmpOn ? `<span><span class="dot" style="background:#d9a23a"></span>TED35 累計保費</span><span><span class="dot" style="background:#214f9e"></span>NCIC 累計保費</span>` : '');
 }
 
 function render(){
