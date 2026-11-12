@@ -137,6 +137,22 @@
   th,td{ padding:6px 8px; text-align:center; border-bottom:1px solid var(--line); }
   th{ background:var(--navy); color:var(--gold-hi); font-family:"Noto Sans TC",sans-serif; font-weight:500; position:sticky; top:0; }
   tr.current-row td{background:#fff0d0;font-weight:700;}
+  .grid > .card{min-width:0;}
+  .renew-wrap{margin-top:20px;min-width:0;}
+  .renew-wrap .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .renew-title{font-family:"Noto Serif TC",serif;font-weight:700;font-size:16px;color:var(--navy);margin-bottom:8px;padding-left:10px;border-left:4px solid var(--gold);}
+  table.renew td,table.renew th{text-align:center;white-space:nowrap;font-family:"DM Mono","Noto Sans TC",monospace;padding:8px 6px;font-size:12.5px;}
+  table.renew th{white-space:normal;line-height:1.35;font-family:"Noto Sans TC",sans-serif;}
+  table.renew td.rate{color:#71809a;}
+  .swipe-hint{display:none;font-size:11.5px;color:#71809a;margin:-2px 0 6px;}
+  @media(max-width:600px){table.renew th:last-child,table.renew td:last-child{display:none;} .swipe-hint{display:block;}}
+  table.renew td:first-child{font-family:"Noto Sans TC",sans-serif;}
+  table.renew tr.done td{color:#71809a;}
+  table.renew tr.current-row td{background:#fff0d0;}
+  table.renew td.cumul{color:var(--navy);font-weight:700;}
+  table.renew tr.total-row td{background:var(--navy)!important;color:#fff;font-weight:700;}
+  table.renew tr.total-row td.cumul{color:var(--gold-hi);}
+  .now-tag{display:inline-block;margin-left:6px;padding:0 7px;border-radius:9px;background:var(--gold);color:#fff;font-size:11px;font-weight:700;}
   .table-scroll{max-height:340px;overflow:auto;border:1px solid var(--line);border-radius:8px;}
   .tag-wrap{display:flex;flex-wrap:wrap;gap:7px;}
   .tag{
@@ -271,6 +287,12 @@
       <div class="chart-shell"><svg id="chart" viewBox="0 0 900 470"></svg></div>
       <div class="legend" id="legendBox"></div>
       <div class="hint" style="margin-top:8px;" id="chartHint"></div>
+      <div class="renew-wrap">
+        <div class="renew-title">📋 每 10 年保費一覽（保證續保・累計總保費）</div>
+        <div class="swipe-hint">← 表格可左右滑動，看「累計總保費」 →</div>
+        <div class="table-scroll" style="max-height:none;"><table id="renewBox" class="bt renew"></table></div>
+        <div class="note">本契約保險期間為 10 年，期滿後 30 日內交付續保保險費，本公司不得拒絕；每次續保期間為 10 年，續保時被保險人保險年齡不得超過 70 歲。續保時依續保生效當時陳報主管機關之費率及被保險人年齡重新計算保險費（不得針對個別被保險人身體狀況調整）。上表以現行費率表示意，實際以續保時費率為準。</div>
+      </div>
     </div>
   </div>
 
@@ -286,10 +308,7 @@
     <summary>▸ 健康促進係數：體位類型（DM 第4頁）</summary>
 <div class="table-scroll" style="max-height:none;"><table class="bt"><thead><tr><th class="left">體位類型</th><th class="left">健康促進係數</th><th class="left">身體健康檢查條件</th></tr></thead><tbody><tr><td>A++ 級</td><td>1.1</td><td>①至⑤皆須符合：BMI 20～24.9（男）／20～22.9（女）（保險年齡≦39 歲）、20～26.9（保險年齡≧40 歲）；血壓 收縮壓 90～120、舒張壓 56～80 mmHg；膽固醇 ＜190（≦39 歲）／＜200 mg/dl（≧40 歲）；高密度膽固醇 ≧50 mg/dl；尼古丁陰性</td></tr><tr><td>A+ 級</td><td>1.05</td><td>①至⑤皆須符合：BMI 18～27.9（男）／18～25.9（女）（≦39 歲）、18～29.9（≧40 歲）；血壓 收縮壓 90～125（≦39 歲）／90～135（≧40 歲）、舒張壓 56～80／56～85 mmHg；膽固醇 ≦199.9／≦214.9 mg/dl；高密度膽固醇 ≧45 mg/dl；尼古丁陰性</td></tr><tr><td>A 級</td><td>1</td><td>不符合 A++ 級及 A+ 級之數值</td></tr></tbody></table></div><div class="note">您需每 2 年提供 1 次健康檢查報告，供判斷次一保單年度起二個保單年度之健康促進係數使用。</div>
   </details>
-  <details open>
-    <summary>▸ 保證續保：各期保費（依所選性別、保險金額，以現行費率試算）</summary>
-<div class="table-scroll" style="max-height:none;"><table id="renewBox" class="bt"></table></div><div class="note">本契約保險期間為 10 年，期滿後 30 日內交付續保保險費，本公司不得拒絕；每次續保期間為 10 年，續保時被保險人保險年齡不得超過 70 歲。續保時依續保生效當時陳報主管機關之費率及被保險人年齡重新計算保險費（不得針對個別被保險人身體狀況調整）。上表以現行費率表示意，實際以續保時費率為準。</div>
-  </details>
+  
   <details>
     <summary>▸ 投保規範與重要提醒</summary>
 <div class="table-scroll" style="max-height:none;"><table class="bt"><thead><tr><th class="left">項目</th><th class="left">內容</th></tr></thead><tbody><tr><td>投保年齡／繳費年期／保障期間</td><td>20～70 歲；繳費 10 年、保障 10 年，期滿保證續保（續保時保險年齡不得超過 70 歲）</td></tr><tr><td>投保金額</td><td>20～40 歲最低 20 萬；41～70 歲最低 10 萬；累計最高 300 萬</td></tr><tr><td>等待期</td><td>特定重大傷病（不含癌症）30 日；癌症 90 日</td></tr><tr><td>解約金</td><td>本險因費率計算考慮脫退率，無解約金。</td></tr><tr><td>繳費管道與折扣</td><td>金融機構自動轉帳／南山人壽聯名卡／信用卡／自行繳費；自動轉帳／聯名卡享 1% 折扣；集體投保另有彙繳費率。範例：35 歲 100 萬年繳 12,950 元，折扣後 12,820 元。</td></tr><tr><td>備查資訊</td><td>(108)南壽研字第135號函備查，111 年 12 月依金管保壽字第1110445485號函修正（PA-01-395／2025年7月版）；受保險安定基金保障，非存款項目。</td></tr></tbody></table></div><div class="note">投保後解約或不繼續繳費可能不利消費者，請慎選符合需求之保險商品。本內容僅供參考，詳細內容請參閱保單條款之規定；南山人壽保留最終承保與否之權利。</div>
@@ -420,10 +439,15 @@ function calc(){
 
 function renewTable(c){
   const el = document.getElementById('renewBox'); if(!el || !c.periods) return;
-  let h = '<thead><tr><th>期別</th><th>保險年齡</th><th>保障期間</th><th>每10萬年繳費率</th><th>年繳保費（元）</th><th>該期10年保費</th><th>累計總保費</th></tr></thead><tbody>';
+  const py = state.policyYear;
+  const cur = Math.min(c.periods.length-1, Math.floor(Math.max(py-1,0)/10));
+  let h = '<thead><tr><th>期別</th><th>保障期間<br>（保險年齡）</th><th>年繳保費<br>（元）</th><th>該期10年保費<br>（元）</th><th>累計總保費<br>（元）</th><th>每10萬<br>年繳費率</th></tr></thead><tbody>';
   c.periods.forEach((p, n) => {
-    h += `<tr><td>${n === 0 ? '首期（投保）' : '第 '+n+' 次續保'}</td><td>${p.age}</td><td>${p.age}～${p.age+9} 歲</td><td>${p.rate.toLocaleString('en-US')}</td><td>${fmt(p.prem)}</td><td>${fmt(p.prem*10)}</td><td><b>${fmt(c.cum((n+1)*10)*10000)}</b></td></tr>`;
+    const cls = n === cur ? 'current-row' : (n < cur ? 'done' : '');
+    h += `<tr class="${cls}"><td>${n === 0 ? '首期（投保）' : '第 '+n+' 次續保'}${n === cur ? '<span class="now-tag">目前</span>' : ''}</td><td>${p.age}～${p.age+9} 歲</td><td>${fmt(p.prem)}</td><td>${fmt(p.prem*10)}</td><td class="cumul">${fmt(c.cum((n+1)*10)*10000)}</td><td class="rate">${p.rate.toLocaleString('en-US')}</td></tr>`;
   });
+  const last = c.periods[c.periods.length-1];
+  h += `<tr class="total-row"><td>合計 ${c.periods.length} 期</td><td>${c.age}～${last.age+9} 歲</td><td>—</td><td>共 ${c.periods.length*10} 年</td><td class="cumul">${fmt(c.cum(c.span)*10000)}</td><td>—</td></tr>`;
   el.innerHTML = h + '</tbody>';
 }
 

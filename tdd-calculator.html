@@ -137,6 +137,22 @@
   th,td{ padding:6px 8px; text-align:center; border-bottom:1px solid var(--line); }
   th{ background:var(--navy); color:var(--gold-hi); font-family:"Noto Sans TC",sans-serif; font-weight:500; position:sticky; top:0; }
   tr.current-row td{background:#fff0d0;font-weight:700;}
+  .grid > .card{min-width:0;}
+  .renew-wrap{margin-top:20px;min-width:0;}
+  .renew-wrap .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .renew-title{font-family:"Noto Serif TC",serif;font-weight:700;font-size:16px;color:var(--navy);margin-bottom:8px;padding-left:10px;border-left:4px solid var(--gold);}
+  table.renew td,table.renew th{text-align:center;white-space:nowrap;font-family:"DM Mono","Noto Sans TC",monospace;padding:8px 6px;font-size:12.5px;}
+  table.renew th{white-space:normal;line-height:1.35;font-family:"Noto Sans TC",sans-serif;}
+  table.renew td.rate{color:#71809a;}
+  .swipe-hint{display:none;font-size:11.5px;color:#71809a;margin:-2px 0 6px;}
+  @media(max-width:600px){table.renew th:last-child,table.renew td:last-child{display:none;} .swipe-hint{display:block;}}
+  table.renew td:first-child{font-family:"Noto Sans TC",sans-serif;}
+  table.renew tr.done td{color:#71809a;}
+  table.renew tr.current-row td{background:#fff0d0;}
+  table.renew td.cumul{color:var(--navy);font-weight:700;}
+  table.renew tr.total-row td{background:var(--navy)!important;color:#fff;font-weight:700;}
+  table.renew tr.total-row td.cumul{color:var(--gold-hi);}
+  .now-tag{display:inline-block;margin-left:6px;padding:0 7px;border-radius:9px;background:var(--gold);color:#fff;font-size:11px;font-weight:700;}
   .table-scroll{max-height:340px;overflow:auto;border:1px solid var(--line);border-radius:8px;}
   .tag-wrap{display:flex;flex-wrap:wrap;gap:7px;}
   .tag{
@@ -271,6 +287,12 @@
       <div class="chart-shell"><svg id="chart" viewBox="0 0 900 470"></svg></div>
       <div class="legend" id="legendBox"></div>
       <div class="hint" style="margin-top:8px;" id="chartHint"></div>
+      <div class="renew-wrap">
+        <div class="renew-title">📋 每 10 年保費一覽（保證續保・累計總保費）</div>
+        <div class="swipe-hint">← 表格可左右滑動，看「累計總保費」 →</div>
+        <div class="table-scroll" style="max-height:none;"><table id="renewBox" class="bt renew"></table></div>
+        <div class="note">保險期間 10 年，期滿後 30 日內交付續保保費，本公司不得拒絕；每次續保 10 年，續保時被保險人保險年齡不得超過 70 歲，並依續保當時費率及年齡重新計算保費，不得針對個別被保險人身體狀況調整。（若曾給付重度重大疾病保險金或辦理減額繳清，不適用續保規定。）上表以現行費率表示意，實際以續保時費率為準。</div>
+      </div>
     </div>
   </div>
 
@@ -283,10 +305,7 @@
 <div class="note" style="margin-top:6px;">王先生（25 歲）投保 10TDD，保險金額 200 萬，年繳保險費 2,780 元。偶數保單年度（第 2、4、6…）第 8 個月進行健檢，結果適用次 1 保單年度起 2 個保單年度：<br>
     第 1～2 年 <b>200 萬</b>（A 級）→ 第 3～4 年 <b>230 萬</b>（A+ 體位）→ 第 5～6 年 <b>240 萬</b>（A++ 體位）→ 第 7～8 年 未健檢 <b>200 萬</b> → 第 9～10 年 <b>240 萬</b>（A++ 體位）。</div>
   </details>
-  <details>
-    <summary>▸ 保證續保：各期保費（以現行費率試算）</summary>
-<div class="table-scroll" style="max-height:none;"><table id="renewBox" class="bt"></table></div><div class="note">保險期間 10 年，期滿後 30 日內交付續保保費，本公司不得拒絕；每次續保 10 年，續保時被保險人保險年齡不得超過 70 歲，並依續保當時費率及年齡重新計算保費，不得針對個別被保險人身體狀況調整。（若曾給付重度重大疾病保險金或辦理減額繳清，不適用續保規定。）上表以現行費率表示意，實際以續保時費率為準。</div>
-  </details>
+  
   <details>
     <summary>▸ 重度重大疾病 7 項定義與除外項目（條款第2、20～24條）</summary>
 <div class="table-scroll" style="max-height:none;"><table class="bt"><thead><tr><th class="left">項目</th><th class="left">定義重點</th></tr></thead><tbody><tr><td>1 急性心肌梗塞（重度）</td><td>冠狀動脈阻塞致部分心肌壞死；發病滿 90 日後左心室射出分率 50% 以下，且具備典型胸痛、心電圖變化、心肌酶／肌鈣蛋白升高三項中至少兩項</td></tr><tr><td>2 冠狀動脈繞道手術</td><td>因冠狀動脈疾病致心絞痛或心衰竭而接受繞道手術；其他手術不含</td></tr><tr><td>3 末期腎病變</td><td>腎臟慢性不可復原衰竭，已開始長期規則透析</td></tr><tr><td>4 腦中風後障礙（重度）</td><td>事故 6 個月後仍有永久神經機能障礙：植物人、一肢三大關節機能完全喪失或肌力 2 分以下、兩肢以上障礙致無法自理、喪失言語或咀嚼機能之一</td></tr><tr><td>5 癌症（重度）</td><td>經病理確定的惡性腫瘤；<b>不含</b>原位癌／零期癌、第一期惡性類癌、第二期以下非惡性黑色素瘤皮膚癌，以及慢性淋巴性白血病第一二期、第一期何杰金氏病、第一期前列腺癌、膀胱乳頭狀癌、甲狀腺微乳頭狀癌、邊緣性卵巢癌、第一期黑色素瘤、乳癌、子宮頸癌、大腸直腸癌（即初期／輕度癌症，本險<b>不給付</b>）</td></tr><tr><td>6 癱瘓（重度）</td><td>兩上肢、兩下肢或一上一下肢，各有三大關節中兩個以上機能障礙，6 個月後仍無法復原</td></tr><tr><td>7 重大器官移植或造血幹細胞移植</td><td>心、肺、肝、胰、腎異體移植；或因造血功能損害／造血系統惡性腫瘤接受造血幹細胞異體移植</td></tr></tbody></table></div><div class="note"><b>本險沒有「初期」「輕度」分類，只有重度重大疾病。</b>須於生效日起滿 31 日（癌症 91 日）後經醫師診斷確定，因意外傷害所致不受 31 日限制。</div><div class="sectitle">除外項目（責任免除，條款第24條）</div><div class="table-scroll" style="max-height:none;"><table class="bt"><thead><tr><th class="left">給付項目</th><th class="left">不給付的情形</th></tr></thead><tbody><tr><td>重度重大疾病保險金／豁免保險費</td><td>被保險人之故意行為（含自殺、自殺未遂）；犯罪行為；非法施用毒品</td></tr><tr><td>身故／喪葬費用／完全失能保險金</td><td>要保人故意致被保險人於死；被保險人故意自殺或故意自傷致完全失能（訂約或復效滿 2 年後自殺致死仍給付身故保險金）；因犯罪被處死、拒捕或越獄致死或完全失能</td></tr></tbody></table></div><div class="note">豁免保險費：繳費期間內經診斷確定罹患重度重大疾病，自診斷確定翌日起豁免以後各期保費，契約繼續有效；若同時符合完全失能並已給付者不適用。</div><div class="note">整理自南山人壽公開條款，文字為摘要；實際認定以保單條款與病理報告為準。</div>
@@ -388,10 +407,15 @@ function calc(){
 
 function renewTable(c){
   const el = document.getElementById('renewBox'); if(!el || !c.periods) return;
-  let h = '<thead><tr><th>期別</th><th>保險年齡</th><th>保障期間</th><th>每10萬年繳費率</th><th>年繳保費（元）</th><th>該期10年保費</th><th>累計總保費</th></tr></thead><tbody>';
+  const py = state.policyYear;
+  const cur = Math.min(c.periods.length-1, Math.floor(Math.max(py-1,0)/10));
+  let h = '<thead><tr><th>期別</th><th>保障期間<br>（保險年齡）</th><th>年繳保費<br>（元）</th><th>該期10年保費<br>（元）</th><th>累計總保費<br>（元）</th><th>每10萬<br>年繳費率</th></tr></thead><tbody>';
   c.periods.forEach((p, n) => {
-    h += `<tr><td>${n === 0 ? '首期（投保）' : '第 '+n+' 次續保'}</td><td>${p.age}</td><td>${p.age}～${p.age+9} 歲</td><td>${p.rate.toLocaleString('en-US')}</td><td>${fmt(p.prem)}</td><td>${fmt(p.prem*10)}</td><td><b>${fmt(c.cum((n+1)*10)*10000)}</b></td></tr>`;
+    const cls = n === cur ? 'current-row' : (n < cur ? 'done' : '');
+    h += `<tr class="${cls}"><td>${n === 0 ? '首期（投保）' : '第 '+n+' 次續保'}${n === cur ? '<span class="now-tag">目前</span>' : ''}</td><td>${p.age}～${p.age+9} 歲</td><td>${fmt(p.prem)}</td><td>${fmt(p.prem*10)}</td><td class="cumul">${fmt(c.cum((n+1)*10)*10000)}</td><td class="rate">${p.rate.toLocaleString('en-US')}</td></tr>`;
   });
+  const last = c.periods[c.periods.length-1];
+  h += `<tr class="total-row"><td>合計 ${c.periods.length} 期</td><td>${c.age}～${last.age+9} 歲</td><td>—</td><td>共 ${c.periods.length*10} 年</td><td class="cumul">${fmt(c.cum(c.span)*10000)}</td><td>—</td></tr>`;
   el.innerHTML = h + '</tbody>';
 }
 
