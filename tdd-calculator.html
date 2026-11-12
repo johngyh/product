@@ -138,6 +138,27 @@
   th{ background:var(--navy); color:var(--gold-hi); font-family:"Noto Sans TC",sans-serif; font-weight:500; position:sticky; top:0; }
   tr.current-row td{background:#fff0d0;font-weight:700;}
   .grid > .card{min-width:0;}
+  .pv{margin:18px 0 6px;padding:18px 16px 14px;border:1px solid var(--line);border-radius:14px;background:#fff;}
+  .pv h4{font-family:"Noto Serif TC",serif;font-size:17px;color:var(--navy);margin:0 0 4px;}
+  .pv .pv-sub{font-size:12.5px;color:#71809a;margin-bottom:12px;}
+  .pv-bars{display:flex;align-items:flex-end;gap:10px;height:210px;padding:26px 4px 0;border-bottom:1.5px solid #c9d3e3;
+    background:repeating-linear-gradient(to top,transparent 0 51px,#eef2f8 51px 52px);}
+  .pv-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;min-width:0;}
+  .pv-val{font-family:"DM Mono",monospace;font-weight:600;font-size:14px;color:var(--navy);margin-bottom:4px;transition:opacity .4s;white-space:nowrap;}
+  .pv-bar{width:min(62px,80%);background:#c8603f;border-radius:4px 4px 0 0;height:0;transition:height .55s cubic-bezier(.3,.8,.3,1),opacity .4s;}
+  .pv-col.future .pv-bar{opacity:.18;} .pv-col.future .pv-val{opacity:0;}
+  .pv-col.now .pv-bar{background:#b4461f;box-shadow:0 0 0 3px #f6d9cd;}
+  .pv-x{display:flex;gap:10px;padding:6px 4px 0;}
+  .pv-x div{flex:1;text-align:center;font-size:13px;color:var(--navy);min-width:0;}
+  .pv-x small{display:block;color:#71809a;font-size:11px;}
+  .pv-step-t{font-weight:700;font-size:13.5px;color:var(--navy);margin:18px 0 8px;}
+  .pv-steps{display:flex;align-items:flex-end;gap:6px;height:130px;}
+  .pv-step{flex:1;min-width:0;background:#f8e3dc;border-top:4px solid #c8603f;border-radius:6px 6px 0 0;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;padding:0 2px 8px;transition:opacity .4s,background .3s;}
+  .pv-step b{font-family:"DM Mono",monospace;font-size:13.5px;color:var(--navy);white-space:nowrap;}
+  .pv-step span{font-size:11px;color:#71809a;margin-top:2px;white-space:nowrap;}
+  .pv-step.future{opacity:.35;} .pv-step.now{background:#f3cbbd;border-top-color:#b4461f;}
+  .pv-foot{font-size:11.5px;color:#71809a;margin-top:10px;}
+  @media(max-width:600px){.pv-val{font-size:12px;}.pv-step b{font-size:11.5px;}.pv-step span{font-size:10px;}.pv-bars{gap:6px;}}
   .renew-wrap{margin-top:20px;min-width:0;}
   .renew-wrap .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
   .renew-title{font-family:"Noto Serif TC",serif;font-weight:700;font-size:16px;color:var(--navy);margin-bottom:8px;padding-left:10px;border-left:4px solid var(--gold);}
@@ -288,6 +309,7 @@
       <div class="legend" id="legendBox"></div>
       <div class="hint" style="margin-top:8px;" id="chartHint"></div>
       <div class="renew-wrap">
+        <div class="pv" id="premViz"></div>
         <div class="renew-title">📋 每 10 年保費一覽（保證續保・累計總保費）</div>
         <div class="swipe-hint">← 表格可左右滑動，看「累計總保費」 →</div>
         <div class="table-scroll" style="max-height:none;"><table id="renewBox" class="bt renew"></table></div>
@@ -405,7 +427,42 @@ function calc(){
   return c;
 }
 
+
+let pvKey = null;
+function premViz(c){
+  const el = document.getElementById('premViz'); if(!el || !c.periods) return;
+  if(!c.has){ el.innerHTML = '<div class="pv-sub">請先輸入投保金額</div>'; pvKey = null; return; }
+  const py = state.policyYear, P_ = c.periods, N = P_.length;
+  const cur = Math.min(N-1, Math.floor(Math.max(py-1,0)/10));
+  const totals = P_.map((p,n) => c.cum((n+1)*10)*10000);
+  const maxT = totals[N-1] || 1, maxP = Math.max(...P_.map(p=>p.prem)) || 1;
+  const w = v => (v/10000 >= 100 ? Math.round(v/10000) : (Math.round(v/1000)/10)).toLocaleString('en-US');
+  const reached = n => py >= (n+1)*10 || (n === 0 && py > 0);
+  const key = totals.join(',') + '|' + P_.map(p=>p.age).join(',');
+  if(key !== pvKey){
+    pvKey = key;
+    el.innerHTML = `<h4>10TDD 累積繳了多少錢</h4><div class="pv-sub" id="pvSub"></div>`
+      + '<div class="pv-bars">' + P_.map((p,n) => `<div class="pv-col future" data-n="${n}"><div class="pv-val">${w(totals[n])}萬</div><div class="pv-bar" style="height:0"></div></div>`).join('') + '</div>'
+      + '<div class="pv-x">' + P_.map(p => `<div>${p.age+9} 歲<small>${p.age}～${p.age+9}</small></div>`).join('') + '</div>'
+      + `<div class="pv-step-t">10TDD 每年保費（${fmtW(c.amount)} 萬）</div><div class="pv-steps">`
+      + P_.map((p,n) => `<div class="pv-step future" data-n="${n}" style="height:${Math.max(34, p.prem/maxP*100)}%"><b>${fmt(p.prem)}</b><span>${p.age}–${p.age+9} 歲</span></div>`).join('') + '</div>'
+      + '<div class="pv-foot">依目前費率試算；續保時以當時公司費率重新計算。按「▶ 播放」可逐期看累計保費長出來。</div>';
+    el.offsetHeight; // 讓長條從 0 開始長
+  }
+  document.getElementById('pvSub').innerHTML = `保額 ${fmtW(c.amount)} 萬・每 10 年依當時年齡調整保費。目前第 ${py} 保單年度，累計已繳 <b style="color:#b4461f">${fmt(c.cum(py)*10000)}</b> 元；繳到 ${P_[N-1].age+9} 歲共 ${fmt(maxT)} 元。`;
+  el.querySelectorAll('.pv-col').forEach(col => {
+    const n = +col.dataset.n, r = reached(n);
+    col.className = 'pv-col ' + (r ? (n === cur ? 'now' : '') : 'future');
+    col.querySelector('.pv-bar').style.height = (r ? Math.max(2, totals[n]/maxT*100) : 0) + '%';
+  });
+  el.querySelectorAll('.pv-step').forEach(st => {
+    const n = +st.dataset.n;
+    st.className = 'pv-step ' + (n === cur && py > 0 ? 'now' : (reached(n) ? '' : 'future'));
+  });
+}
+
 function renewTable(c){
+  premViz(c);
   const el = document.getElementById('renewBox'); if(!el || !c.periods) return;
   const py = state.policyYear;
   const cur = Math.min(c.periods.length-1, Math.floor(Math.max(py-1,0)/10));
