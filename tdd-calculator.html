@@ -138,6 +138,8 @@
   th{ background:var(--navy); color:var(--gold-hi); font-family:"Noto Sans TC",sans-serif; font-weight:500; position:sticky; top:0; }
   tr.current-row td{background:#fff0d0;font-weight:700;}
   .grid > .card{min-width:0;}
+  @keyframes pvgrow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+  .pvg{transform-box:fill-box;transform-origin:50% 100%;animation:pvgrow .6s cubic-bezier(.3,.8,.3,1);}
   .pv{margin:18px 0 6px;padding:18px 16px 14px;border:1px solid var(--line);border-radius:14px;background:#fff;}
   .pv h4{font-family:"Noto Serif TC",serif;font-size:17px;color:var(--navy);margin:0 0 4px;}
   .pv .pv-sub{font-size:12.5px;color:#71809a;margin-bottom:12px;}
@@ -309,7 +311,6 @@
       <div class="legend" id="legendBox"></div>
       <div class="hint" style="margin-top:8px;" id="chartHint"></div>
       <div class="renew-wrap">
-        <div class="pv" id="premViz"></div>
         <div class="renew-title">📋 每 10 年保費一覽（保證續保・累計總保費）</div>
         <div class="swipe-hint">← 表格可左右滑動，看「累計總保費」 →</div>
         <div class="table-scroll" style="max-height:none;"><table id="renewBox" class="bt renew"></table></div>
@@ -368,7 +369,7 @@ const PRODUCT = {
       { name:'身故／完全失能保險金（壽險當年度保險金額＝年繳保費×10）', short:'身故／失能', color:'#c23b3b', fn:k => life(k), w:2.6 }
     ];
     c.endLabel = '最後一期屆滿（保險年齡 '+(c.age+c.span-1)+' 歲）';
-    c.chartHint = '每 10 年為一期、期滿保證續保，續保時保險年齡不得超過 70 歲，本圖計算到無法續保為止；藍色虛線為各期保費累計；身故／失能金額隨各期年繳保費變動。重度重大疾病保險金＝保險金額×健康促進係數（1.2／1.15／1）；前 2 保單年度適用 A 級，其後依偶數保單年度第 8 個月起之健檢結果，適用次 1 保單年度起 2 年。身故／完全失能金額約為年繳保費之 10 倍。';
+    c.chartHint = '每 10 年為一期、期滿保證續保，續保時保險年齡不得超過 70 歲，本圖計算到無法續保為止；藍色長條為每 10 年期滿時的累計保費；身故／失能金額隨各期年繳保費變動。重度重大疾病保險金＝保險金額×健康促進係數（1.2／1.15／1）；前 2 保單年度適用 A 級，其後依偶數保單年度第 8 個月起之健檢結果，適用次 1 保單年度起 2 年。身故／完全失能金額約為年繳保費之 10 倍。';
     c.stats = k => { const kk = Math.max(k,1); return [
       ['年繳保險費（未扣折扣）', fmt(c.premAt(kk))+' 元', '第 '+(Math.floor((kk-1)/10)+1)+' 期（保險年齡 '+c.periods[Math.floor((kk-1)/10)].age+' 歲起）費率 '+c.periods[Math.floor((kk-1)/10)].rate.toLocaleString('en-US')+' 元／10萬', 'gold'],
       ['累計已繳總保費', fmt(c.cum(kk)*10000)+' 元', '至第 '+kk+' 保單年度；續保到最後一期共 '+fmt(c.cum(c.span)*10000)+' 元'],
@@ -462,7 +463,6 @@ function premViz(c){
 }
 
 function renewTable(c){
-  premViz(c);
   const el = document.getElementById('renewBox'); if(!el || !c.periods) return;
   const py = state.policyYear;
   const cur = Math.min(c.periods.length-1, Math.floor(Math.max(py-1,0)/10));
@@ -564,17 +564,19 @@ function drawChart(c){
       s += `<text x="${(x1+x2)/2}" y="${trackY+26}" text-anchor="middle" font-size="12.5" font-weight="700" fill="${z.col}">${z.l}</text>`;
     }
   }
-  // 已繳保費
-  {
+  // 已繳保費：每 10 年一根累計長條（播放時逐根長出）
+  const barLab = [];
+  if(P.renewal && c.periods){
+    const N = c.periods.length, bw = Math.min(30, (x(10)-x(0)) * 0.28);
+    c.periods.forEach((p, n) => {
+      const k = (n+1)*10, v = c.cum(k), xx = x(k) - bw/2 - (n === N-1 ? bw*0.15 : 0), yy = y(v), r = py >= k;
+      s += `<rect class="${r && py === k ? 'pvg' : ''}" x="${xx}" y="${yy}" width="${bw}" height="${baseY-yy}" rx="3" fill="#5b9bd5" opacity="${r ? 0.85 : 0.12}"/>`;
+      if(r) barLab.push(`<text x="${xx+bw/2}" y="${yy-7}" text-anchor="middle" font-size="11" font-weight="600" fill="#1c63b3" stroke="#fff" stroke-width="3.5" paint-order="stroke" font-family="DM Mono,monospace">${fmtW(Math.round(v*10)/10)}萬</text>`);
+    });
+  } else {
     let d = `M ${x(0)} ${y(0)}`;
     for(let k = 1; k <= span; k++){ d += ` L ${x(k)} ${y(c.cum(k))}`; }
     s += `<path d="${d}" fill="none" stroke="#5b9bd5" stroke-width="2.2" stroke-dasharray="4,4"/>`;
-    if(P.premTag && c.cum(P.renewal ? span : c.term) > 0){
-      const kk = Math.max(1, Math.round((P.renewal ? span * 0.45 : c.term * 0.6)));
-      const below = !!P.premTagBelow, tx = x(kk) + (below ? 56 : 0), ty = y(c.cum(kk)) + (below ? 34 : -22), tw = P.premTag.length * 11.5 + 16;
-      s += `<rect x="${tx - tw/2}" y="${ty - 13}" width="${tw}" height="20" rx="10" fill="#fff" stroke="#5b9bd5" stroke-width="1.2"/><text x="${tx}" y="${ty + 1}" text-anchor="middle" font-size="11" fill="#1c63b3" font-weight="700">${P.premTag}</text>`;
-      s += `<line x1="${x(kk)}" y1="${y(c.cum(kk)) + 2}" x2="${below ? tx - tw/2 : tx}" y2="${below ? ty : ty + 7}" stroke="#5b9bd5" stroke-width="1"/>`;
-    }
   }
   // 給付線（階梯）
   const labels = [];
@@ -588,6 +590,7 @@ function drawChart(c){
     s += `<path d="${d}" fill="none" stroke="${se.color}" stroke-width="${se.w || 3}" stroke-linejoin="round" ${se.dash ? 'stroke-dasharray="'+se.dash+'"' : ''}/>`;
     labels.push({ y: y(se.fn(span)), text: se.short, color: se.color, v: se.fn(span) });
   }
+  s += barLab.join('');
   // 右側標籤（避免重疊）
   labels.sort((a,b)=>a.y-b.y);
   for(let i = 1; i < labels.length; i++){ if(labels[i].y - labels[i-1].y < 15) labels[i].y = labels[i-1].y + 15; }
@@ -599,7 +602,7 @@ function drawChart(c){
     const xx = x(Math.min(py, span));
     s += `<line x1="${xx}" y1="${topY}" x2="${xx}" y2="${baseY}" stroke="#c23b3b" stroke-width="1.4" stroke-dasharray="2,3"/>`;
     for(const se of ser){ s += `<circle cx="${xx}" cy="${y(se.fn(Math.min(py, span)))}" r="4.5" fill="${se.color}" stroke="#fff" stroke-width="1.5"/>`; }
-    s += `<circle cx="${xx}" cy="${y(c.cum(py))}" r="4" fill="#5b9bd5" stroke="#fff" stroke-width="1.5"/>`;
+    if(!P.renewal) s += `<circle cx="${xx}" cy="${y(c.cum(py))}" r="4" fill="#5b9bd5" stroke="#fff" stroke-width="1.5"/>`;
   }
   // 起點、終點
   s += `<circle cx="${x(0)}" cy="${y(0)}" r="5" fill="#fff" stroke="#c9860f" stroke-width="2.5"/>`;
@@ -612,7 +615,7 @@ function drawChart(c){
 
 function legendHTML(c){
   return c.series.map(se => `<span><span class="dot" style="background:${se.color}"></span>${se.name}</span>`).join('') +
-    `<span><span class="dot" style="background:#5b9bd5"></span>累積保費線：已繳保費合計（同一縱軸，未扣折扣）</span>`;
+    `<span><span class="dot" style="background:#5b9bd5;border-radius:2px"></span>累計保費長條：每 10 年期滿時已繳保費合計（同一縱軸，未扣折扣）</span>`;
 }
 
 function render(){
