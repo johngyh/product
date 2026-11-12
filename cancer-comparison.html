@@ -29,7 +29,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .site-title{font-family:var(--serif);font-size:22px;font-weight:700;color:#fff;letter-spacing:1px;position:relative}
 .site-sub{font-size:13px;color:#c9d9ef;margin-top:4px;letter-spacing:1px;position:relative}
 
-.container{max-width:700px;margin:0 auto;padding:0 16px}
+.container{max-width:900px;margin:0 auto;padding:0 16px}
 
 .section-label{font-size:13px;letter-spacing:3px;color:var(--gold);font-weight:600;margin:24px 0 10px;display:flex;align-items:center;gap:10px}
 .section-label::after{content:'';flex:1;height:1px;background:rgba(201,134,15,.25)}
@@ -172,7 +172,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 <header class="site-header">
   <div class="brand-tag">NAN SHAN LIFE · 順可通訊處</div>
   <div class="site-title">癌症保障 快速試算比較</div>
-  <div class="site-sub">NCIC ／ TED35 ／ TED ／ HDD ／ TSDD ／ TDD</div>
+  <div class="site-sub">NCIC ／ TED35 ／ TED ／ HDD ／ HC ／ SC ／ TSDD ／ TDD</div>
 </header>
 
 <div class="container">
@@ -196,7 +196,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
         <input type="radio" name="period" id="p-10" value="10"><label for="p-10">10年</label>
         <input type="radio" name="period" id="p-20" value="20" checked><label for="p-20">20年</label>
       </div>
-      <div class="input-hint">HDD 僅 20 年期；TSDD、TDD 為 10 年期保證續保</div>
+      <div class="input-hint">HDD 僅 20 年期；TSDD、TDD 為 10 年期保證續保；SC 限 55 歲以上</div>
     </div>
   </div>
   <div class="field-row">
@@ -212,7 +212,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
         <input type="radio" name="amtmode" id="am-same" value="same"><label for="am-same">同保額</label>
       </div>
       <input type="number" id="amount" min="10" value="200" inputmode="numeric" step="10" style="margin-top:6px;display:none">
-      <div class="input-hint" id="amt-hint">NCIC・TED35・TED 500 萬、HDD 2,000 萬、TSDD 300 萬、TDD 200 萬</div>
+      <div class="input-hint" id="amt-hint">NCIC・TED35・TED 500 萬、HDD 2,000 萬、HC・TSDD 300 萬、TDD 200 萬、SC 100 萬</div>
     </div>
   </div>
   <div class="field-row">
@@ -222,7 +222,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
         <input type="radio" name="health" id="h-best" value="best" checked><label for="h-best">最佳體況</label>
         <input type="radio" name="health" id="h-std" value="std"><label for="h-std">標準體況</label>
       </div>
-      <div class="input-hint">最佳：NCIC・TED35・TED・HDD S×1.05／TSDD A++×1.1／TDD A++×1.2<br>標準：一律×1.00</div>
+      <div class="input-hint">最佳：NCIC・TED35・TED・HDD S×1.05／TSDD A++×1.1／TDD A++×1.2<br>標準：一律×1.00（HC、SC 無健康促進係數）</div>
     </div>
     <div class="field">
       <label>繳費折扣</label>
@@ -242,10 +242,11 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 <div id="results">
   <div class="section-label">保費比較</div>
   <div class="summary-table-wrap"><table class="summary-table" id="summary-table"></table></div>
+  <div id="skip-note" style="font-size:12.5px;color:var(--text2);margin:-4px 2px 10px;line-height:1.7"></div>
 
   <div class="section-label">癌症保障金額比較</div>
   <div class="summary-table-wrap"><table class="summary-table" id="benefit-table"></table></div>
-  <div style="font-size:12.5px;color:var(--text2);margin:-4px 2px 10px;line-height:1.7">金額以第 3 保單年度起、所選健康促進等級計算；前 2 保單年度一律×1.00。NCIC、TED35、TED、HDD 的重度給付為「MAX(保額, 年繳保費總和×1.06)×係數」，表中以保額計（較保守）。</div>
+  <div style="font-size:12.5px;color:var(--text2);margin:-4px 2px 10px;line-height:1.7">金額以第 3 保單年度起、所選健康促進等級計算；前 2 保單年度一律×1.00（HC、SC 第 2 年起即為表列金額）。NCIC、TED35、TED、HDD 的重度給付為「MAX(保額, 年繳保費總和×1.06)×係數」，表中以保額計（較保守）。</div>
 
   <div class="section-label">各險種給付明細</div>
   <div class="detail-cols" id="detail-cols"></div>
@@ -256,15 +257,15 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
   <div class="criteria-title">🎗️ 初期、輕度、重度癌症怎麼分</div>
   <div class="criteria-block">
     <div class="criteria-badge blue">初期癌症</div>
-    <div class="criteria-desc">原位癌或零期癌、第一期惡性類癌、第二期（含）以下非惡性黑色素瘤皮膚癌等。<strong>TED35、TED、HDD 給付保額 5%</strong>；TSDD、TDD 不給付。</div>
+    <div class="criteria-desc">原位癌或零期癌、第一期惡性類癌、第二期（含）以下非惡性黑色素瘤皮膚癌等。<strong>TED35、TED、HDD 給付保額 5%</strong>；<strong>HC、SC 給付 10%</strong>（初期或輕度擇一）；TSDD、TDD 不給付。</div>
   </div>
   <div class="criteria-block">
     <div class="criteria-badge blue">輕度癌症</div>
-    <div class="criteria-desc">第一期乳癌、前列腺癌、甲狀腺癌、膀胱乳頭狀癌等條款所列項目。<strong>TED35、TED、HDD 給付保額 10%</strong>；TSDD、TDD 不給付。</div>
+    <div class="criteria-desc">第一期乳癌、前列腺癌、甲狀腺癌、膀胱乳頭狀癌等條款所列項目。<strong>TED35、TED、HDD、HC、SC 給付保額 10%</strong>；TSDD、TDD 不給付。</div>
   </div>
   <div class="criteria-block">
     <div class="criteria-badge gold">重度癌症</div>
-    <div class="criteria-desc">惡性腫瘤經病理確認，且不屬初期、輕度者。<strong>六張商品皆給付</strong>；TSDD 另加預備門診、住院、居家療養各 20%。</div>
+    <div class="criteria-desc">惡性腫瘤經病理確認，且不屬初期、輕度者。<strong>八張商品皆給付</strong>；TSDD 另加預備門診、住院、居家療養各 20%。</div>
   </div>
   <div class="criteria-block">
     <div class="criteria-badge gold">NCIC 重大傷病</div>
@@ -289,6 +290,8 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
   • <strong>NCIC</strong>：第 1 保單年度罹患重大傷病給付年繳保費×1.06；第 2 年起 MAX(保額, 總繳×1.06)×係數；保障至 100 歲，期滿給付祝壽保險金。<br>
   • <strong>TED35／TED</strong>：初期 5%、輕度 10%、重度 100%，單一保單累計最高 115%；TED35 投保後 35 年滿期、TED 至保險年齡 84 歲滿期，滿期給付 MAX(保額, 總繳×1.06)×係數。<br>
   • <strong>HDD</strong>：初期癌症 5%、輕度 10%（各以 1 次為限）、重度 MAX(保額, 總繳×1.06)×係數；保障至 95 歲，滿期給付年繳保費總和×1.06。<br>
+  • <strong>HC</strong>：癌症健康保險，第 1 保單年度給付年繳保費×1.1；第 2 年起初期或輕度 10%（以 1 次為限）、重度 100%（給付後契約終止），累計最高 110%；保障至 95 歲，無滿期金。<br>
+  • <strong>SC</strong>：55 歲以上投保之癌症定期險，給付方式同 HC；保障期間即繳費期間（10 或 20 年），無滿期金；另有健康促進、防疫保健回饋金（本表未計）。<br>
   • <strong>TSDD</strong>：癌症（重度）屬第二類特定重大傷病，給付保額×係數，另加三項預備金各 20%，合計 160%；初期、輕度癌症不給付；每 10 年保證續保至 70 歲。<br>
   • <strong>TDD</strong>：癌症（重度）屬重度重大疾病，給付保額×係數（以 1 次為限）；初期、輕度癌症不給付；每 10 年保證續保至 70 歲。<br>
   • TSDD、TDD 續保保費依現行費率估算，實際以續保時費率為準；月繳為年繳÷12 之估算；實際保費與給付以保單條款及核保結果為準。
@@ -305,7 +308,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 </div>
 
 <script>
-const RATES = {"NCIC":{"10":{"male":[455,464,472,481,489,498,506,515,523,532,540,553,565,578,590,603,615,628,640,653,665,677,689,701,713,725,737,749,761,773,785,801,817,833,849,865,881,897,913,929,945,970,995,1019,1044,1069,1094,1119,1143,1168,1193,1380,1568,1755,1942,2130,2317,2504,2691,2879,3066],"female":[435,444,452,461,469,478,486,495,503,512,520,531,542,553,564,575,586,597,608,619,630,641,652,663,674,685,696,707,718,729,740,756,771,787,802,818,833,849,864,880,895,912,929,946,963,980,996,1013,1030,1047,1064,1152,1239,1327,1414,1502,1589,1677,1764,1852,1939],"min":0},"20":{"male":[250,255,260,265,270,275,280,285,290,295,300,307,314,321,328,335,342,349,356,363,370,378,386,394,402,410,418,426,434,442,450,458,466,474,482,490,498,506,514,522,530,572,614,656,698,740,782,824,866,908,950],"female":[240,245,250,255,260,265,270,275,280,285,290,296,302,308,314,320,326,332,338,344,350,357,363,370,376,383,389,396,402,409,415,424,433,442,451,460,469,478,487,496,505,530,554,579,603,628,652,677,701,726,750],"min":0}},"TED35":{"10":{"male":[725,728,730,733,735,738,740,743,745,748,750,753,755,758,760,768,776,784,792,800,808,816,824,832,840,850,860,871,881,891,901,911,922,932,942,1054,1165,1277,1388,1500],"female":[715,716,718,719,720,722,724,726,728,730,732,734,736,738,740,745,750,755,760,765,770,775,780,785,790,800,809,819,828,838,847,857,866,876,885,928,971,1014,1057,1100],"min":16},"20":{"male":[390,391,393,394,395,398,400,403,405,408,410,413,415,418,420,426,431,437,442,448,453,459,464,470,475,506,538,569,600,632,663,694,725,757,788,880,973,1065,1158,1250],"female":[385,386,388,389,390,392,394,396,398,400,402,404,406,408,410,415,419,424,428,433,437,442,446,451,455,471,487,503,519,535,550,566,582,598,614,645,676,708,739,770],"min":16}},"TED":{"10":{"male":[379,385,388,394,404,412,422,430,439,449,459,468,479,490,500,512,524,537,546,560,572,574,578,595,605,616,629,639,650,661,673,688,700,712,726,739,752,764,779,792,807,822,837,853,868,885,903,912,924,934,942,1000,1106,1169,1280,1351,1481,1662,1867,2121,2440],"female":[359,363,370,374,383,387,397,406,416,423,432,442,452,462,472,483,491,500,507,517,522,533,540,552,561,570,581,591,603,614,627,636,649,660,673,684,703,715,730,745,757,774,789,804,817,828,841,851,862,871,885,912,918,935,1014,1090,1143,1194,1267,1334,1402],"min":0},"20":{"male":[202,205,209,210,217,219,223,229,235,240,247,254,257,264,274,280,282,287,294,297,302,307,312,318,325,334,342,355,361,370,383,389,400,409,418,428,435,445,451,454,458,465,470,496,524,553,593,641,687,735,788],"female":[190,193,195,199,203,206,211,217,221,225,233,236,242,248,255,262,266,271,275,282,286,289,292,300,305,315,321,329,337,345,353,357,367,375,383,392,402,407,420,428,438,450,455,460,464,479,508,540,570,589,614],"min":0}},"HDD":{"min":0,"male":[160,161,165,166,171,174,176,180,183,187,190,197,201,205,212,216,220,223,229,233,235,238,244,250,255,262,269,277,284,291,300,309,318,326,331,340,348,355,362,369,385,392,399,419,438,461,495,526,564,606,645,704,759,813,863,910],"female":[150,153,155,158,159,162,166,170,173,176,180,185,189,195,199,204,208,213,216,223,225,228,232,236,238,243,247,252,257,261,275,282,287,292,296,301,307,312,317,323,360,344,352,362,371,394,422,449,477,496,510,546,579,610,639,665]},"TSDD":{"min":20,"male":[370,419,468,517,566,615,664,713,762,811,860,974,1088,1202,1316,1430,1544,1658,1772,1886,2000,2190,2380,2570,2760,2950,3140,3330,3520,3710,3900,4337,4774,5211,5648,6085,6522,6959,7396,7833,8270,8807,9344,9881,10418,10955,11492,12029,12566,13103,13640],"female":[400,444,488,532,576,620,664,708,752,796,840,931,1022,1113,1204,1295,1386,1477,1568,1659,1750,1880,2010,2140,2270,2400,2530,2660,2790,2920,3050,3354,3658,3962,4266,4570,4874,5178,5482,5786,6090,6480,6870,7260,7650,8040,8430,8820,9210,9600,9990]},"TDD":{"min":20,"male":[84,91,100,110,123,139,158,181,208,241,278,323,373,429,488,552,619,692,771,852,940,1031,1131,1237,1352,1475,1609,1757,1919,2106,2335,2576,2869,3195,3481,3768,4054,4341,4627,4914,5200,5640,6080,6520,6960,7400,7840,8280,8720,9160,9600],"female":[92,105,115,118,161,180,210,240,271,306,342,379,420,461,507,554,606,662,719,776,830,879,927,974,1024,1077,1134,1193,1258,1331,1415,1500,1601,1712,1832,1961,2104,2264,2447,2665,2940,3226,3512,3798,4084,4370,4656,4942,5228,5514,5800]}};
+const RATES = {"NCIC":{"10":{"male":[455,464,472,481,489,498,506,515,523,532,540,553,565,578,590,603,615,628,640,653,665,677,689,701,713,725,737,749,761,773,785,801,817,833,849,865,881,897,913,929,945,970,995,1019,1044,1069,1094,1119,1143,1168,1193,1380,1568,1755,1942,2130,2317,2504,2691,2879,3066],"female":[435,444,452,461,469,478,486,495,503,512,520,531,542,553,564,575,586,597,608,619,630,641,652,663,674,685,696,707,718,729,740,756,771,787,802,818,833,849,864,880,895,912,929,946,963,980,996,1013,1030,1047,1064,1152,1239,1327,1414,1502,1589,1677,1764,1852,1939],"min":0},"20":{"male":[250,255,260,265,270,275,280,285,290,295,300,307,314,321,328,335,342,349,356,363,370,378,386,394,402,410,418,426,434,442,450,458,466,474,482,490,498,506,514,522,530,572,614,656,698,740,782,824,866,908,950],"female":[240,245,250,255,260,265,270,275,280,285,290,296,302,308,314,320,326,332,338,344,350,357,363,370,376,383,389,396,402,409,415,424,433,442,451,460,469,478,487,496,505,530,554,579,603,628,652,677,701,726,750],"min":0}},"TED35":{"10":{"male":[725,728,730,733,735,738,740,743,745,748,750,753,755,758,760,768,776,784,792,800,808,816,824,832,840,850,860,871,881,891,901,911,922,932,942,1054,1165,1277,1388,1500],"female":[715,716,718,719,720,722,724,726,728,730,732,734,736,738,740,745,750,755,760,765,770,775,780,785,790,800,809,819,828,838,847,857,866,876,885,928,971,1014,1057,1100],"min":16},"20":{"male":[390,391,393,394,395,398,400,403,405,408,410,413,415,418,420,426,431,437,442,448,453,459,464,470,475,506,538,569,600,632,663,694,725,757,788,880,973,1065,1158,1250],"female":[385,386,388,389,390,392,394,396,398,400,402,404,406,408,410,415,419,424,428,433,437,442,446,451,455,471,487,503,519,535,550,566,582,598,614,645,676,708,739,770],"min":16}},"TED":{"10":{"male":[379,385,388,394,404,412,422,430,439,449,459,468,479,490,500,512,524,537,546,560,572,574,578,595,605,616,629,639,650,661,673,688,700,712,726,739,752,764,779,792,807,822,837,853,868,885,903,912,924,934,942,1000,1106,1169,1280,1351,1481,1662,1867,2121,2440],"female":[359,363,370,374,383,387,397,406,416,423,432,442,452,462,472,483,491,500,507,517,522,533,540,552,561,570,581,591,603,614,627,636,649,660,673,684,703,715,730,745,757,774,789,804,817,828,841,851,862,871,885,912,918,935,1014,1090,1143,1194,1267,1334,1402],"min":0},"20":{"male":[202,205,209,210,217,219,223,229,235,240,247,254,257,264,274,280,282,287,294,297,302,307,312,318,325,334,342,355,361,370,383,389,400,409,418,428,435,445,451,454,458,465,470,496,524,553,593,641,687,735,788],"female":[190,193,195,199,203,206,211,217,221,225,233,236,242,248,255,262,266,271,275,282,286,289,292,300,305,315,321,329,337,345,353,357,367,375,383,392,402,407,420,428,438,450,455,460,464,479,508,540,570,589,614],"min":0}},"HDD":{"min":0,"male":[160,161,165,166,171,174,176,180,183,187,190,197,201,205,212,216,220,223,229,233,235,238,244,250,255,262,269,277,284,291,300,309,318,326,331,340,348,355,362,369,385,392,399,419,438,461,495,526,564,606,645,704,759,813,863,910],"female":[150,153,155,158,159,162,166,170,173,176,180,185,189,195,199,204,208,213,216,223,225,228,232,236,238,243,247,252,257,261,275,282,287,292,296,301,307,312,317,323,360,344,352,362,371,394,422,449,477,496,510,546,579,610,639,665]},"TSDD":{"min":20,"male":[370,419,468,517,566,615,664,713,762,811,860,974,1088,1202,1316,1430,1544,1658,1772,1886,2000,2190,2380,2570,2760,2950,3140,3330,3520,3710,3900,4337,4774,5211,5648,6085,6522,6959,7396,7833,8270,8807,9344,9881,10418,10955,11492,12029,12566,13103,13640],"female":[400,444,488,532,576,620,664,708,752,796,840,931,1022,1113,1204,1295,1386,1477,1568,1659,1750,1880,2010,2140,2270,2400,2530,2660,2790,2920,3050,3354,3658,3962,4266,4570,4874,5178,5482,5786,6090,6480,6870,7260,7650,8040,8430,8820,9210,9600,9990]},"TDD":{"min":20,"male":[84,91,100,110,123,139,158,181,208,241,278,323,373,429,488,552,619,692,771,852,940,1031,1131,1237,1352,1475,1609,1757,1919,2106,2335,2576,2869,3195,3481,3768,4054,4341,4627,4914,5200,5640,6080,6520,6960,7400,7840,8280,8720,9160,9600],"female":[92,105,115,118,161,180,210,240,271,306,342,379,420,461,507,554,606,662,719,776,830,879,927,974,1024,1077,1134,1193,1258,1331,1415,1500,1601,1712,1832,1961,2104,2264,2447,2665,2940,3226,3512,3798,4084,4370,4656,4942,5228,5514,5800]},"HC":{"10":{"min":0,"male":[225,229,234,238,243,247,251,256,260,265,269,274,280,285,291,296,301,307,312,318,323,331,338,346,353,361,369,376,384,391,399,407,414,422,429,437,445,452,460,467,475,483,491,499,507,515,522,530,538,546,554,565,575,586,597,608,618,629,640,650,661,669,676,684,691,699,706,714,721,729,736],"female":[224,228,233,237,242,246,250,255,259,264,268,273,279,284,290,295,300,306,311,317,322,330,337,345,352,360,368,375,383,390,398,405,413,420,427,435,442,449,456,464,471,476,480,485,489,494,498,503,507,512,516,521,526,531,536,541,546,551,556,561,566,570,574,578,582,586,589,593,597,601,605]},"20":{"min":0,"male":[118,120,123,125,127,130,132,134,136,139,141,144,147,150,153,156,158,161,164,167,170,174,178,182,186,190,194,198,202,206,210,216,223,229,235,242,248,254,260,267,273,279,285,292,298,304,310,316,323,329,335,345,354,364,373,383,392,402,411,421,430,440,451,461,472,482],"female":[117,119,122,124,126,129,131,133,135,138,140,143,146,149,152,155,157,160,163,166,169,173,177,181,185,189,193,197,201,205,209,215,222,228,234,241,247,253,259,266,272,276,279,283,287,291,294,298,302,305,309,314,318,323,327,332,336,341,345,350,354,362,369,377,384,392]}},"SC":{"10":{"min":55,"male":[159,171,181,195,208,221,234,247,261,276,290,305,319,334,348,361,373,383,393,396,397,398,399,400,401,402],"female":[142,148,154,160,167,173,180,189,196,204,213,222,231,239,248,257,264,272,280,286,293,298,301,303,304,305]},"20":{"min":55,"male":[236,249,262,275,288,302,315,328,341,354,367,379,391,402,413,423],"female":[192,199,207,215,223,232,240,248,257,265,274,282,290,298,305,313]}}};
 // 費率單位：NCIC／TED35／TED／HDD 每萬元；TSDD／TDD 每 10 萬元
 const PROD = {
   NCIC:{ name:'安心溢百', full:'安心溢百重大傷病終身保險', color:'#1c63b3', desc:'重大傷病終身保險<br>認健保重大傷病證明，保障至100歲', max:()=>500, terms:{10:[0,60],20:[0,50]}, best:1.05, unit:1, cover:()=> '100 歲' },
@@ -313,9 +316,11 @@ const PROD = {
   TED:{ name:'精選傷病(2)', full:'精選傷病定期保險(2)（TED）', color:'#a8710c', desc:'定期重大疾病保險<br>癌症分期給付，84歲期滿領回', max:()=>500, terms:{10:[0,60],20:[0,50]}, best:1.05, unit:1, cover:()=> '84 歲' },
   HDD:{ name:'活力洋溢3', full:'活力洋溢3重大疾病保險（HDD）', color:'#1f7a4d', desc:'終身重大疾病保險<br>初期5%・輕度10%・重度100%', max:a=> a<=7?500:(a<=15?750:2000), terms:{20:[0,55]}, best:1.05, unit:1, cover:()=> '95 歲' },
   TSDD:{ name:'樂健康祥定', full:'10TSDD 特定重大傷病定期健康保險', color:'#c8603f', desc:'10年定期・保證續保<br>重度癌症160%（含三項預備金）', max:()=>300, terms:{10:[20,70]}, renew:true, best:1.1, unit:10, cover:a=>{ let x=a; while(x+10<=70) x+=10; return (x+9)+' 歲（續保）'; } },
-  TDD:{ name:'樂健康祥定', full:'10TDD 樂健康祥定期健康保險', color:'#7a6bd6', desc:'10年定期・保證續保<br>重度癌症100%，最高×1.2', max:()=>200, terms:{10:[20,70]}, renew:true, best:1.2, unit:10, cover:a=>{ let x=a; while(x+10<=70) x+=10; return (x+9)+' 歲（續保）'; } }
+  TDD:{ name:'樂健康祥定', full:'10TDD 樂健康祥定期健康保險', color:'#7a6bd6', desc:'10年定期・保證續保<br>重度癌症100%，最高×1.2', max:()=>200, terms:{10:[20,70]}, renew:true, best:1.2, unit:10, cover:a=>{ let x=a; while(x+10<=70) x+=10; return (x+9)+' 歲（續保）'; } },
+  HC:{ name:'心滿溢足', full:'心滿溢足癌症健康保險（HC）', color:'#b5562f', desc:'癌症健康保險・保障至95歲<br>初期／輕度10%・重度100%', max:a=> a<=54?300:200, terms:{10:[0,70],20:[0,65]}, best:1, unit:1, cover:()=> '95 歲' },
+  SC:{ name:'長青滿溢', full:'長青滿溢癌症定期健康保險（SC）', color:'#2f9e9e', desc:'55歲以上癌症定期險<br>初期／輕度10%・重度100%', max:()=>100, terms:{10:[55,80],20:[55,70]}, best:1, unit:1, cover:(a,t)=> (a+t-1)+' 歲（定期'+t+'年）' }
 };
-const ORDER = ['NCIC','TED35','TED','HDD','TSDD','TDD'];
+const ORDER = ['NCIC','TED35','TED','HDD','HC','SC','TSDD','TDD'];
 const SEL = new Set(ORDER);
 
 document.getElementById('product-grid').innerHTML = ORDER.map(k => { const p = PROD[k]; return `
@@ -367,18 +372,19 @@ function calcProd(k, age, g, period, amtMode, sameAmt, health, disc){
   } else total = annual * term;
   const totalRaw = total;
   const W = amt * 10000;                                   // 元
-  const early = (k==='TED35'||k==='TED'||k==='HDD') ? W*0.05*coef : null;
-  const mild  = (k==='TED35'||k==='TED'||k==='HDD') ? W*0.10*coef : null;
+  const HCSC = k==='HC'||k==='SC';
+  const early = (k==='TED35'||k==='TED'||k==='HDD') ? W*0.05*coef : (HCSC ? W*0.10 : null);
+  const mild  = (k==='TED35'||k==='TED'||k==='HDD'||HCSC) ? W*0.10*coef : null;
   const severe = W * coef;
   const extra = k==='TSDD' ? W*coef*0.6 : null;            // 預備門診／住院／居家 各20%
-  const maxCancer = k==='TSDD' ? W*coef*1.6 : ((k==='TED35'||k==='TED') ? W*coef*1.15 : (k==='HDD' ? W*coef*1.15 : severe));
+  const maxCancer = k==='TSDD' ? W*coef*1.6 : ((k==='TED35'||k==='TED') ? W*coef*1.15 : (k==='HDD' ? W*coef*1.15 : (HCSC ? W*1.1 : severe)));
   let endBen = null, endLabel = '—';
   if(k==='NCIC'){ endBen = Math.max(W, totalRaw*1.06)*coef; endLabel = '100 歲祝壽金'; }
   if(k==='TED35'){ endBen = Math.max(W, totalRaw*1.06)*coef; endLabel = (age+34)+' 歲滿期金'; }
   if(k==='TED'){ endBen = Math.max(W, totalRaw*1.06)*coef; endLabel = '84 歲滿期金'; }
   if(k==='HDD'){ endBen = totalRaw*1.06; endLabel = '95 歲滿期金'; }
   if(k==='TDD'){ endBen = annual*10; endLabel = '身故／完全失能（首期）'; }
-  const firstYear = k==='NCIC' ? annual*1.06 : W * (k==='TSDD' ? 1.6 : 1);
+  const firstYear = k==='NCIC' ? annual*1.06 : (HCSC ? annual*1.1 : W * (k==='TSDD' ? 1.6 : 1));
   return { ok:true, k, p, term, amt, max, over, coef, annual, annualDisc: annual*disc, monthly: annual*disc/12, total: total*disc, periods,
            early, mild, severe, extra, maxCancer, endBen, endLabel, firstYear };
 }
@@ -407,8 +413,10 @@ function calculate(){
   const ok = prods.filter(k => res[k].ok);
   if(!ok.length){ showErr('所選條件下，所有選取險種均不可投保'); document.getElementById('results').style.display='none'; return; }
 
-  const head = lab => '<tr><th>' + lab + '</th>' + prods.map(k => `<th class="prod-header" style="color:${PROD[k].color};border-color:${PROD[k].color}">${k}<br><span style="font-size:12px;font-weight:400;color:var(--text2)">${PROD[k].name}</span></th>`).join('') + '</tr>';
-  const row = (lab, fn) => `<tr><td class="row-label">${lab}</td>` + prods.map(k => `<td>${fn(res[k])}</td>`).join('') + '</tr>';
+  const skipped = prods.filter(k => !res[k].ok);
+  const all = prods; const prodsT = ok;
+  const head = lab => '<tr><th>' + lab + '</th>' + prodsT.map(k => `<th class="prod-header" style="color:${PROD[k].color};border-color:${PROD[k].color}">${k}<br><span style="font-size:12px;font-weight:400;color:var(--text2)">${PROD[k].name}</span></th>`).join('') + '</tr>';
+  const row = (lab, fn) => `<tr><td class="row-label">${lab}</td>` + prodsT.map(k => `<td>${fn(res[k])}</td>`).join('') + '</tr>';
   const minPrem = Math.min(...ok.map(k => res[k].annualDisc));
 
   let h = head('項目');
@@ -417,24 +425,25 @@ function calculate(){
   h += row('首年年繳（折後）', r => r.ok ? `<span class="${r.annualDisc===minPrem?'highlight-val':''}">${fmt(r.annualDisc)}</span>` : NA);
   h += row('月繳估算', r => r.ok ? fmt(r.monthly)+'/月' : '—');
   h += row('繳費總額', r => r.ok ? fmt(r.total) + (r.p.renew ? '<br><span style="font-size:11.5px;color:var(--text2)">續保至最後一期</span>' : '') : '—');
-  h += row('保障至', r => r.ok ? r.p.cover(age) : '—');
+  h += row('保障至', r => r.ok ? r.p.cover(age, r.term) : '—');
   document.getElementById('summary-table').innerHTML = h;
+  document.getElementById('skip-note').innerHTML = skipped.length ? '未列入比較（不符合投保規則）：' + skipped.map(k => `<b>${k}</b> ${res[k].reason}`).join('；') : '';
 
   let b = head('癌症保障項目');
-  b += row('初期癌症（原位癌等）', r => r.k==='NCIC' ? (r.ok ? '<span class="na" style="font-size:12.5px">依是否取得<br>重大傷病證明</span>' : NA) : cell(r, r.early));
-  b += row('輕度癌症', r => r.k==='NCIC' ? (r.ok ? '<span class="na" style="font-size:12.5px">依是否取得<br>重大傷病證明</span>' : NA) : cell(r, r.mild));
+  b += row('初期癌症（原位癌等）', r => r.k==='NCIC' ? (r.ok ? '<span class="na" style="font-size:12.5px">依是否取得<br>重大傷病證明</span>' : NA) : cell(r, r.early, (r.k==='HC'||r.k==='SC') ? '初期或輕度擇一，1 次' : ''));
+  b += row('輕度癌症', r => r.k==='NCIC' ? (r.ok ? '<span class="na" style="font-size:12.5px">依是否取得<br>重大傷病證明</span>' : NA) : cell(r, r.mild, (r.k==='HC'||r.k==='SC') ? '初期或輕度擇一，1 次' : ''));
   b += row('重度癌症', r => cell(r, r.severe, r.k==='NCIC' ? '需積極或長期治療之癌症' : ''));
   b += row('預備門診・住院・居家', r => cell(r, r.extra, r.k==='TSDD' ? '各 20%' : ''));
-  b += row('第1保單年度罹患重度癌症', r => !r.ok ? NA : (r.k==='NCIC' ? fmt(r.firstYear)+'<br><span style="font-size:11.5px;color:var(--text2)">年繳保費×1.06</span>' : fmt(r.firstYear)+'<br><span style="font-size:11.5px;color:var(--text2)">'+(r.k==='TSDD'?'重度＋預備金，':'重度，')+'係數×1.00</span>'));
+  b += row('第1保單年度罹患重度癌症', r => !r.ok ? NA : (r.k==='NCIC'||r.k==='HC'||r.k==='SC' ? fmt(r.firstYear)+'<br><span style="font-size:11.5px;color:var(--text2)">年繳保費×'+(r.k==='NCIC'?'1.06':'1.1')+'</span>' : fmt(r.firstYear)+'<br><span style="font-size:11.5px;color:var(--text2)">'+(r.k==='TSDD'?'重度＋預備金，':'重度，')+'係數×1.00</span>'));
   b += row('滿期／身故給付', r => !r.ok ? NA : (r.endBen ? CHECK + fmt(r.endBen) + `<br><span style="font-size:11.5px;color:var(--text2)">${r.endLabel}</span>` : '<span class="na">✕</span>'));
   const tops = ok.map(k => res[k].maxCancer), topV = Math.max(...tops);
-  b += `<tr><td class="row-label" style="font-weight:600;color:var(--text)">癌症最高可領</td>` + prods.map(k => { const r = res[k]; if(!r.ok) return `<td>${NA}</td>`;
+  b += `<tr><td class="row-label" style="font-weight:600;color:var(--text)">癌症最高可領</td>` + prodsT.map(k => { const r = res[k]; if(!r.ok) return `<td>${NA}</td>`;
     const top = r.maxCancer === topV; return `<td class="${top?'best':''}">${top?'<div style="font-size:18px;line-height:1.2">🏆</div>':''}<span class="highlight-val" style="font-size:15px">${fmt(r.maxCancer)}</span></td>`; }).join('') + '</tr>';
   document.getElementById('benefit-table').innerHTML = b;
 
   const cols = document.getElementById('detail-cols');
   cols.className = 'detail-cols cols-' + Math.min(ok.length, 2);
-  cols.innerHTML = prods.map(k => { const r = res[k], p = PROD[k];
+  cols.innerHTML = ok.map(k => { const r = res[k], p = PROD[k];
     if(!r.ok) return `<div class="prod-detail-card" style="--prod-color:${p.color}"><div class="prod-detail-header"><div class="d-code">${k}</div><div class="d-name">${p.full}</div><div class="d-prem" style="color:var(--text2);font-size:16px">⚠ ${r.reason}</div></div></div>`;
     const br = (l, v, cls) => `<div class="benefit-row"><span class="b-label">${l}</span><span class="b-val ${cls||''}">${v}</span></div>`;
     let rows = '';
@@ -454,7 +463,7 @@ function calculate(){
       <div class="prod-detail-header"><div class="d-code">${k}</div><div class="d-name">${p.full}</div>
         <div class="d-prem">${fmt(r.annualDisc)}<span style="font-size:13px;color:var(--text2);margin-left:4px">元/年（首年・折後）</span></div>
         <div class="d-prem-sub">保額 ${r.amt.toLocaleString()} 萬・係數 ×${r.coef}・繳費 ${r.term} 年${r.p.renew?'（續保）':''}</div>
-        <div class="d-prem-sub">保障至：<span style="color:var(--gold2)">${p.cover(age)}</span></div></div>
+        <div class="d-prem-sub">保障至：<span style="color:var(--gold2)">${p.cover(age, r.term)}</span></div></div>
       <div class="benefit-divider">癌症給付（第 3 年起）</div>${rows}
       ${r.endBen ? '<div class="benefit-divider">滿期／身故</div>' + br(r.endLabel, fmt(r.endBen)) : ''}
       ${ren}</div>`; }).join('');
@@ -463,7 +472,7 @@ function calculate(){
 document.querySelectorAll('input[name=amtmode]').forEach(i => i.addEventListener('change', () => {
   const same = document.querySelector('input[name=amtmode]:checked').value === 'same';
   document.getElementById('amount').style.display = same ? 'block' : 'none';
-  document.getElementById('amt-hint').textContent = same ? '六張商品用同一保額比較（萬元）' : 'NCIC・TED35・TED 500 萬、HDD 2,000 萬、TSDD 300 萬、TDD 200 萬';
+  document.getElementById('amt-hint').textContent = same ? '所有商品用同一保額比較（萬元）' : 'NCIC・TED35・TED 500 萬、HDD 2,000 萬、HC・TSDD 300 萬、TDD 200 萬、SC 100 萬';
 }));
 calculate();
 </script>
