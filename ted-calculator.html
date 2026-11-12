@@ -162,7 +162,7 @@
       <div class="field">
         <label>投保年齡　<span class="val" id="ageVal">35</span> 歲</label>
         <input type="range" id="age" min="16" max="55" value="35">
-        <div class="hint">同一投保年齡／性別／繳費年期／健檢體位，同時適用於已輸入金額的商品。年齡範圍依各商品規定：<b style="color:#1f7a7a;">TED35</b> 10年期／20年期皆為16～55歲；<b style="color:var(--gold-deep);">TED</b> 10年期16～60歲、20年期16～50歲。兩商品都投保時，滑桿自動取兩者交集；只投保其中一項時，滑桿會放寬到該商品自己的範圍。</div>
+        <div class="hint">同一投保年齡／性別／繳費年期／健檢體位，同時適用於已輸入金額的商品。年齡範圍依各商品規定：<b style="color:#1f7a7a;">TED35</b> 10年期／20年期皆為16～55歲；<b style="color:var(--gold-deep);">TED</b> 10年期0～60歲、20年期0～50歲（可0歲投保）。兩商品都投保時，滑桿自動取兩者交集；只投保其中一項時，滑桿會放寬到該商品自己的範圍。</div>
       </div>
       <div class="field">
         <label>性別</label>
@@ -193,7 +193,7 @@
         <div class="field">
           <label>TED 投保金額（萬元）</label>
           <input type="number" id="amountTED" value="" min="0" step="10" placeholder="0">
-          <div class="hint">最低 10 萬、最高 500 萬（另受「累計重大疾病給付保額總和 ≦ 2,500 萬元」限制）；投保年齡 10年期16～60歲、20年期16～50歲。<b>留空或輸入 0 代表不投保 TED</b>。</div>
+          <div class="hint">最低 10 萬、最高 500 萬（另受「累計重大疾病給付保額總和 ≦ 2,500 萬元」限制）；投保年齡 10年期0～60歲、20年期0～50歲（未滿16歲不適用健康促進係數，身故／完全失能依「所繳保費加計1.75%利息」計算）。<b>留空或輸入 0 代表不投保 TED</b>。</div>
         </div>
       </div>
 
@@ -204,7 +204,7 @@
           <button data-v="1" class="active">A 級 × 1.00</button>
           <button data-v="1.05">S 級 × 1.05</button>
         </div>
-        <div class="hint">依條款：給付＝MAX(保額,已繳「年繳保險費總和」×1.06)×健康促進係數，兩張保單各自獨立計算後再加總。前 2 保單年度一律以 A 級（× 1.00）計算。</div>
+        <div class="hint">依條款：給付＝MAX(保額,已繳「年繳保險費總和」×1.06)×健康促進係數，兩張保單各自獨立計算後再加總。前 2 保單年度一律以 A 級（× 1.00）計算。<b>投保時保險年齡未滿16歲者不適用健康促進係數（以 × 1.00 計）。</b></div>
       </div>
     </div>
 
@@ -456,7 +456,9 @@ const RATESTED = {
 
 const SPAN35 = 35;                 // TED35：投保後固定35年滿期
 const MATURITY_AGE_TED = 84;       // TED：固定保險年齡84歲滿期
-const AGE_MIN = 16;
+const AGE_MIN_35 = 16;              // TED35 投保年齡 16～55 歲
+const AGE_MIN_TED = 0;              // TED 投保年齡 0～60（10年期）／0～50（20年期）歲
+function minAgeFor(has35){ return has35 ? AGE_MIN_35 : AGE_MIN_TED; }
 
 let state = { age:35, gender:'male', term:20, amount35:500, amountTED:0, coef:1, policyYear:0, everPlayed:false };
 let playTimer = null;
@@ -477,9 +479,11 @@ function clampAgeForTerm(){
   const {has35,hasTED} = flags();
   const maxAge = ageMaxFor(state.term, has35, hasTED);
   if(state.age > maxAge) state.age = maxAge;
-  if(state.age < AGE_MIN) state.age = AGE_MIN;
+  const minAge = minAgeFor(has35);
+  if(state.age < minAge) state.age = minAge;
   const ageInput = document.getElementById('age');
-  ageInput.max = maxAge; ageInput.min = AGE_MIN;
+  ageInput.max = maxAge; ageInput.min = minAge;
+  if(parseInt(ageInput.value) < minAge){ ageInput.value = minAge; }
   if(parseInt(ageInput.value) > maxAge){ ageInput.value = maxAge; }
   document.getElementById('ageVal').textContent = state.age;
 }
@@ -564,13 +568,14 @@ function stageBoundaries(start, term, end){
 
 // ---- 核心試算函式 ----
 function calc(){
-  const age = state.age, term = state.term, coef = state.coef;
+  const age = state.age, term = state.term;
+  const coef = age < 16 ? 1 : state.coef;   // 健康促進係數僅適用保險年齡16歲(含)以上
   const amount35 = state.amount35, amountTED = state.amountTED;
   const { has35, hasTED } = flags();
   const mode = modeOf();
   const span2 = spanTED(age);
 
-  const rate35 = (has35 && age>=AGE_MIN && age<=55) ? RATES35[state.gender][term][age] : 0;
+  const rate35 = (has35 && age>=AGE_MIN_35 && age<=55) ? RATES35[state.gender][term][age] : 0;
   const rateTED = hasTED ? (RATESTED[state.gender][term][age] || 0) : 0;
   const premium35 = has35 ? rate35 * amount35 : 0;      // 元／年（TED35）
   const premiumTED = hasTED ? rateTED * amountTED : 0;  // 元／年（TED）
@@ -581,10 +586,13 @@ function calc(){
   const cumTED = n => hasTED ? annualWanTED * Math.min(n, term) : 0;
   // 在保單有效期間內的保單價值／給付；超過該商品自身年期後（已滿期給付、契約終止）視為 0
   const ted35Value = n => (!has35 || n > SPAN35) ? 0 : Math.max(amount35, cum35(n)*1.06) * coef;
-  const tedValue    = n => (!hasTED || n > span2)  ? 0 : Math.max(amountTED, cumTED(n)*1.06) * coef;
+  // 未滿16歲：以「所繳保險費加計1.75%利息」（年複利）取代 ×1.06，且不適用健康促進係數
+  const cumTEDInt = n => { let t = 0; const m = Math.min(n, term); for(let k=1;k<=m;k++) t += annualWanTED * Math.pow(1.0175, m-k); return t; };
+  const tedBase = n => age < 16 ? cumTEDInt(n) : cumTED(n)*1.06;
+  const tedValue    = n => (!hasTED || n > span2)  ? 0 : Math.max(amountTED, tedBase(n)) * coef;
   // 各自滿期給付金額（不歸零，供顯示用）
   const ted35Maturity = has35 ? Math.max(amount35, annualWan35*term*1.06) * coef : 0;
-  const tedMaturity    = hasTED ? Math.max(amountTED, annualWanTED*term*1.06) * coef : 0;
+  const tedMaturity    = hasTED ? Math.max(amountTED, age < 16 ? cumTEDInt(term) : annualWanTED*term*1.06) * coef : 0;
 
   const totalSpan = has35 && hasTED ? Math.max(SPAN35, span2) : has35 ? SPAN35 : hasTED ? span2 : 0;
 
