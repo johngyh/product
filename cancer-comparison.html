@@ -81,6 +81,25 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .summary-table .highlight-val{color:var(--gold)}
 .summary-table .best{background:rgba(31,122,77,.1)}
 
+.summary-table th.prod-header{background:#fff}
+.cov-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;margin-bottom:12px;box-shadow:0 12px 30px -22px rgba(11,46,92,.3)}
+.cov-row{display:grid;grid-template-columns:70px 1fr 74px;align-items:center;gap:10px;padding:5px 0}
+.cov-code{font-size:13px;font-weight:700;letter-spacing:1px}
+.cov-track{height:12px;background:var(--navy3);border-radius:6px;overflow:hidden}
+.cov-fill{height:100%;border-radius:6px}
+.cov-num{font-family:var(--serif);font-weight:700;font-size:15px;text-align:right;color:var(--text)}
+.cov-sub{grid-column:2/4;font-size:12px;color:var(--text2);margin-top:-4px}
+.cov-matrix td:not(:first-child){font-family:var(--sans)!important;font-size:15px}
+.cov-y{color:var(--green);font-weight:700}.cov-p{color:var(--gold);font-weight:700}.cov-n{color:#c3cad6}
+details.cov-list{background:#fff;border:1px solid var(--line);border-left:4px solid var(--prod-color);border-radius:10px;margin-bottom:8px}
+details.cov-list summary{cursor:pointer;padding:10px 14px;font-size:14px;color:var(--navy);font-weight:600;list-style:none}
+details.cov-list summary::-webkit-details-marker{display:none}
+details.cov-list summary::after{content:'＋';float:right;color:var(--text2)}
+details.cov-list[open] summary::after{content:'－'}
+.cov-g{padding:0 14px 10px}
+.cov-g h5{font-size:12.5px;color:var(--blue2);margin:6px 0 6px;font-weight:700}
+.cov-chips{display:flex;flex-wrap:wrap;gap:5px}
+.cov-chips span{font-size:12.5px;background:var(--navy3);border:1px solid var(--line);border-radius:14px;padding:3px 10px;color:var(--text)}
 /* Detail sections */
 .detail-cols{display:grid;gap:10px;margin-bottom:10px}
 .detail-cols.cols-1{grid-template-columns:1fr}
@@ -248,6 +267,12 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
   <div class="summary-table-wrap"><table class="summary-table" id="benefit-table"></table></div>
   <div style="font-size:12.5px;color:var(--text2);margin:-4px 2px 10px;line-height:1.7">金額以第 3 保單年度起、所選健康促進等級計算；前 2 保單年度一律×1.00（HC、SC 第 2 年起即為表列金額）。NCIC、TED35、TED、HDD 的重度給付為「MAX(保額, 年繳保費總和×1.06)×係數」，表中以保額計（較保守）。</div>
 
+  <div class="section-label">保障範圍比較</div>
+  <div class="cov-card" id="cov-bars"></div>
+  <div class="summary-table-wrap"><table class="summary-table cov-matrix" id="cov-matrix"></table></div>
+  <div style="font-size:12.5px;color:var(--text2);margin:-4px 2px 10px;line-height:1.7">✓ 有保障　△ 部分符合（NCIC 依健保重大傷病卡項目認定，例如腦中風限急性發作後一個月內、癱瘓限脊髓損傷或小兒麻痺併發症）　— 不在保障範圍。HC、SC 為癌症專屬保險。實際認定以各商品保單條款為準。</div>
+  <div id="cov-lists"></div>
+
   <div class="section-label">各險種給付明細</div>
   <div class="detail-cols" id="detail-cols"></div>
 </div>
@@ -320,6 +345,8 @@ const PROD = {
   HC:{ name:'心滿溢足', full:'心滿溢足癌症健康保險（HC）', color:'#b5562f', desc:'癌症健康保險・保障至95歲<br>初期／輕度10%・重度100%', max:a=> a<=54?300:200, terms:{10:[0,70],20:[0,65]}, best:1, unit:1, cover:()=> '95 歲' },
   SC:{ name:'長青滿溢', full:'長青滿溢癌症定期健康保險（SC）', color:'#2f9e9e', desc:'55歲以上癌症定期險<br>初期／輕度10%・重度100%', max:()=>100, terms:{10:[55,80],20:[55,70]}, best:1, unit:1, cover:(a,t)=> (a+t-1)+' 歲（定期'+t+'年）' }
 };
+const COVER = {"NCIC":{"n":300,"count":"300+ 項","sub":"22 大類重大傷病＋9 項特定疾病","groups":[["重大傷病 22 大類（依健保重大傷病範圍，共 300 多項）",["需積極或長期治療之癌症","嚴重溶血性及再生不良性貧血","慢性腎衰竭（尿毒症），必須接受定期透析治療者","需終身治療之全身性自體免疫症候群","慢性精神病","燒燙傷面積達全身20%以上；或顏面燒燙傷合併五官功能障礙者","接受器官移植","小兒麻痺、腦性麻痺所引起之併發症者（身心障礙等級中度以上）","重大創傷且創傷嚴重程度分數16分以上（ISS≧16）","因呼吸衰竭需長期使用呼吸器符合其條件者","嚴重營養不良（需全靜脈營養超過30天且病情穩定，口攝飲食仍無法提供足量營養）","重症肌無力症","嚴重型減壓病或空氣栓塞症（潛水或減壓不當所致，且需長期治療）","脊髓損傷或病變所引起之併發症者（身心障礙等級中度以上）","急性腦血管疾病（限急性發作後一個月內）","多發性硬化症","漢生病","肝硬化症，併有符合其情形者","砷及其化合物之毒性作用（烏腳病）","運動神經元疾病（身心障礙等級中度以上或須使用呼吸器；經診斷為ALS者不受限制）","庫賈氏病","經中央主管機關公告之罕見疾病"]],["特定疾病 9 項",["急性心肌梗塞（重度）","冠狀動脈繞道手術","心臟瓣膜開心手術","主動脈外科置換手術","經導管心臟瓣膜置換術","嚴重阿茲海默氏症","嚴重巴金森氏症","嚴重全身性紅斑性狼瘡腎病變","嚴重類風濕性關節炎"]]]},"TED35":{"n":41,"count":"41 項","sub":"10 大類，癌症與心腦血管分初期／輕度／重度","groups":[["惡性腫瘤（癌症）",["癌症（初期）","癌症（輕度）","癌症（重度）"]],["心腦血管",["急性心肌梗塞（輕度）","急性心肌梗塞（重度）","冠狀動脈繞道手術","心臟瓣膜開心手術","主動脈外科置換手術","經導管心臟瓣膜置換術","腦中風後障礙（輕度）","腦中風後障礙（重度）","腦血管動脈瘤開顱手術"]],["肺部及呼吸系統",["嚴重原發性肺動脈高血壓","因呼吸衰竭需長期使用呼吸器"]],["肝腎腸疾病",["病毒性猛暴性肝炎合併肝衰竭","慢性肝病合併肝衰竭","嚴重肝硬化症","末期腎病變","嚴重克隆氏病或潰瘍性結腸炎"]],["器官移植",["重大器官移植或造血幹細胞移植","小腸移植"]],["認知功能障礙",["認知功能障礙初期","認知功能障礙中重度"]],["神經系統疾病",["良性腦腫瘤併神經障礙後遺症","急性腦炎併神經障礙後遺症","脊髓灰質炎併神經障礙後遺症","多發性硬化症","嚴重巴金森氏症","嚴重運動神經元疾病"]],["癱瘓",["癱瘓（輕度）","癱瘓（重度）"]],["自體免疫疾病",["嚴重全身性紅斑性狼瘡腎病變","嚴重類風濕性關節炎","嚴重再生不良性貧血"]],["其他",["思覺失調症","重症肌無力症","漢生病","嚴重肌肉失養症","深度昏迷","嚴重第三度燒燙傷","嚴重頭部創傷"]]]},"TED":{"n":41,"count":"41 項","sub":"同 TED35","groups":[["惡性腫瘤（癌症）",["癌症（初期）","癌症（輕度）","癌症（重度）"]],["心腦血管",["急性心肌梗塞（輕度）","急性心肌梗塞（重度）","冠狀動脈繞道手術","心臟瓣膜開心手術","主動脈外科置換手術","經導管心臟瓣膜置換術","腦中風後障礙（輕度）","腦中風後障礙（重度）","腦血管動脈瘤開顱手術"]],["肺部及呼吸系統",["嚴重原發性肺動脈高血壓","因呼吸衰竭需長期使用呼吸器"]],["肝腎腸疾病",["病毒性猛暴性肝炎合併肝衰竭","慢性肝病合併肝衰竭","嚴重肝硬化症","末期腎病變","嚴重克隆氏病或潰瘍性結腸炎"]],["器官移植",["重大器官移植或造血幹細胞移植","小腸移植"]],["認知功能障礙",["認知功能障礙初期","認知功能障礙中重度"]],["神經系統疾病",["良性腦腫瘤併神經障礙後遺症","急性腦炎併神經障礙後遺症","脊髓灰質炎併神經障礙後遺症","多發性硬化症","嚴重巴金森氏症","嚴重運動神經元疾病"]],["癱瘓",["癱瘓（輕度）","癱瘓（重度）"]],["自體免疫疾病",["嚴重全身性紅斑性狼瘡腎病變","嚴重類風濕性關節炎","嚴重再生不良性貧血"]],["其他",["思覺失調症","重症肌無力症","漢生病","嚴重肌肉失養症","深度昏迷","嚴重第三度燒燙傷","嚴重頭部創傷"]]]},"HDD":{"n":7,"count":"7 項","sub":"重度重大疾病 7 項（另有輕度 4 項、初期癌症）","groups":[["重度重大疾病 7 項（100%）",["急性心肌梗塞（重度）","冠狀動脈繞道手術","末期腎病變","腦中風後障礙（重度）","癌症（重度）","癱瘓（重度）","重大器官移植或造血幹細胞移植"]],["輕度重大疾病 4 項（10%）",["急性心肌梗塞（輕度）","腦中風後障礙（輕度）","癌症（輕度）","癱瘓（輕度）"]],["初期癌症（5%）",["原位癌或零期癌","第一期惡性類癌","第二期以下非惡性黑色素瘤皮膚癌"]]]},"HC":{"n":1,"count":"癌症","sub":"初期／輕度／重度癌症","groups":[["癌症",["初期癌症（10%，與輕度擇一）","輕度癌症（10%，與初期擇一）","重度癌症（100%）"]]]},"SC":{"n":1,"count":"癌症","sub":"初期／輕度／重度癌症","groups":[["癌症",["初期癌症（10%，與輕度擇一）","輕度癌症（10%，與初期擇一）","重度癌症（100%）"]]]},"TSDD":{"n":29,"count":"29 項","sub":"第一類 11 項（含 10 年生活照護）＋第二類 18 項","groups":[["第一類 11 項（最高 400%）",["腦中風後障礙（重度）","癱瘓（重度）","急性腦炎併神經障礙後遺症","嚴重阿茲海默氏症","嚴重巴金森氏症","嚴重運動神經元疾病","嚴重肌肉失養症","脊髓灰質炎併神經障礙後遺症","良性腦腫瘤併神經障礙後遺症","嚴重頭部創傷","深度昏迷"]],["第二類 18 項（最高 160%）",["急性心肌梗塞（重度）","冠狀動脈繞道手術","末期腎病變","癌症（重度）","重大器官移植或造血幹細胞移植","嚴重再生不良性貧血","腦血管動脈瘤開顱手術","多發性硬化症","嚴重原發性肺動脈高血壓","心臟瓣膜開心手術","主動脈外科置換手術","慢性肝病合併肝衰竭","病毒性猛暴性肝炎合併肝衰竭","嚴重肝硬化症","嚴重克隆氏病或潰瘍性結腸炎","嚴重全身性紅斑性狼瘡腎病變","嚴重類風濕性關節炎","嚴重第三度燒燙傷"]]]},"TDD":{"n":7,"count":"7 項","sub":"重度重大疾病 7 項","groups":[["重度重大疾病 7 項（100%，最高×1.2）",["急性心肌梗塞（重度）","冠狀動脈繞道手術","末期腎病變","腦中風後障礙（重度）","癌症（重度）","癱瘓（重度）","重大器官移植或造血幹細胞移植"]]]}};
+const MATRIX = [["癌症",{"NCIC":"Y","TED35":"Y","TED":"Y","HDD":"Y","HC":"Y","SC":"Y","TSDD":"Y","TDD":"Y"}],["急性心肌梗塞（重度）",{"NCIC":"Y","TED35":"Y","TED":"Y","HDD":"Y","TSDD":"Y","TDD":"Y"}],["冠狀動脈繞道手術",{"NCIC":"Y","TED35":"Y","TED":"Y","HDD":"Y","TSDD":"Y","TDD":"Y"}],["心臟瓣膜／主動脈手術",{"NCIC":"Y","TED35":"Y","TED":"Y","TSDD":"Y"}],["腦中風",{"NCIC":"P","TED35":"Y","TED":"Y","HDD":"Y","TSDD":"Y","TDD":"Y"}],["末期腎病變（洗腎）",{"NCIC":"Y","TED35":"Y","TED":"Y","HDD":"Y","TSDD":"Y","TDD":"Y"}],["重大器官移植",{"NCIC":"Y","TED35":"Y","TED":"Y","HDD":"Y","TSDD":"Y","TDD":"Y"}],["癱瘓",{"NCIC":"P","TED35":"Y","TED":"Y","HDD":"Y","TSDD":"Y","TDD":"Y"}],["失智（阿茲海默）",{"NCIC":"Y","TED35":"Y","TED":"Y","TSDD":"Y"}],["巴金森氏症",{"NCIC":"Y","TED35":"Y","TED":"Y","TSDD":"Y"}],["運動神經元／多發性硬化",{"NCIC":"Y","TED35":"Y","TED":"Y","TSDD":"Y"}],["肝衰竭／肝硬化",{"NCIC":"Y","TED35":"Y","TED":"Y","TSDD":"Y"}],["自體免疫（紅斑狼瘡、類風濕）",{"NCIC":"Y","TED35":"Y","TED":"Y","TSDD":"Y"}],["慢性精神病（思覺失調等）",{"NCIC":"Y","TED35":"Y","TED":"Y"}],["重大燒燙傷",{"NCIC":"Y","TED35":"Y","TED":"Y","TSDD":"Y"}],["長期使用呼吸器",{"NCIC":"Y","TED35":"Y","TED":"Y"}],["罕見疾病",{"NCIC":"Y"}]];
 const ORDER = ['NCIC','TED35','TED','HDD','HC','SC','TSDD','TDD'];
 const SEL = new Set(ORDER);
 
@@ -430,6 +457,7 @@ function calculate(){
   document.getElementById('skip-note').innerHTML = skipped.length ? '未列入比較（不符合投保規則）：' + skipped.map(k => `<b>${k}</b> ${res[k].reason}`).join('；') : '';
 
   let b = head('癌症保障項目');
+  b += row('保障項目數', r => `<span style="font-size:15px">${COVER[r.k].count}</span><br><span style="font-size:11.5px;color:var(--text2);font-family:var(--sans);font-weight:400">${COVER[r.k].sub}</span>`);
   b += row('初期癌症（原位癌等）', r => r.k==='NCIC' ? (r.ok ? '<span class="na" style="font-size:12.5px">依是否取得<br>重大傷病證明</span>' : NA) : cell(r, r.early, (r.k==='HC'||r.k==='SC') ? '初期或輕度擇一，1 次' : ''));
   b += row('輕度癌症', r => r.k==='NCIC' ? (r.ok ? '<span class="na" style="font-size:12.5px">依是否取得<br>重大傷病證明</span>' : NA) : cell(r, r.mild, (r.k==='HC'||r.k==='SC') ? '初期或輕度擇一，1 次' : ''));
   b += row('重度癌症', r => cell(r, r.severe, r.k==='NCIC' ? '需積極或長期治療之癌症' : ''));
@@ -440,6 +468,19 @@ function calculate(){
   b += `<tr><td class="row-label" style="font-weight:600;color:var(--text)">癌症最高可領</td>` + prodsT.map(k => { const r = res[k]; if(!r.ok) return `<td>${NA}</td>`;
     const top = r.maxCancer === topV; return `<td class="${top?'best':''}">${top?'<div style="font-size:18px;line-height:1.2">🏆</div>':''}<span class="highlight-val" style="font-size:15px">${fmt(r.maxCancer)}</span></td>`; }).join('') + '</tr>';
   document.getElementById('benefit-table').innerHTML = b;
+
+  // 保障範圍：依所選商品（不受年齡影響）
+  const maxN = Math.log10(301);
+  document.getElementById('cov-bars').innerHTML = prods.map(k => { const c = COVER[k], w = Math.max(4, Math.log10(c.n+1)/maxN*100);
+    return `<div class="cov-row"><div class="cov-code" style="color:${PROD[k].color}">${k}</div><div class="cov-track"><div class="cov-fill" style="width:${w}%;background:${PROD[k].color}"></div></div><div class="cov-num">${c.count}</div><div class="cov-sub">${c.sub}</div></div>`; }).join('')
+    + '<div style="font-size:11.5px;color:var(--text2);margin-top:6px">長條以對數比例呈現，方便同時看出 300 多項與 7 項的差距。</div>';
+  const mark = v => v==='Y' ? '<span class="cov-y">✓</span>' : (v==='P' ? '<span class="cov-p">△</span>' : '<span class="cov-n">—</span>');
+  document.getElementById('cov-matrix').innerHTML = '<tr><th>疾病類別</th>' + prods.map(k => `<th class="prod-header" style="color:${PROD[k].color};border-color:${PROD[k].color}">${k}</th>`).join('') + '</tr>'
+    + MATRIX.map(([lab, m]) => `<tr><td class="row-label">${lab}</td>` + prods.map(k => `<td>${mark(m[k])}</td>`).join('') + '</tr>').join('')
+    + '<tr><td class="row-label" style="font-weight:600;color:var(--text)">涵蓋類別數</td>' + prods.map(k => `<td><span class="highlight-val" style="font-family:var(--serif);font-weight:700">${MATRIX.filter(([l,m]) => m[k]).length}／${MATRIX.length}</span></td>`).join('') + '</tr>';
+  document.getElementById('cov-lists').innerHTML = prods.map(k => { const c = COVER[k];
+    return `<details class="cov-list" style="--prod-color:${PROD[k].color}"><summary><span style="color:${PROD[k].color};letter-spacing:1px">${k}</span>　${PROD[k].name}・${c.count}　<span style="font-weight:400;color:var(--text2);font-size:12.5px">點開看保障項目</span></summary>`
+      + c.groups.map(([g, items]) => `<div class="cov-g"><h5>${g}</h5><div class="cov-chips">${items.map(i => `<span>${i}</span>`).join('')}</div></div>`).join('') + '</details>'; }).join('');
 
   const cols = document.getElementById('detail-cols');
   cols.className = 'detail-cols cols-' + Math.min(ok.length, 2);
