@@ -245,7 +245,7 @@
 
       <div class="field">
         <label>投保金額（萬元）</label>
-        <input type="number" id="amount" value="100" min="0" step="10">
+        <input type="number" id="amount" value="2000" min="0" step="10">
         <div class="hint">最低：0～30 歲 30 萬、31～55 歲 20 萬；累計最高：0～7 歲 500 萬、8～15 歲 750 萬、16 歲以上 2,000 萬。<b>留空或輸入 0 代表不試算</b>。</div>
         <div class="warn" id="amountWarn"></div>
       </div>
@@ -315,7 +315,7 @@ const RATES = {"male": {"0": 160, "1": 161, "2": 165, "3": 166, "4": 171, "5": 1
 
 const COEF = {'A':1,'S':1.05};
 const PRODUCT = {
-  defAge:30, defAmount:100, terms:[20], ageMax:{20:55}, ageMin:0,
+  defAge:30, defAmount:2000, terms:[20], ageMax:{20:55}, ageMin:0,
   rateByTerm:false, rateMul:1, rates:RATES, premTag:'累積保費線', premTagBelow:true,
   rateCols:[{label:'男',g:'male'},{label:'女',g:'female'}],
   stages:true, span:(age,term)=>96-age,   // 保險年齡95歲保單年度末

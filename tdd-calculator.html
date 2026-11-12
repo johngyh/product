@@ -282,7 +282,7 @@
 
       <div class="field">
         <label>投保金額（萬元）</label>
-        <input type="number" id="amount" value="100" min="0" step="10">
+        <input type="number" id="amount" value="200" min="0" step="10">
         <div class="hint">最低：20～25 歲 100 萬、26～70 歲 50 萬；累計最高 200 萬。<b>留空或輸入 0 代表不試算</b>。</div>
         <div class="warn" id="amountWarn"></div>
       </div>
@@ -353,7 +353,7 @@ const RATES = {"male": {"20": 84, "21": 91, "22": 100, "23": 110, "24": 123, "25
 const COEF = {'A':1,'A+':1.15,'A++':1.2};
 const PRODUCT = {
   afterRender:c => renewTable(c),
-  defAge:35, defAmount:100, terms:[10], ageMax:{10:70}, ageMin:20,
+  defAge:35, defAmount:200, terms:[10], ageMax:{10:70}, ageMin:20,
   rateByTerm:false, rateMul:0.1, rates:RATES,
   rateCols:[{label:'男（每10萬）',g:'male'},{label:'女（每10萬）',g:'female'}],
   stages:true, span:()=>10, renewal:true, pyStep:10, premTag:'累積保費線',

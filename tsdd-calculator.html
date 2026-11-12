@@ -282,7 +282,7 @@
 
       <div class="field">
         <label>投保金額（萬元）</label>
-        <input type="number" id="amount" value="100" min="0" step="10">
+        <input type="number" id="amount" value="300" min="0" step="10">
         <div class="hint">20～40 歲最低 20 萬、41～70 歲最低 10 萬；累計最高 300 萬。<b>留空或輸入 0 代表不試算</b>。</div>
         <div class="warn" id="amountWarn"></div>
       </div>
@@ -384,7 +384,7 @@ document.addEventListener('keydown', e => { if(e.key === 'Escape') closeItem(); 
 
 const COEF = {'A':1,'A+':1.05,'A++':1.1};
 const PRODUCT = {
-  defAge:35, defAmount:100, terms:[10], ageMax:{10:70}, ageMin:20,
+  defAge:35, defAmount:300, terms:[10], ageMax:{10:70}, ageMin:20,
   rateByTerm:false, rateMul:0.1, rates:RATES,
   rateCols:[{label:'男（每10萬）',g:'male'},{label:'女（每10萬）',g:'female'}],
   stages:true, span:()=>10, renewal:true, pyStep:10, premTag:'累積保費線',
