@@ -340,8 +340,8 @@ const PROD = {
   TED35:{ name:'精選傷病35', full:'精選傷病定期保險（TED35）', color:'#c9860f', desc:'定期重大疾病保險<br>癌症分期給付，35年期滿領回', max:()=>500, terms:{10:[16,55],20:[16,55]}, best:1.05, unit:1, cover:a=> (a+34)+' 歲（35年）' },
   TED:{ name:'精選傷病(2)', full:'精選傷病定期保險(2)（TED）', color:'#a8710c', desc:'定期重大疾病保險<br>癌症分期給付，84歲期滿領回', max:()=>500, terms:{10:[0,60],20:[0,50]}, best:1.05, unit:1, cover:()=> '84 歲' },
   HDD:{ name:'活力洋溢3', full:'活力洋溢3重大疾病保險（HDD）', color:'#1f7a4d', desc:'終身重大疾病保險<br>初期5%・輕度10%・重度100%', max:a=> a<=7?500:(a<=15?750:2000), terms:{20:[0,55]}, best:1.05, unit:1, cover:()=> '95 歲' },
-  TSDD:{ name:'樂健康祥定', full:'10TSDD 特定重大傷病定期健康保險', color:'#c8603f', desc:'10年定期・保證續保<br>重度癌症160%（含三項預備金）', max:()=>300, terms:{10:[20,70]}, renew:true, best:1.1, unit:10, cover:a=>{ let x=a; while(x+10<=70) x+=10; return (x+9)+' 歲（續保）'; } },
-  TDD:{ name:'樂健康祥定', full:'10TDD 樂健康祥定期健康保險', color:'#7a6bd6', desc:'10年定期・保證續保<br>重度癌症100%，最高×1.2', max:()=>200, terms:{10:[20,70]}, renew:true, best:1.2, unit:10, cover:a=>{ let x=a; while(x+10<=70) x+=10; return (x+9)+' 歲（續保）'; } },
+  TSDD:{ name:'活力洋溢特定', full:'活力洋溢特定重大傷病定期健康保險（10TSDD）', color:'#c8603f', desc:'10年定期・保證續保<br>重度癌症160%（含三項預備金）', max:()=>300, terms:{10:[20,70]}, renew:true, best:1.1, unit:10, cover:a=>{ let x=a; while(x+10<=70) x+=10; return (x+9)+' 歲（續保）'; } },
+  TDD:{ name:'樂健康祥', full:'樂健康祥定期健康保險（10TDD）', color:'#7a6bd6', desc:'10年定期・保證續保<br>重度癌症100%，最高×1.2', max:()=>200, terms:{10:[20,70]}, renew:true, best:1.2, unit:10, cover:a=>{ let x=a; while(x+10<=70) x+=10; return (x+9)+' 歲（續保）'; } },
   HC:{ name:'心滿溢足', full:'心滿溢足癌症健康保險（HC）', color:'#b5562f', desc:'癌症健康保險・保障至95歲<br>初期／輕度10%・重度100%', max:a=> a<=54?300:200, terms:{10:[0,70],20:[0,65]}, best:1, unit:1, cover:()=> '95 歲' },
   SC:{ name:'長青滿溢', full:'長青滿溢癌症定期健康保險（SC）', color:'#2f9e9e', desc:'55歲以上癌症定期險<br>初期／輕度10%・重度100%', max:()=>100, terms:{10:[55,80],20:[55,70]}, best:1, unit:1, cover:(a,t)=> (a+t-1)+' 歲（定期'+t+'年）' }
 };
