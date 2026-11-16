@@ -216,6 +216,9 @@ select{width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius
 .sr-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;background:linear-gradient(135deg,var(--navy),var(--blue2));color:#fff;border-radius:12px;padding:14px 16px;margin-bottom:12px}
 .sr-lab{font-size:12.5px;color:#c9d9ef}.sr-num{font-family:var(--serif);font-size:30px;font-weight:700;color:var(--gold2)}
 .sr-side{font-size:13px;color:#e6eef8;text-align:right;line-height:1.7}.sr-side b{color:var(--gold2);font-size:16px}
+.acc{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:12px;background:#f8fbff}
+.acc-top{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;font-size:14px;color:var(--navy);font-weight:600;margin-bottom:8px}.acc-top b{color:var(--gold)}
+.acc-bar{height:14px;background:var(--navy3);border-radius:7px;overflow:hidden;margin-bottom:6px}.acc-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold2),var(--gold));border-radius:7px}
 .sr-table{width:100%;border-collapse:collapse;font-size:13.5px}.sr-table td{padding:7px 4px;border-bottom:1px solid var(--line)}
 .sr-table td:last-child{text-align:right;font-family:'DM Mono',monospace;font-weight:600;white-space:nowrap;color:var(--navy)}
 .sr-table tr.sr-sum td{background:var(--navy3);font-weight:700}
@@ -248,14 +251,17 @@ select{width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius
   </div>
   <div class="field-row">
     <div class="field">
-      <label>HCAB2 主約（單位）</label>
-      <select id="u1"><option>1</option><option>2</option><option>3</option><option>4</option><option selected>5</option></select>
-      <div class="input-hint">繳費 20 年・保障至 95 歲；最高 5 單位</div>
+      <label>投保單位（1 單位＝200 萬醫療總帳戶）</label>
+      <select id="u1"><option value="1">1 單位｜200 萬帳戶</option><option value="2">2 單位｜400 萬帳戶</option><option value="3">3 單位｜600 萬帳戶</option><option value="4">4 單位｜800 萬帳戶</option><option value="5" selected>5 單位｜1,000 萬帳戶</option></select>
+      <div class="input-hint">繳費 20 年・保障至 95 歲；最高 5 單位（含 CAB、HCAB 等累計≦10 單位）</div>
     </div>
     <div class="field">
-      <label>HCAR2 附約（單位）</label>
-      <select id="u2"><option value="0">不附加</option><option>1</option><option>2</option><option>3</option><option>4</option><option selected>5</option></select>
-      <div class="input-hint">主約、附約合計（含 CAB、HCAB 等）≦ 10 單位</div>
+      <label>HCAR2 附約（同單位數）</label>
+      <div class="toggle-group">
+        <input type="radio" name="rider2" id="r2-y" value="1" checked><label for="r2-y">附加 HCAR2</label>
+        <input type="radio" name="rider2" id="r2-n" value="0"><label for="r2-n">只買 HCAB2</label>
+      </div>
+      <div class="input-hint">HCAR2 補上手術、移植、重建等給付</div>
     </div>
   </div>
   <div class="field-row">
@@ -290,7 +296,7 @@ select{width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius
 
 <div class="section-label">保障內容（依投保單位換算）</div>
 <div class="summary-table-wrap"><table class="summary-table ben-table" id="ben-table"></table></div>
-<div class="note-line">HCAB2、HCAR2 每投保單位總給付以 200 萬元為上限，累積達上限時該契（附）約終止。罹患重度癌症翌日起豁免 HCAB2、HCAR2 後續保費。癌症等待期 90 日。</div>
+<div class="note-line">1 單位＝200 萬醫療總帳戶：HCAB2、HCAR2 各項癌症給付由帳戶支出，累積給付達上限時契（附）約終止。罹患重度癌症翌日起豁免 HCAB2、HCAR2 後續保費。癌症等待期 90 日。</div>
 
 <div class="section-label">罹癌療程情境試算</div>
 <div class="input-card">
@@ -411,7 +417,7 @@ drawScenInputs();
 
 function calc(){
   const g = val('gender'), age = Math.max(0, Math.min(70, parseInt($('age').value) || 0));
-  const u1 = +$('u1').value, u2 = +$('u2').value, coef = age >= 16 ? +val('health') : 1, disc = +val('disc');
+  const u1 = +$('u1').value, u2 = +val('rider2') ? u1 : 0, ACC = 2000000 * u1, coef = age >= 16 ? +val('health') : 1, disc = +val('disc');
   const p1 = HC.HCAB2[g][age] * u1, p2 = HC.HCAR2[g][age] * u2;
   const rOK = age >= 30 && age <= 70;
   $('rider-age-note').textContent = rOK ? '' : '⚠ 附加條款限 30～70 歲投保，目前年齡不適用，以下不計入。';
@@ -456,7 +462,7 @@ function calc(){
   if(act.length){ b += '<tr class="grp"><td colspan="5">癌症精準治療附加條款（一次給付，給付後該附加條款終止）</td></tr>';
     act.forEach(r => b += `<tr><td class="row-label">${r.k} ${r.ben}</td><td>—</td><td colspan="2"><span class="sm">附加條款</span></td><td class="tot">${fmt(riderAmt(r)*10000)}</td></tr>`); }
   b += `<tr class="grp"><td colspan="5">豁免保險費：罹患重度癌症翌日起豁免 HCAB2、HCAR2 後續保費（附加條款不在此列）</td></tr>`;
-  b += `<tr class="total-row"><td class="row-label">總給付上限</td><td>200 萬／單位</td><td>${W(2000000*u1)}</td><td>${u2?W(2000000*u2):'—'}</td><td>${W(2000000*(u1+u2))}</td></tr>`;
+  b += `<tr class="total-row"><td class="row-label">💰 醫療總帳戶（HCAB2＋HCAR2 共用）</td><td>200 萬／單位</td><td colspan="2">${u1} 單位</td><td>${W(ACC)}</td></tr>`;
   $('ben-table').innerHTML = b;
 
   // 情境
@@ -474,7 +480,7 @@ function calc(){
     sB += vB; sR += vR;
     lines.push([n, (isFirst ? '' : q + (unit.replace('/','')||'次') + ' × ') + fmt(amt*c*(isFirst?1:1)) + ' × ' + (inB&&inR&&u2 ? (u1+u2) : inB ? u1 : u2) + ' 單位', vB + vR, inB ? (inR && u2 ? '主約＋附約' : 'HCAB2') : 'HCAR2']);
   });
-  sB = Math.min(sB, 2000000*u1); sR = Math.min(sR, 2000000*u2);
+  const raw = sB + sR, used = Math.min(raw, ACC); sB = used; sR = 0;
   let sX = 0;
   act.forEach(r => { if(scen['r'+r.k]){ const v = riderAmt(r)*10000; sX += v; lines.push([r.k + ' ' + r.ben, '一次給付', v, '附加條款']); } });
   const total = sB + sR + sX;
@@ -482,14 +488,17 @@ function calc(){
   $('scen-result').innerHTML = `
     <div class="sr-head"><div><div class="sr-lab">此情境可領</div><div class="sr-num">${W(total)}</div></div>
       <div class="sr-side"><div>首年保費 ${fmt(y1p)} 元</div><div>約為首年保費的 <b>${(total/Math.max(y1p,1)).toFixed(1)}</b> 倍</div></div></div>
+    <div class="acc"><div class="acc-top"><span>💰 醫療總帳戶 ${W(ACC)}</span><span>已用 <b>${W(used)}</b>｜剩餘 <b>${W(ACC-used)}</b></span></div>
+      <div class="acc-bar"><i style="width:${Math.min(100, used/ACC*100).toFixed(1)}%"></i></div>
+      <div class="sm">此情境用掉帳戶 ${(used/ACC*100).toFixed(1)}%；剩餘額度可繼續支付日後復發、轉移的療程費用，用完為止。</div></div>
     <table class="sr-table">${lines.map(l => `<tr><td>${l[0]}<br><span class="sm">${l[1]}｜${l[3]}</span></td><td>${fmt(l[2])} 元</td></tr>`).join('')}
-    <tr class="sr-sum"><td>HCAB2＋HCAR2 小計${(sB < 0 ? '' : '')}</td><td>${fmt(sB+sR)} 元</td></tr>
+    <tr class="sr-sum"><td>HCAB2＋HCAR2 小計（由醫療總帳戶支出）${raw > ACC ? '<br><span class="sm">已達帳戶上限，超出 '+fmt(raw-ACC)+' 元不給付</span>' : ''}</td><td>${fmt(used)} 元</td></tr>
     <tr class="sr-sum"><td>附加條款小計</td><td>${fmt(sX)} 元</td></tr></table>
     <div class="sm" style="margin-top:8px">首次罹患癌症保險金以 ${age>=16?'所選健康促進係數':'×1（未滿16歲）'}計；門診每年最多 120 次。實際以保單條款與理賠審核為準。</div>`;
 }
-['age','u1','u2'].forEach(id => $(id).addEventListener('input', calc));
-['u1','u2'].forEach(id => $(id).addEventListener('change', calc));
-document.querySelectorAll('input[name=gender],input[name=health],input[name=disc]').forEach(i => i.addEventListener('change', calc));
+['age'].forEach(id => $(id).addEventListener('input', calc));
+$('u1').addEventListener('change', calc);
+document.querySelectorAll('input[name=gender],input[name=health],input[name=disc],input[name=rider2]').forEach(i => i.addEventListener('change', calc));
 calc();
 </script>
 </body>
