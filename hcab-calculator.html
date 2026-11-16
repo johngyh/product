@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>南山人壽 療程型癌症險 HCAB2＋HCAR2 試算</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  /* 南山人壽 CI：藍為主色，黃(溫暖)、綠(活力)為輔助色 — 配色參考 WEHS 試算表 */
+  --navy:#0b2e5c;--navy2:#ffffff;--navy3:#e7f0fb;
+  --blue2:#134a8c;--blue3:#1c63b3;
+  --gold:#c9860f;--gold2:#e3a635;
+  --text:#101826;--text2:#71809a;
+  --green:#1f7a4d;--green2:#3f9e6d;--brown:#8b5e3c;--red:#c23b3b;
+  --c1:#c9860f;--c2:#1c63b3;--c3:#1f7a4d;--c4:#b5562f;
+  --bg:#f3f6fb;--line:#d8e0ec;
+  --radius:12px;
+  --serif:'Noto Serif TC',serif;--sans:'Noto Sans TC',sans-serif;
+}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:60px}
+
+/* HEADER */
+.site-header{background:linear-gradient(135deg,var(--navy),var(--blue2));border-bottom:none;padding:22px 20px 18px;text-align:center;position:relative;overflow:hidden;border-radius:0 0 18px 18px}
+.site-header::before{content:'';position:absolute;right:-40px;top:-40px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(227,166,53,.35),transparent 70%)}
+.site-header::after{content:'';position:absolute;left:-30px;bottom:-50px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(63,158,109,.32),transparent 70%)}
+.brand-tag{font-size:13px;letter-spacing:3px;color:var(--gold2);font-weight:500;margin-bottom:5px;position:relative}
+.site-title{font-family:var(--serif);font-size:22px;font-weight:700;color:#fff;letter-spacing:1px;position:relative}
+.site-sub{font-size:13px;color:#c9d9ef;margin-top:4px;letter-spacing:1px;position:relative}
+
+.container{max-width:900px;margin:0 auto;padding:0 16px}
+
+.section-label{font-size:13px;letter-spacing:3px;color:var(--gold);font-weight:600;margin:24px 0 10px;display:flex;align-items:center;gap:10px}
+.section-label::after{content:'';flex:1;height:1px;background:rgba(201,134,15,.25)}
+
+/* PRODUCT SELECTOR */
+.product-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px 10px;margin-top:18px}
+.prod-card{background:var(--navy2);border:2px solid var(--line);border-radius:var(--radius);padding:14px;cursor:pointer;transition:all .2s;user-select:none;position:relative;box-shadow:0 6px 16px -12px rgba(11,46,92,.3)}
+.prod-card.active{border-color:var(--prod-color,var(--gold));background:rgba(var(--prod-rgb,201,134,15),.06)}
+.prod-card .prod-code{font-size:13px;font-weight:700;letter-spacing:2px;color:var(--prod-color,var(--gold));margin-bottom:4px}
+.prod-card .prod-name{font-size:15px;color:var(--text);font-weight:500;line-height:1.4}
+.prod-card .prod-desc{font-size:13px;color:var(--text2);margin-top:4px;line-height:1.5}
+.prod-card .prod-check{position:absolute;top:10px;right:12px;width:23px;height:23px;border-radius:50%;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:13px;transition:all .2s;background:#fff}
+.prod-card .rank-badge{position:absolute;top:-9px;left:12px;background:linear-gradient(135deg,var(--gold2),var(--gold));color:#fff;font-size:10px;font-weight:700;letter-spacing:1px;padding:3px 9px 3px 7px;border-radius:20px;display:flex;align-items:center;gap:3px;box-shadow:0 2px 6px rgba(11,46,92,.35);white-space:nowrap;z-index:2}
+.prod-card .prod-badge{position:absolute;top:-9px;left:12px;background:var(--prod-color,var(--gold));color:#fff;font-size:10px;font-weight:700;letter-spacing:.5px;padding:3px 9px 3px 7px;border-radius:20px;display:flex;align-items:center;gap:3px;box-shadow:0 2px 6px rgba(11,46,92,.35);white-space:nowrap;z-index:2}
+.prod-card.active .prod-check{background:var(--prod-color,var(--gold));border-color:var(--prod-color,var(--gold));color:#fff}
+
+/* INPUT CARD */
+.input-card{background:var(--navy2);border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:0 12px 30px -20px rgba(11,46,92,.25)}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.field-row.triple{grid-template-columns:1fr 1fr 1fr}
+.field{display:flex;flex-direction:column;gap:4px}
+.field label{font-size:13px;color:var(--blue2);font-weight:700;letter-spacing:1px}
+.toggle-group{display:flex;background:var(--navy3);border-radius:7px;overflow:hidden;border:1px solid var(--line)}
+.toggle-group input[type=radio]{display:none}
+.toggle-group label{flex:1;text-align:center;padding:8px 4px;font-size:14px;font-weight:500;color:var(--text2);background:none;cursor:pointer;transition:all .2s;letter-spacing:0}
+.toggle-group input:checked+label{background:var(--blue2);color:#fff;font-weight:700}
+.field input[type=number],.field select{background:var(--navy3);border:1px solid var(--line);border-radius:7px;color:var(--text);font-family:var(--sans);font-size:17px;font-weight:500;padding:8px 12px;outline:none;width:100%;transition:border-color .2s;-webkit-appearance:none}
+.field input:focus,.field select:focus{border-color:var(--blue3)}
+.input-hint{font-size:13px;color:var(--text2);margin-top:2px}
+.calc-btn{width:100%;padding:13px;background:linear-gradient(135deg,var(--gold),#a8710c);color:#fff;border:none;border-radius:9px;font-family:var(--serif);font-size:17px;font-weight:700;cursor:pointer;margin-top:14px;letter-spacing:2px;transition:opacity .2s;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 10px 22px -12px rgba(201,134,15,.55)}
+.calc-btn:hover{opacity:.92}
+.calc-btn:active{transform:scale(.98)}
+.error-msg{background:rgba(194,59,59,.08);border:1px solid rgba(194,59,59,.3);border-radius:8px;padding:11px 14px;font-size:14px;color:var(--red);text-align:center;margin-top:10px;display:none}
+
+/* RESULTS */
+#results{display:none}
+
+/* Premium summary table */
+.summary-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-bottom:12px;border-radius:10px;box-shadow:0 12px 30px -22px rgba(11,46,92,.3)}
+.summary-table{width:100%;border-collapse:collapse;min-width:360px;background:var(--navy2)}
+.summary-table th{background:var(--blue2);font-size:13px;color:#fff;letter-spacing:1px;padding:9px 10px;text-align:left;border-bottom:none;font-weight:600}
+.summary-table th:not(:first-child){text-align:center}
+.summary-table td{padding:9px 10px;font-size:14px;border-bottom:1px solid var(--line)}
+.summary-table td:not(:first-child){text-align:center;font-family:var(--serif);font-weight:600;color:var(--text)}
+.summary-table tr:last-child td{border-bottom:none}
+.summary-table .row-label{color:var(--text2);font-size:13px}
+.summary-table .prod-header{font-size:13px;font-weight:700;letter-spacing:1px;padding:7px 10px;text-align:center;border-bottom:2px solid}
+.summary-table .na{color:var(--text2);font-size:13px}
+.summary-table .highlight-val{color:var(--gold)}
+.summary-table .best{background:rgba(31,122,77,.1)}
+
+.summary-table th.prod-header{background:#fff}
+.product-grid .prod-badge,.product-grid .rank-badge{max-width:calc(100% - 16px);white-space:nowrap}
+@media(max-width:420px){.product-grid .prod-badge,.product-grid .rank-badge{font-size:9.5px;letter-spacing:0;left:8px}}
+.cov-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;margin-bottom:12px;box-shadow:0 12px 30px -22px rgba(11,46,92,.3)}
+.cov-row{display:grid;grid-template-columns:70px 1fr 104px;align-items:center;gap:10px;padding:5px 0}
+.cov-code{font-size:13px;font-weight:700;letter-spacing:1px}
+.cov-track{height:12px;background:var(--navy3);border-radius:6px;overflow:hidden}
+.cov-fill{height:100%;border-radius:6px}
+.cov-num{font-family:var(--serif);font-weight:700;font-size:15px;text-align:right;color:var(--text)}
+.cov-sub{grid-column:2/4;font-size:12px;color:var(--text2);margin-top:-4px}
+.cov-matrix td:not(:first-child){font-family:var(--sans)!important;font-size:15px}
+.cov-y{color:var(--green);font-weight:700}.cov-p{color:var(--gold);font-weight:700}.cov-n{color:#c3cad6}
+details.cov-list{background:#fff;border:1px solid var(--line);border-left:4px solid var(--prod-color);border-radius:10px;margin-bottom:8px}
+details.cov-list summary{cursor:pointer;padding:10px 14px;font-size:14px;color:var(--navy);font-weight:600;list-style:none}
+details.cov-list summary::-webkit-details-marker{display:none}
+details.cov-list summary::after{content:'＋';float:right;color:var(--text2)}
+details.cov-list[open] summary::after{content:'－'}
+.cov-g{padding:0 14px 10px}
+.cov-g h5{font-size:12.5px;color:var(--blue2);margin:6px 0 6px;font-weight:700}
+.cov-chips{display:flex;flex-wrap:wrap;gap:5px}
+.cov-chips span{font-size:12.5px;background:var(--navy3);border:1px solid var(--line);border-radius:14px;padding:3px 10px;color:var(--text)}
+/* Detail sections */
+.detail-cols{display:grid;gap:10px;margin-bottom:10px}
+.detail-cols.cols-1{grid-template-columns:1fr}
+.detail-cols.cols-2{grid-template-columns:1fr 1fr}
+.detail-cols.cols-3{grid-template-columns:1fr 1fr 1fr}
+.detail-cols.cols-4{grid-template-columns:1fr 1fr}
+
+.prod-detail-card{background:var(--navy2);border:1px solid var(--line);border-top:3px solid var(--prod-color,var(--gold));border-radius:var(--radius);overflow:hidden;box-shadow:0 12px 30px -22px rgba(11,46,92,.3)}
+.prod-detail-header{padding:12px 14px;background:var(--navy3)}
+.prod-detail-header .d-code{font-size:13px;font-weight:700;letter-spacing:2px;color:var(--prod-color,var(--gold))}
+.prod-detail-header .d-name{font-size:15px;color:var(--text);font-weight:600;margin-top:2px}
+.prod-detail-header .d-prem{font-family:var(--serif);font-size:22px;font-weight:700;color:var(--blue2);margin-top:6px}
+.prod-detail-header .d-prem-sub{font-size:13px;color:var(--text2);margin-top:2px}
+
+.benefit-row{display:flex;justify-content:space-between;align-items:baseline;padding:7px 14px;border-bottom:1px solid var(--line);font-size:13px}
+.benefit-row:last-child{border-bottom:none}
+.benefit-row .b-label{color:var(--text2)}
+.benefit-row .b-val{font-family:var(--serif);font-weight:600;color:var(--text);font-size:15px}
+.benefit-row .b-val.gold{color:var(--gold)}
+.benefit-row .b-val.na{color:var(--text2);font-size:13px;font-family:var(--sans);font-weight:400}
+.benefit-row .b-val.green{color:var(--green)}
+.benefit-divider{padding:5px 14px;background:var(--navy3);font-size:13px;color:var(--blue2);letter-spacing:1px;border-bottom:1px solid var(--line);font-weight:600}
+
+/* installment mini table */
+.mini-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-bottom:8px}
+.mini-table{width:100%;border-collapse:collapse;font-size:12px;min-width:0;table-layout:auto}
+.mini-table th{padding:4px 5px;font-size:11px;color:#fff;letter-spacing:.5px;background:var(--blue2);border-bottom:none;text-align:right;font-weight:500;white-space:nowrap}
+.mini-table th:first-child{text-align:left}
+.mini-table td{padding:4px 5px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+.mini-table td:first-child{text-align:left;color:var(--text2)}
+.mini-table .amt{font-family:var(--serif);font-weight:600;color:var(--text);font-size:12.5px}
+.mini-table tr:last-child td{border-bottom:none}
+.mini-table .total-tr td{background:rgba(201,134,15,.12);color:var(--gold);font-family:var(--serif);font-weight:700;border-top:1px solid rgba(201,134,15,.3);font-size:13px}
+.first-tr td{background:rgba(31,122,77,.08)}
+
+/* LTC costs */
+.ltc-cost-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px}
+.ltc-cost-card{background:var(--navy2);border:1px solid var(--line);border-radius:10px;padding:12px 10px;text-align:center;box-shadow:0 6px 16px -14px rgba(11,46,92,.3)}
+.ltc-cost-card--wide{grid-column:1/-1;display:flex;align-items:center;gap:12px;text-align:left;padding:12px 16px}
+.ltc-icon{font-size:24px;margin-bottom:6px;line-height:1}
+.ltc-cost-card--wide .ltc-icon{margin-bottom:0;font-size:26px;flex-shrink:0}
+.ltc-title{font-size:13px;color:var(--text2);margin-bottom:5px;line-height:1.4}
+.ltc-cost-card--wide .ltc-title{margin-bottom:3px}
+.ltc-amount{font-size:15px;color:var(--text)}
+.ltc-amount strong{color:var(--gold);font-family:var(--serif);font-size:17px}
+.ltc-amount span{font-size:13px;color:var(--text2);margin-left:2px}
+
+.footer-note{margin-top:20px;padding:14px 16px;background:var(--navy3);border-radius:8px;font-size:13px;color:var(--text2);line-height:1.8;border:1px solid var(--line)}
+.footer-note strong{color:var(--text)}
+
+/* CRITERIA */
+.criteria-card{background:var(--navy2);border:1px solid var(--line);border-radius:var(--radius);padding:16px;box-shadow:0 12px 30px -22px rgba(11,46,92,.25)}
+.criteria-title{font-family:var(--serif);font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px}
+.criteria-sub{font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:12px}
+.criteria-block{margin-bottom:14px}
+.criteria-block:last-child{margin-bottom:0}
+.criteria-badge{display:inline-block;font-size:13px;font-weight:700;letter-spacing:1px;padding:3px 10px;border-radius:20px;margin-bottom:7px}
+.criteria-badge.blue{background:var(--navy3);color:var(--blue2);border:1px solid rgba(11,46,92,.15)}
+.criteria-badge.gold{background:rgba(201,134,15,.12);color:var(--gold);border:1px solid rgba(201,134,15,.3)}
+.criteria-desc{font-size:13px;color:var(--text2);line-height:1.7}
+.criteria-desc strong{color:var(--text)}
+.adl-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-top:10px}
+.adl-item{background:var(--navy3);border-radius:8px;padding:8px 4px;text-align:center;border:1px solid var(--line)}
+.adl-icon{font-size:22px;margin-bottom:4px}
+.adl-label{font-size:12px;color:var(--text2);line-height:1.3}
+.disability-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px}
+.dis-item{background:var(--navy3);border-radius:7px;padding:8px 10px;font-size:13px;color:var(--text2);line-height:1.5;border:1px solid var(--line)}
+.dis-item--wide{grid-column:1/-1}
+.criteria-footnote{font-size:13px;color:var(--text2);margin-top:12px;padding-top:10px;border-top:1px solid var(--line);line-height:1.7}
+.criteria-footnote strong{color:var(--gold)}
+@media(max-width:420px){
+  .adl-grid{grid-template-columns:repeat(3,1fr)}
+  .disability-grid{grid-template-columns:1fr}
+}
+
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-thumb{background:rgba(201,134,15,.35);border-radius:2px}
+
+@media(max-width:420px){
+  .product-grid{grid-template-columns:1fr 1fr}
+  .field-row{grid-template-columns:1fr}
+  .field-row.triple{grid-template-columns:1fr 1fr}
+  .detail-cols.cols-2,.detail-cols.cols-3,.detail-cols.cols-4{grid-template-columns:1fr}
+  .ltc-cost-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+<style>
+select{width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;font-size:15px;background:#fff;color:var(--text);font-family:var(--sans)}
+.rider-title{font-family:var(--serif);font-weight:700;color:var(--navy);font-size:15px;margin:18px 0 10px;padding-top:14px;border-top:1px dashed var(--line)}
+.rider-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.rider{position:relative;display:flex;flex-direction:column;gap:4px;border:1.5px solid var(--line);border-radius:12px;padding:11px 12px;background:#fff;cursor:pointer;transition:.15s}
+.rider input[type=checkbox]{position:absolute;top:12px;right:12px;accent-color:var(--blue3);width:17px;height:17px}
+.rider.on{border-color:var(--blue3);background:#f3f8ff;box-shadow:0 8px 20px -14px rgba(28,99,179,.6)}
+.r-top{display:flex;align-items:center;gap:6px}.r-icon{font-size:20px}.r-code{font-family:'DM Mono',monospace;font-weight:700;color:var(--blue2);font-size:13px;letter-spacing:1px}
+.r-name{font-weight:700;color:var(--navy);font-size:14px}.r-desc{font-size:12px;color:var(--text2);line-height:1.5}
+.r-amt{font-size:12.5px;color:var(--gold);font-weight:700}.rider select{padding:6px 8px;font-size:13px;margin-top:2px}
+.note-line{font-size:12.5px;color:var(--text2);margin:-4px 2px 12px;line-height:1.7}
+.summary-table .sm,.sm{font-size:11.5px;color:var(--text2);font-weight:400;font-family:var(--sans)}
+.summary-table tr.grp td{background:var(--navy3);color:var(--blue2);font-weight:700;font-size:12.5px;text-align:left;font-family:var(--sans)}
+.summary-table tr.total-row td{background:#fdf1dc;font-weight:700;color:var(--navy)}
+.summary-table td.tot{color:var(--navy);font-weight:700}
+.summary-table .na{color:#b6bfcd}
+.scen-presets{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:12px}
+.p-lab{font-size:13px;color:var(--text2)}
+.preset{border:1.5px solid var(--line);background:#fff;border-radius:18px;padding:6px 12px;font-size:13px;cursor:pointer;color:var(--text);font-family:var(--sans)}
+.preset.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.scen-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px 12px}
+.s-num{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:13.5px}
+.s-num input{width:74px;padding:6px 8px;border:1.5px solid var(--line);border-radius:8px;font-size:14px;text-align:right}
+.s-chk{font-size:13.5px;display:flex;align-items:center;gap:6px}.s-chk input{accent-color:var(--blue3);width:16px;height:16px}
+.scen-result{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin-bottom:20px;box-shadow:0 12px 30px -22px rgba(11,46,92,.3)}
+.sr-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;background:linear-gradient(135deg,var(--navy),var(--blue2));color:#fff;border-radius:12px;padding:14px 16px;margin-bottom:12px}
+.sr-lab{font-size:12.5px;color:#c9d9ef}.sr-num{font-family:var(--serif);font-size:30px;font-weight:700;color:var(--gold2)}
+.sr-side{font-size:13px;color:#e6eef8;text-align:right;line-height:1.7}.sr-side b{color:var(--gold2);font-size:16px}
+.sr-table{width:100%;border-collapse:collapse;font-size:13.5px}.sr-table td{padding:7px 4px;border-bottom:1px solid var(--line)}
+.sr-table td:last-child{text-align:right;font-family:'DM Mono',monospace;font-weight:600;white-space:nowrap;color:var(--navy)}
+.sr-table tr.sr-sum td{background:var(--navy3);font-weight:700}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="brand-tag">NAN SHAN LIFE · 順可通訊處</div>
+  <div class="site-title">療程型癌症險 試算</div>
+  <div class="site-sub">滿溢久久2 HCAB2 主約 ＋ HCAR2 附約 ＋ 癌症精準治療附加條款</div>
+</header>
+
+<div class="container">
+
+<div class="section-label">投保條件</div>
+<div class="input-card">
+  <div class="field-row">
+    <div class="field">
+      <label>性別</label>
+      <div class="toggle-group">
+        <input type="radio" name="gender" id="g-m" value="male" checked><label for="g-m">男</label>
+        <input type="radio" name="gender" id="g-f" value="female"><label for="g-f">女</label>
+      </div>
+    </div>
+    <div class="field">
+      <label>投保年齡（保險年齡）</label>
+      <input type="number" id="age" min="0" max="70" value="35" inputmode="numeric">
+      <div class="input-hint">HCAB2／HCAR2：0～70 歲；附加條款：30～70 歲</div>
+    </div>
+  </div>
+  <div class="field-row">
+    <div class="field">
+      <label>HCAB2 主約（單位）</label>
+      <select id="u1"><option>1</option><option>2</option><option>3</option><option>4</option><option selected>5</option></select>
+      <div class="input-hint">繳費 20 年・保障至 95 歲；最高 5 單位</div>
+    </div>
+    <div class="field">
+      <label>HCAR2 附約（單位）</label>
+      <select id="u2"><option value="0">不附加</option><option>1</option><option>2</option><option>3</option><option>4</option><option selected>5</option></select>
+      <div class="input-hint">主約、附約合計（含 CAB、HCAB 等）≦ 10 單位</div>
+    </div>
+  </div>
+  <div class="field-row">
+    <div class="field">
+      <label>健康促進係數（第3年起，16歲以上）</label>
+      <div class="toggle-group">
+        <input type="radio" name="health" id="h-a" value="1" checked><label for="h-a">A 級 ×1</label>
+        <input type="radio" name="health" id="h-s" value="1.05"><label for="h-s">S 級 ×1.05</label>
+      </div>
+      <div class="input-hint">只影響首次罹患癌症（初期／輕度／重度）保險金</div>
+    </div>
+    <div class="field">
+      <label>繳費折扣</label>
+      <div class="toggle-group">
+        <input type="radio" name="disc" id="d-y" value="0.99" checked><label for="d-y">自動轉帳 1%</label>
+        <input type="radio" name="disc" id="d-n" value="1"><label for="d-n">無折扣</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="rider-title">➕ 癌症精準治療附加條款（1 年期・保證續保至第 10 年）</div>
+  <div class="rider-grid" id="rider-grid"></div>
+  <div class="input-hint" id="rider-age-note" style="margin-top:6px"></div>
+</div>
+
+<div class="section-label">保費總覽</div>
+<div class="summary-table-wrap"><table class="summary-table prem-table" id="prem-table"></table></div>
+<div class="note-line">附加條款為 1 年期、類似自然費率，第 2 年起依續保年齡的續保費率計算（現行費率估算，實際以續保時陳報主管機關之費率為準）。</div>
+
+<div class="section-label">附加條款 10 年保費試算</div>
+<div class="summary-table-wrap"><table class="summary-table" id="rider-years"></table></div>
+
+<div class="section-label">保障內容（依投保單位換算）</div>
+<div class="summary-table-wrap"><table class="summary-table ben-table" id="ben-table"></table></div>
+<div class="note-line">HCAB2、HCAR2 每投保單位總給付以 200 萬元為上限，累積達上限時該契（附）約終止。罹患重度癌症翌日起豁免 HCAB2、HCAR2 後續保費。癌症等待期 90 日。</div>
+
+<div class="section-label">罹癌療程情境試算</div>
+<div class="input-card">
+  <div class="scen-presets" id="presets"></div>
+  <div class="scen-grid" id="scen-inputs"></div>
+</div>
+<div class="scen-result" id="scen-result"></div>
+
+<div class="footer-note">
+  <strong>注意事項</strong><br>
+  • 資料來源：滿溢久久2 HCAB2／HCAR2 商品簡介（PA-01-442／2025年7月版）、1CGT／1STT／1SCT／1RAS／1CPT 商品簡介（PA-01-453／2025年7月版）。<br>
+  • 癌症（初期）：原位癌或零期癌、第一期惡性類癌、第二期（含）以下非惡性黑色素瘤之皮膚癌；癌症（輕度）：第一期乳癌、前列腺癌、子宮頸癌、大腸直腸癌等條款所列項目；癌症（重度）：初期、輕度以外之癌症。<br>
+  • 附加條款另有健康促進回饋金（年繳應繳保費×0%～10%，依健檢達標項目）與防疫保健回饋金（年繳應繳保費×2%），本頁未計入。<br>
+  • 1STT 僅提供重度癌症接受標靶治療之保障；1SCT 僅提供首次罹患實體癌第四期之保障；1RAS 以切除惡性腫瘤或癌症病灶為目的之機械手臂微創手術為限；1CPT 為特定粒子（質子、重粒子）放射治療。<br>
+  • 本試算僅供參考，實際保費與給付以保單條款及核保結果為準；南山人壽保留最終承保與否之權利。
+</div>
+<div style="margin-top:18px;padding:16px;text-align:center;border-top:1px solid rgba(201,134,15,.2)">
+  <div style="width:36px;height:2px;background:linear-gradient(90deg,var(--gold),var(--green));margin:0 auto 10px"></div>
+  <div style="font-size:13px;color:var(--text2);line-height:1.8">本試算工具由 <strong style="color:var(--gold)">南山人壽 順可通訊處</strong> 業務主任 <strong style="color:var(--navy)">吳約翰</strong> 製作提供<br>僅供保戶參考說明，實際保費及給付內容以保單條款及核保結果為準</div>
+</div>
+</div>
+
+<script>
+const HC = {"HCAB2":{"male":[3589,3651,3714,3776,3840,3907,3975,4043,4114,4185,4260,4335,4414,4492,4571,4654,4739,4825,4910,5001,5092,5185,5281,5379,5479,5582,5687,5796,5906,6020,6134,6250,6368,6487,6609,6731,6857,6984,7112,7243,7376,7510,7648,7787,7926,8067,8207,8345,8482,8617,8751,8882,9014,9146,9281,9414,9540,9653,9759,9860,9960,10059,10156,10253,10346,10442,10537,10629,10720,10809,10896],"female":[3460,3520,3578,3637,3696,3759,3821,3887,3953,4021,4090,4160,4232,4306,4381,4457,4535,4614,4695,4776,4859,4945,5031,5118,5207,5296,5389,5482,5576,5671,5768,5864,5960,6056,6151,6245,6337,6429,6518,6606,6692,6776,6859,6939,7014,7085,7154,7218,7279,7339,7392,7439,7479,7514,7545,7571,7595,7609,7618,7625,7628,7626,7621,7614,7601,7585,7565,7542,7517,7492,7464]},"HCAR2":{"male":[1023,1042,1059,1078,1097,1117,1136,1157,1178,1200,1222,1244,1267,1290,1314,1339,1364,1389,1414,1440,1468,1494,1522,1551,1580,1610,1640,1671,1702,1735,1768,1801,1835,1871,1906,1943,1980,2018,2056,2096,2135,2175,2217,2257,2298,2340,2381,2423,2464,2506,2547,2586,2627,2669,2711,2753,2797,2842,2888,2935,2984,3034,3086,3139,3193,3248,3303,3357,3413,3468,3522],"female":[1222,1243,1265,1286,1310,1332,1357,1381,1406,1432,1459,1485,1513,1540,1568,1597,1626,1656,1686,1717,1748,1780,1811,1844,1877,1910,1943,1977,2011,2046,2080,2114,2150,2185,2219,2253,2286,2319,2351,2382,2413,2443,2472,2501,2527,2551,2573,2594,2613,2630,2646,2659,2672,2682,2692,2700,2706,2711,2715,2719,2723,2725,2727,2728,2728,2730,2730,2730,2731,2735,2739]}};      // 每投保單位年繳費率：HCAB2／HCAR2，年齡 0～70
+const RD = {"1CGT":{"init":{"male":[90,105,135,135,165,180,210,225,255,300,330,375,390,465,510,570,630,705,780,870,1440,1470,1545,1590,1650,1725,1800,1860,1950,2040,2160,2325,2490,2700,2850,3045,3240,3450,3645,3840,4080],"female":[255,285,330,345,390,420,450,495,540,585,615,690,735,825,945,1035,1155,1230,1305,1395,990,1050,1170,1260,1350,1470,1590,1695,1845,1980,2115,2205,2325,2445,2535,2625,2715,2790,2850,2925,3000]},"renew":{"male":[165,165,180,225,255,285,330,345,390,450,495,540,615,690,750,855,945,1065,1185,1320,1425,1545,1680,1815,2295,2400,2490,2595,2715,2835,2970,3105,3240,3360,3495,3615,4590,4860,5145,5445,5745,6060,6435,6750,6990,7200,7425,7725,7980],"female":[375,450,495,540,570,615,660,735,780,825,900,990,1110,1260,1395,1545,1665,1755,1845,1950,1950,2040,2145,2235,1980,2115,2280,2460,2640,2880,3105,3315,3600,3825,4050,4335,3735,3795,3915,4005,4125,4305,4515,4695,4845,4935,5040,5190,5295]}},"1STT50":{"init":{"male":[285,325,375,420,480,545,615,695,780,875,990,1100,1225,1390,1560,1730,1925,2145,2380,2655,3130,3310,3490,3670,3865,4070,4260,4470,4660,4900,6460,6935,7445,8005,8520,9035,9630,10230,10825,11450,12130],"female":[405,450,515,585,660,750,835,935,1020,1115,1230,1350,1505,1700,1935,2210,2450,2645,2840,3050,2960,3265,3545,3825,4145,4490,4810,5185,5560,6000,5155,5395,5675,5940,6185,6485,6730,7280,7460,7725,8035]},"renew":{"male":[435,505,560,645,730,825,925,1035,1160,1320,1460,1640,1855,2085,2310,2575,2865,3175,3545,3950,4355,4740,5105,5535,5445,5690,5975,6235,6555,6895,7220,7595,7955,8280,8685,9005,13715,14520,15365,16280,17170,18125,19230,20210,20850,21505,22105,22960,23605],"female":[605,695,780,890,1000,1115,1250,1365,1490,1645,1800,2005,2270,2590,2960,3270,3535,3795,4085,4190,4425,4670,4910,5160,6005,6425,6935,7435,8020,8645,9285,9960,10725,11410,12105,12910,9750,9990,10350,10770,11145,11730,12350,12880,13350,13630,13990,14395,14795]}},"1STT100":{"init":{"male":[570,650,750,840,960,1090,1230,1390,1560,1750,1980,2200,2450,2780,3120,3460,3850,4290,4760,5310,6260,6620,6980,7340,7730,8140,8520,8940,9320,9800,12920,13870,14890,16010,17040,18070,19260,20460,21650,22900,24260],"female":[810,900,1030,1170,1320,1500,1670,1870,2040,2230,2460,2700,3010,3400,3870,4420,4900,5290,5680,6100,5920,6530,7090,7650,8290,8980,9620,10370,11120,12000,10310,10790,11350,11880,12370,12970,13460,14560,14920,15450,16070]},"renew":{"male":[870,1010,1120,1290,1460,1650,1850,2070,2320,2640,2920,3280,3710,4170,4620,5150,5730,6350,7090,7900,8710,9480,10210,11070,10890,11380,11950,12470,13110,13790,14440,15190,15910,16560,17370,18010,27430,29040,30730,32560,34340,36250,38460,40420,41700,43010,44210,45920,47210],"female":[1210,1390,1560,1780,2000,2230,2500,2730,2980,3290,3600,4010,4540,5180,5920,6540,7070,7590,8170,8380,8850,9340,9820,10320,12010,12850,13870,14870,16040,17290,18570,19920,21450,22820,24210,25820,19500,19980,20700,21540,22290,23460,24700,25760,26700,27260,27980,28790,29590]}},"1RAS":{"init":{"male":[75,75,90,90,105,120,135,150,165,180,210,225,255,285,315,360,405,450,495,570,930,975,1020,1065,1110,1140,1185,1230,1275,1335,1425,1530,1635,1755,1875,1995,2130,2265,2400,2535,2685],"female":[165,180,195,225,240,270,300,315,345,375,405,420,450,510,570,645,705,765,810,870,645,705,765,825,885,960,1035,1110,1200,1305,1410,1455,1500,1560,1620,1680,1740,1800,1860,1920,1995]},"renew":{"male":[90,120,120,135,165,180,195,225,255,270,300,345,375,435,480,540,615,675,750,855,945,1020,1110,1200,1515,1575,1650,1725,1785,1875,1965,2010,2055,2160,2265,2325,3000,3195,3390,3600,3780,3960,4140,4320,4500,4680,4860,5040,5235],"female":[255,270,285,330,345,390,405,450,480,540,555,615,675,780,855,960,1005,1065,1140,1230,1305,1350,1410,1455,1290,1380,1470,1590,1755,1890,2055,2175,2325,2520,2670,2850,2400,2460,2550,2670,2745,2820,2910,3000,3105,3210,3315,3420,3525]}},"1CPT":{"init":{"male":[30,33,40,44,49,57,63,71,79,89,100,109,122,137,153,169,187,209,230,258,415,432,452,471,492,511,529,553,574,602,645,695,747,804,857,911,972,1031,1093,1155,1225],"female":[75,86,96,107,117,125,133,147,157,169,180,195,215,239,271,303,332,357,378,401,290,322,350,377,410,444,476,513,553,597,630,658,689,720,747,778,804,828,845,868,890]},"renew":{"male":[46,52,59,67,76,84,95,106,117,133,146,163,183,205,225,250,278,309,344,386,429,466,502,546,680,706,736,765,802,840,877,919,959,995,1038,1072,1375,1455,1540,1635,1723,1819,1929,2027,2093,2159,2222,2313,2387],"female":[114,129,142,157,166,178,196,209,225,241,259,287,320,361,404,444,474,505,534,555,577,603,629,656,592,634,684,736,796,862,928,995,1072,1143,1214,1295,1104,1126,1157,1188,1218,1276,1337,1391,1432,1458,1493,1533,1573]}},"1SCT":{"male":[[211,380,531,666,734,966,1160,1353,1625,1817],[269,490,617,693,928,1122,1315,1587,1779,2126],[347,568,633,876,1074,1268,1539,1730,2077,2404],[401,573,803,1011,1211,1480,1673,2020,2346,2704],[403,736,931,1141,1417,1609,1957,2282,2639,3150],[523,858,1052,1339,1538,1885,2211,2569,3079,3303],[607,965,1230,1442,1798,2123,2480,2992,3215,3626],[679,1126,1314,1687,2022,2379,2890,3114,3525,3990],[801,1206,1552,1903,2269,2780,3004,3415,3882,4465],[850,1425,1742,2130,2652,2874,3285,3752,4336,4841],[1011,1600,1950,2495,2730,3141,3607,4192,4696,5223],[1131,1785,2288,2552,2976,3442,4026,4531,5058,5677],[1261,2104,2322,2777,3258,3842,4347,4874,5493,6152],[1492,2115,2515,3030,3631,4138,4665,5284,5941,6585],[1487,2282,2738,3380,3904,4431,5049,5707,6352,7073],[1611,2500,3080,3644,4192,4809,5468,6112,6833,7468],[1761,2811,3309,3901,4542,5201,5846,6566,7201,8115],[1979,3003,3525,4219,4903,5547,6268,6903,7817,8501],[2107,3187,3804,4547,5219,5939,6574,7488,8173,9271],[2238,3446,4106,4839,5590,6225,7139,7823,8922,9728],[2417,3714,4357,5173,5841,6755,7439,8538,9344,10653],[2600,3922,4638,5382,6331,7015,8114,8920,10230,11426],[2741,4169,4809,5841,6563,7661,8468,9777,10974,12263],[2912,4309,5233,6042,7180,7987,9296,10493,11782,12941],[3004,4704,5393,6626,7476,8785,9982,11271,12430,13876],[3280,4819,5926,6877,8234,9431,10720,11880,13326,15114],[3341,5298,6119,7592,8838,10126,11285,12731,14520,15753],[3688,5455,6790,8157,9500,10658,12104,13893,15126,16874],[3771,6057,7279,8760,9976,11422,13211,14444,16192,18076],[4207,6503,7836,9193,10703,12492,13725,15473,17355,19392],[4501,6973,8165,9836,11693,12928,14674,16558,18593,20530],[4820,7230,8728,10758,12068,13814,15698,17734,19671,22049],[4977,7717,9563,11065,12890,14774,16811,18746,21123,23160],[5317,8490,9798,11828,13800,15834,17771,20149,22184,24338],[5849,8623,10457,12652,14780,16717,19095,21131,23285,25806],[5907,9187,11173,13550,15587,17965,20001,22155,24677,27363],[6280,9800,11968,14271,16757,18792,20946,23468,26153,30649],[6696,10501,12573,15347,17498,19652,22174,24860,29355,32961],[7174,11006,13546,16009,18284,20806,23492,27988,31593,33830],[7507,11887,14114,16720,19369,22055,26550,30157,32393,35593],[8125,12368,14722,17720,20541,25038,28642,30879,34080,35409]],"female":[[136,241,333,433,525,639,709,842,944,1055],[161,279,392,487,615,692,825,926,1039,1193],[187,330,441,571,665,806,907,1019,1174,1384],[225,374,517,617,776,885,998,1152,1361,1493],[250,433,550,714,847,969,1125,1334,1466,1685],[290,455,639,779,928,1093,1304,1434,1653,1866],[301,530,695,849,1047,1269,1400,1619,1831,2080],[357,579,757,961,1217,1361,1580,1793,2042,2266],[385,620,858,1119,1303,1538,1750,2000,2222,2461],[414,709,1001,1195,1471,1701,1950,2174,2414,2673],[469,826,1060,1344,1625,1895,2117,2357,2617,2893],[552,868,1195,1487,1809,2055,2295,2555,2831,3161],[573,979,1322,1655,1963,2226,2485,2761,3093,3311],[653,1093,1477,1798,2125,2412,2688,3019,3236,3580],[728,1219,1596,1939,2300,2604,2936,3153,3496,3744],[811,1307,1712,2088,2477,2842,3060,3404,3650,3838],[863,1388,1841,2244,2703,2957,3300,3547,3734,4041],[919,1503,1985,2460,2811,3192,3439,3626,3933,4171],[998,1630,2188,2555,3039,3325,3512,3819,4058,4480],[1087,1817,2273,2773,3166,3395,3700,3939,4361,4715],[1223,1884,2469,2887,3225,3576,3815,4238,4590,4961],[1260,2039,2563,2923,3396,3680,4103,4457,4826,5173],[1371,2122,2593,3088,3498,3966,4319,4690,5036,5468],[1434,2150,2755,3190,3782,4182,4552,4898,5330,5639],[1450,2300,2847,3463,3992,4411,4757,5188,5496,5949],[1557,2379,3111,3665,4215,4611,5042,5352,5804,6247],[1612,2628,3304,3880,4412,4893,5203,5655,6098,6861],[1796,2811,3506,4068,4687,5049,5501,5946,6707,7176],[1919,2979,3673,4320,4831,5338,5782,6546,7012,7568],[2041,3128,3909,4453,5111,5614,6377,6844,7400,7800],[2139,3330,4022,4711,5376,6200,6666,7220,7622,8223],[2288,3439,4274,4973,5958,6487,7041,7442,8044,8646],[2363,3669,4522,5541,6238,6857,7257,7858,8460,8790],[2528,3893,5071,5804,6596,7063,7666,8268,8596,9236],[2682,4411,5314,6142,6795,7463,8066,8395,9034,9717],[3066,4633,5628,6323,7177,7855,8185,8825,9506,10173],[3201,4880,5761,6655,7544,7953,8592,9274,9941,12400],[3377,4993,6076,7006,7631,8353,9034,9701,12160,12907],[3452,5280,6412,7079,8025,8788,9455,11914,12661,13384],[3663,5609,6471,7461,8453,9206,11665,12411,13134,13358],[3896,5633,6831,7868,8857,11404,12150,12874,13098,14128]]}};      // 附加條款費率
+const BEN = [ // [群組, 名稱, 每單位金額, 單位, 主約, 附約, 情境鍵]
+  ['首次罹患癌症','首次罹患癌症（初期）保險金',5000,'×係數',1,1,'early'],
+  ['首次罹患癌症','首次罹患癌症（輕度）保險金',10000,'×係數',1,1,'mild'],
+  ['首次罹患癌症','首次罹患癌症（重度）保險金',50000,'×係數',1,1,'severe'],
+  ['癌症手術','癌症住院手術醫療保險金',15000,'/次',0,1,'ipSurg'],
+  ['癌症手術','癌症門診切除手術醫療保險金',3000,'/次',0,1,'opSurg'],
+  ['癌症療程','癌症門診醫療保險金（每年最多 120 次）',500,'/次',1,0,'opd'],
+  ['癌症療程','癌症放射線治療保險金',1000,'/次',1,0,'rad'],
+  ['癌症療程','癌症化學治療保險金',1000,'/次',1,0,'chemo'],
+  ['癌症療程','白血病骨髓或幹細胞移植保險金',120000,'',0,1,'tx1'],
+  ['癌症療程','惡性淋巴瘤骨髓或幹細胞移植保險金',120000,'',0,1,'tx2'],
+  ['住院日額','癌症住院醫療保險金',1000,'/日',1,0,'hosp'],
+  ['住院日額','癌症長期住院醫療保險金（同一住院超過 90 日）',1000,'/日',1,0,'longHosp'],
+  ['出院療養','癌症出院療養保險金',1000,'/日',1,0,'dis'],
+  ['重建／裝置','癌症乳房重建手術保險金（女性，每側 1 次）',20000,'/次',0,1,'breast'],
+  ['重建／裝置','癌症義肢裝設保險金（各肢 1 次）',20000,'/次',0,1,'limb'],
+  ['重建／裝置','癌症義齒裝設保險金',10000,'',0,1,'denture']
+];
+const RIDERS = [
+  { k:'1RAS', name:'機械手臂微創切除手術', icon:'🤖', fixed:15, desc:'達文西等機械手臂切除癌症病灶，給付 15 萬', ben:'癌症特定機械手臂微創切除手術醫療保險金' },
+  { k:'1CGT', name:'罹癌後基因檢測', icon:'🧬', fixed:15, desc:'罹癌後接受基因檢測，給付 15 萬', ben:'罹癌後癌症基因檢測保險金' },
+  { k:'1STT', name:'重度癌症標靶治療', icon:'🎯', min:30, max:100, def:100, desc:'重度癌症接受標靶治療，30～100 萬', ben:'重度癌症標靶治療保險金' },
+  { k:'1SCT', name:'第四期自體免疫細胞治療', icon:'🧫', fixed:100, desc:'首次罹患實體癌第四期，給付 100 萬', ben:'首次罹患實體癌第四期自體免疫細胞治療保險金' },
+  { k:'1CPT', name:'特定粒子精準放射治療', icon:'⚛️', min:30, max:100, def:100, desc:'質子／重粒子放射治療，30～100 萬', ben:'癌症特定粒子精準放射治療保險金' }
+];
+const RSEL = { '1RAS':true, '1CGT':true, '1STT':true, '1SCT':true, '1CPT':true };
+const RAMT = { '1STT':100, '1CPT':100 };
+
+const fmt = n => Math.round(n).toLocaleString('en-US');
+const W = n => { const w = n/10000; return (Math.abs(w) >= 1 ? (Math.round(w*100)/100).toLocaleString('en-US') + ' 萬' : fmt(n) + ' 元'); };
+const $ = id => document.getElementById(id);
+const val = n => document.querySelector(`input[name=${n}]:checked`).value;
+
+function riderPrem(k, g, age, year, amt){        // 第 year 保單年度年繳保費（元，未折）
+  if(age < 30 || age > 70) return null;
+  if(k === '1SCT') return RD['1SCT'][g][age-30][year-1];
+  const t = k === '1STT' ? RD['1STT100'] : RD[k];
+  const r = year === 1 ? t.init[g][age-30] : t.renew[g][age+year-1-31];
+  if(k === '1STT') return r / 10 * (amt/10);       // 100萬費率表 ÷10＝每10萬
+  if(k === '1CPT') return r * (amt/10);            // 每10萬保額費率
+  return r;                                        // 1CGT／1RAS 15萬、1SCT 100萬
+}
+function riderAmt(r){ return r.fixed || RAMT[r.k]; }
+
+$('rider-grid').innerHTML = RIDERS.map(r => `
+  <div class="rider ${RSEL[r.k]?'on':''}" data-k="${r.k}" role="checkbox" tabindex="0">
+    <input type="checkbox" ${RSEL[r.k]?'checked':''}>
+    <div class="r-top"><span class="r-icon">${r.icon}</span><span class="r-code">${r.k}</span></div>
+    <div class="r-name">${r.name}</div>
+    <div class="r-desc">${r.desc}</div>
+    ${r.fixed ? `<div class="r-amt">保額 ${r.fixed} 萬（固定）</div>` :
+      `<select class="r-sel">${Array.from({length:8},(_,i)=>30+i*10).map(v=>`<option value="${v}" ${v===r.def?'selected':''}>保額 ${v} 萬</option>`).join('')}</select>`}
+  </div>`).join('');
+document.querySelectorAll('.rider').forEach(el => {
+  const k = el.dataset.k;
+  const cb = el.querySelector('input');
+  const set = on => { RSEL[k] = on; cb.checked = on; el.classList.toggle('on', on); calc(); };
+  el.addEventListener('click', e => { if(e.target.closest('select')) return; if(e.target === cb){ set(cb.checked); return; } set(!RSEL[k]); });
+  const s = el.querySelector('.r-sel'); if(s) s.addEventListener('change', e => { RAMT[k] = +e.target.value; calc(); });
+});
+
+// 情境
+const SCEN = [
+  ['severe','罹患重度癌症','check'], ['mild','罹患輕度癌症','check'], ['early','罹患初期癌症','check'],
+  ['hosp','住院日數','num'], ['ipSurg','住院手術（次）','num'], ['opSurg','門診切除手術（次）','num'],
+  ['opd','癌症門診（次）','num'], ['chemo','化學治療（次）','num'], ['rad','放射線治療（次）','num'],
+  ['dis','出院療養（日，同住院日數）','num'], ['breast','乳房重建（側）','num'], ['longHosp','長期住院超過 90 日部分（日）','num'],
+  ['r1RAS','機械手臂切除手術','check'], ['r1CGT','基因檢測','check'], ['r1STT','標靶治療','check'], ['r1SCT','實體癌第四期','check'], ['r1CPT','質子／重粒子治療','check']
+];
+const PRESETS = {
+  '乳癌（重度）':{severe:1,hosp:10,ipSurg:1,opd:30,chemo:8,rad:25,dis:10,breast:1,r1CGT:1,r1STT:1},
+  '大腸癌（重度）':{severe:1,hosp:12,ipSurg:1,opd:24,chemo:12,rad:0,dis:12,r1RAS:1,r1CGT:1,r1STT:1},
+  '肺癌第四期':{severe:1,hosp:21,ipSurg:0,opd:40,chemo:12,rad:10,dis:21,r1CGT:1,r1STT:1,r1SCT:1},
+  '攝護腺癌（質子）':{severe:1,hosp:5,ipSurg:1,opd:20,rad:0,dis:5,r1RAS:1,r1CPT:1},
+  '原位癌':{early:1,hosp:3,ipSurg:1,opd:4,dis:3}
+};
+let scen = Object.assign({}, PRESETS['乳癌（重度）']);
+$('presets').innerHTML = '<span class="p-lab">情境範例：</span>' + Object.keys(PRESETS).map((p,i) => `<button class="preset ${i===0?'on':''}" data-p="${p}">${p}</button>`).join('');
+document.querySelectorAll('.preset').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('.preset').forEach(x => x.classList.remove('on')); b.classList.add('on');
+  scen = Object.assign({}, PRESETS[b.dataset.p]); drawScenInputs(); calc();
+}));
+function drawScenInputs(){
+  $('scen-inputs').innerHTML = SCEN.map(([k,l,t]) => t === 'check'
+    ? `<label class="s-chk"><input type="checkbox" data-s="${k}" ${scen[k]?'checked':''}> ${l}</label>`
+    : `<label class="s-num"><span>${l}</span><input type="number" min="0" data-s="${k}" value="${scen[k]||0}" inputmode="numeric"></label>`).join('');
+  document.querySelectorAll('[data-s]').forEach(i => i.addEventListener('input', e => {
+    scen[i.dataset.s] = i.type === 'checkbox' ? (i.checked ? 1 : 0) : (+i.value || 0);
+    document.querySelectorAll('.preset').forEach(x => x.classList.remove('on')); calc();
+  }));
+}
+drawScenInputs();
+
+function calc(){
+  const g = val('gender'), age = Math.max(0, Math.min(70, parseInt($('age').value) || 0));
+  const u1 = +$('u1').value, u2 = +$('u2').value, coef = age >= 16 ? +val('health') : 1, disc = +val('disc');
+  const p1 = HC.HCAB2[g][age] * u1, p2 = HC.HCAR2[g][age] * u2;
+  const rOK = age >= 30 && age <= 70;
+  $('rider-age-note').textContent = rOK ? '' : '⚠ 附加條款限 30～70 歲投保，目前年齡不適用，以下不計入。';
+  const act = RIDERS.filter(r => RSEL[r.k] && rOK);
+
+  // 保費總覽
+  let h = '<tr><th>險種</th><th>保額／單位</th><th>首年年繳</th><th>月繳估算</th><th>繳費期間總繳</th></tr>';
+  const row = (n, a, y1, tot, note) => `<tr><td class="row-label">${n}</td><td>${a}</td><td>${fmt(y1*disc)} 元</td><td>${fmt(y1*disc/12)} 元</td><td>${fmt(tot*disc)} 元${note?`<br><span class="sm">${note}</span>`:''}</td></tr>`;
+  h += row('<b>HCAB2</b> 滿溢久久2 主約', u1+' 單位', p1, p1*20, '20 年');
+  if(u2) h += row('<b>HCAR2</b> 滿溢久久2 附約', u2+' 單位', p2, p2*20, '20 年');
+  let rY1 = 0, r10 = 0;
+  act.forEach(r => { const a = riderAmt(r); let t = 0; for(let y=1;y<=10;y++) t += riderPrem(r.k,g,age,y,a); const y1 = riderPrem(r.k,g,age,1,a); rY1 += y1; r10 += t;
+    h += row(`<b>${r.k}</b> ${r.name}`, a+' 萬', y1, t, '續保至第 10 年（估）'); });
+  const y1tot = p1 + p2 + rY1;
+  h += `<tr class="total-row"><td class="row-label">首年合計</td><td>—</td><td>${fmt(y1tot*disc)} 元</td><td>${fmt(y1tot*disc/12)} 元</td><td>—</td></tr>`;
+  $('prem-table').innerHTML = h;
+
+  // 附加條款逐年
+  if(act.length){
+    let t = '<tr><th>保單年度</th><th>年齡</th>' + act.map(r => `<th>${r.k}</th>`).join('') + '<th>附加條款合計</th><th>含 HCAB2＋HCAR2</th></tr>';
+    let cum = 0;
+    for(let y=1;y<=10;y++){
+      const ps = act.map(r => riderPrem(r.k,g,age,y,riderAmt(r)));
+      const s = ps.reduce((a,b)=>a+b,0); cum += s;
+      t += `<tr><td>第 ${y} 年</td><td>${age+y-1} 歲</td>` + ps.map(p => `<td>${fmt(p*disc)}</td>`).join('') + `<td><b>${fmt(s*disc)}</b></td><td>${fmt((s+p1+p2)*disc)}</td></tr>`;
+    }
+    t += `<tr class="total-row"><td colspan="2">10 年合計</td>` + act.map(r => { let s=0; for(let y=1;y<=10;y++) s+=riderPrem(r.k,g,age,y,riderAmt(r)); return `<td>${fmt(s*disc)}</td>`; }).join('') + `<td>${fmt(cum*disc)}</td><td>${fmt((cum+(p1+p2)*10)*disc)}</td></tr>`;
+    $('rider-years').innerHTML = t;
+  } else $('rider-years').innerHTML = '<tr><td style="padding:14px;color:var(--text2)">未選擇附加條款或年齡不適用</td></tr>';
+
+  // 保障內容
+  let b = `<tr><th>保障項目</th><th>每單位</th><th>HCAB2<br><span class="sm">${u1} 單位</span></th><th>HCAR2<br><span class="sm">${u2} 單位</span></th><th>合計</th></tr>`;
+  let grp = '';
+  BEN.forEach(([gname, n, amt, unit, inB, inR, key]) => {
+    const isFirst = key === 'early' || key === 'mild' || key === 'severe';
+    const c = isFirst ? coef : 1;
+    const vB = inB ? amt*u1*c : null, vR = inR && u2 ? amt*u2*c : null;
+    if(gname !== grp){ b += `<tr class="grp"><td colspan="5">${gname}</td></tr>`; grp = gname; }
+    const sfx = unit.startsWith('/') ? unit : '';
+    b += `<tr><td class="row-label">${n}</td><td>${fmt(amt)}${unit.startsWith('×')?' ×係數':sfx}</td><td>${vB!==null?fmt(vB)+sfx:'<span class="na">—</span>'}</td><td>${vR!==null?fmt(vR)+sfx:'<span class="na">—</span>'}</td><td class="tot">${fmt((vB||0)+(vR||0))}${sfx}</td></tr>`;
+  });
+  if(act.length){ b += '<tr class="grp"><td colspan="5">癌症精準治療附加條款（一次給付，給付後該附加條款終止）</td></tr>';
+    act.forEach(r => b += `<tr><td class="row-label">${r.k} ${r.ben}</td><td>—</td><td colspan="2"><span class="sm">附加條款</span></td><td class="tot">${fmt(riderAmt(r)*10000)}</td></tr>`); }
+  b += `<tr class="grp"><td colspan="5">豁免保險費：罹患重度癌症翌日起豁免 HCAB2、HCAR2 後續保費（附加條款不在此列）</td></tr>`;
+  b += `<tr class="total-row"><td class="row-label">總給付上限</td><td>200 萬／單位</td><td>${W(2000000*u1)}</td><td>${u2?W(2000000*u2):'—'}</td><td>${W(2000000*(u1+u2))}</td></tr>`;
+  $('ben-table').innerHTML = b;
+
+  // 情境
+  const lines = [];
+  let sB = 0, sR = 0;
+  BEN.forEach(([gname, n, amt, unit, inB, inR, key]) => {
+    let q = scen[key] || 0; if(!q) return;
+    if(key === 'breast' && g !== 'female') return;   // 乳房重建限女性被保險人
+    if(key === 'opd') q = Math.min(q, 120);
+    const isFirst = key === 'early' || key === 'mild' || key === 'severe';
+    const c = isFirst ? coef : 1;
+    const qq = isFirst ? 1 : q;
+    const vB = inB ? amt*u1*c*qq : 0, vR = inR && u2 ? amt*u2*c*qq : 0;
+    if(vB + vR === 0) return;
+    sB += vB; sR += vR;
+    lines.push([n, (isFirst ? '' : q + (unit.replace('/','')||'次') + ' × ') + fmt(amt*c*(isFirst?1:1)) + ' × ' + (inB&&inR&&u2 ? (u1+u2) : inB ? u1 : u2) + ' 單位', vB + vR, inB ? (inR && u2 ? '主約＋附約' : 'HCAB2') : 'HCAR2']);
+  });
+  sB = Math.min(sB, 2000000*u1); sR = Math.min(sR, 2000000*u2);
+  let sX = 0;
+  act.forEach(r => { if(scen['r'+r.k]){ const v = riderAmt(r)*10000; sX += v; lines.push([r.k + ' ' + r.ben, '一次給付', v, '附加條款']); } });
+  const total = sB + sR + sX;
+  const y1p = (p1+p2)*disc + rY1*disc;
+  $('scen-result').innerHTML = `
+    <div class="sr-head"><div><div class="sr-lab">此情境可領</div><div class="sr-num">${W(total)}</div></div>
+      <div class="sr-side"><div>首年保費 ${fmt(y1p)} 元</div><div>約為首年保費的 <b>${(total/Math.max(y1p,1)).toFixed(1)}</b> 倍</div></div></div>
+    <table class="sr-table">${lines.map(l => `<tr><td>${l[0]}<br><span class="sm">${l[1]}｜${l[3]}</span></td><td>${fmt(l[2])} 元</td></tr>`).join('')}
+    <tr class="sr-sum"><td>HCAB2＋HCAR2 小計${(sB < 0 ? '' : '')}</td><td>${fmt(sB+sR)} 元</td></tr>
+    <tr class="sr-sum"><td>附加條款小計</td><td>${fmt(sX)} 元</td></tr></table>
+    <div class="sm" style="margin-top:8px">首次罹患癌症保險金以 ${age>=16?'所選健康促進係數':'×1（未滿16歲）'}計；門診每年最多 120 次。實際以保單條款與理賠審核為準。</div>`;
+}
+['age','u1','u2'].forEach(id => $(id).addEventListener('input', calc));
+['u1','u2'].forEach(id => $(id).addEventListener('change', calc));
+document.querySelectorAll('input[name=gender],input[name=health],input[name=disc]').forEach(i => i.addEventListener('change', calc));
+calc();
+</script>
+</body>
+</html>
