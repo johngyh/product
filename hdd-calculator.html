@@ -72,6 +72,18 @@
   .toggle-group button.active{ background:var(--navy); color:var(--gold-hi); font-weight:700; }
   .hint{font-size:11.5px;color:var(--muted);margin-top:6px;line-height:1.55;}
 
+  .grid > .card{ min-width:0; }
+  .split-wrap{ margin:-6px 0 20px; min-width:0; }
+  .split-title{ font-family:'Noto Serif TC',serif; font-weight:700; font-size:15px; color:var(--navy); margin-bottom:8px; padding-left:10px; border-left:4px solid var(--gold); }
+  .split-title span{ font-family:'Noto Sans TC',sans-serif; font-weight:400; font-size:12px; color:var(--muted); }
+  table.split{ width:100%; border-collapse:collapse; font-size:13.5px; }
+  table.split th{ background:var(--navy); color:var(--gold-hi); padding:8px 10px; font-weight:500; text-align:right; white-space:nowrap; }
+  table.split th:first-child{ text-align:left; }
+  table.split td{ padding:8px 10px; border-bottom:1px solid var(--line); text-align:right; font-family:'DM Mono',monospace; white-space:nowrap; }
+  table.split td:first-child{ text-align:left; font-family:'Noto Sans TC',sans-serif; color:#33425b; }
+  table.split td.tot{ font-weight:700; color:var(--navy); background:#fff6da; }
+  table.split tr.prem td{ font-size:15px; font-weight:700; color:var(--navy); }
+  table.split .na{ color:#a9b4c6; font-family:'Noto Sans TC',sans-serif; }
   .results{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-bottom:20px; }
   .stat{ background:linear-gradient(160deg,var(--navy) 0%,var(--navy-2) 100%); border-radius:10px; padding:14px 16px; color:#e9eef6; }
   .stat .label{font-size:11.5px;color:#9fb2ce;margin-bottom:5px;}
@@ -231,10 +243,6 @@
     <div class="card">
       <h2>投保條件</h2>
       <div class="field">
-        <label>險種</label>
-        <div class="toggle-group" id="prodToggle"><button data-v="HDD" class="active">HDD 主約</button><button data-v="ZDDR2">ZDDR2 附約</button><button data-v="COMBO">主約＋附約</button></div>
-      </div>
-      <div class="field">
         <label>投保年齡（保險年齡）　<span class="val" id="ageVal">35</span> 歲</label>
         <input type="range" id="age" min="0" max="70" value="35">
         <div class="hint"><span id="ageHint">投保年齡 0～55 歲</span>；繳費 20 年，保障至保險年齡 95 歲保單年度末。<br><b>請輸入「保險年齡」</b>：投保時以足歲計算，未滿一歲的零數超過 6 個月者加算一歲，以後每經過一個保單年度加算一歲。</div>
@@ -269,6 +277,11 @@
     <div class="card">
       <h2>保單結構試算</h2>
       <div class="results" id="statsGrid"></div>
+      <div class="split-wrap">
+        <div class="split-title">📋 主約、附約分項比較　<span id="splitWhen"></span></div>
+        <div class="table-scroll" style="max-height:none;"><table class="split" id="splitTable"></table></div>
+        <div class="hint" style="margin-top:6px;">ZDDR2 為附約，須附加於主約；附約保額填 0 即為「只買 HDD」。保費為未扣折扣之年繳保費，自動轉帳／聯名卡另享 1% 折扣。</div>
+      </div>
       <div class="scrubber">
         <div class="scrubber-top">
           <div class="ttl">拖曳查看保單進度 ▸</div>
@@ -442,9 +455,9 @@ const ZDDR2 = {
 Object.assign(PRODUCT, { key:'HDD', title:document.getElementById('pTitle').innerHTML, sub:document.getElementById('pSub').textContent,
   foot:document.getElementById('pFoot').textContent, ageHint:document.getElementById('ageHint').textContent, minHint:document.getElementById('minHint').textContent });
 const COMBO = {
-  key:'COMBO', title:'HDD 活力洋溢3 ＋ ZDDR2 至尊康祥附約<br>主約＋附約合計試算',
+  key:'COMBO', title:'HDD 活力洋溢3 ＋ ZDDR2 至尊康祥附約<br>主約＋附約試算',
   sub:'繳費 20 年・保至 95 歲｜重度、輕度保險金合計｜初期癌症、身故與滿期保險金來自 HDD 主約',
-  foot:'南山人壽 HDD 活力洋溢3＋ZDDR2 至尊康祥附約(乙型) 合計', ageHint:'投保年齡 0～55 歲（以 HDD 主約為準）', minHint:'HDD 主約保額；最低：0～30 歲 30 萬、31～55 歲 20 萬',
+  foot:'南山人壽 HDD 活力洋溢3＋ZDDR2 至尊康祥附約(乙型)', ageHint:'投保年齡 0～55 歲（以 HDD 主約為準）', minHint:'HDD 主約保額；最低：0～30 歲 30 萬、31～55 歲 20 萬',
   defAge:30, defAmount:1000, def2:1000, terms:[20], ageMax:{20:55}, ageMin:0,
   rateByTerm:false, rateMul:1, rates:RATES, premTag:'累積保費線（合計）', premTagBelow:true,
   rateCols:[{label:'HDD 男',g:'male'},{label:'HDD 女',g:'female'},{label:'ZDDR2 男',g:'male',rates:ZRATES},{label:'ZDDR2 女',g:'female',rates:ZRATES}],
@@ -468,10 +481,10 @@ const COMBO = {
       { name:'初期癌症保險金（HDD，以1次為限）', short:'初期癌症', color:'#7a6bd6', fn:early, w:2.6 },
       { name:'壽險當年度保險金額（HDD 身故／失能下限、滿期保險金）', short:'身故／滿期', color:'#c23b3b', fn:life, w:2.4 }
     ];
-    c.endLabel = h.endLabel; c.maturity = h.maturity;
+    c.endLabel = h.endLabel; c.maturity = h.maturity; c.h = h; c.z = z;
     c.chartHint = '重度合計＝HDD MAX(保額, 總繳×1.06)×係數 ＋ ZDDR2 MAX(保額, 總繳×1.05)；輕度合計＝HDD 保額×10%×係數 ＋ ZDDR2 保額×20%（ZDDR2 已領輕度者，重度再扣除已領金額）。初期癌症、身故與滿期保險金僅 HDD 主約有。藍色虛線為兩張合計已繳保費。';
     c.stats = k => { const kk = Math.max(k,1); return [
-      ['年繳保險費合計（未扣折扣）', fmt(c.premium)+' 元', 'HDD '+fmt(h.premium)+' ＋ ZDDR2 '+fmt(z.premium)+' 元', 'gold'],
+      ['年繳保險費合計（未扣折扣）', fmt(c.premium)+' 元', 'HDD '+fmt(h.premium)+' ＋ ZDDR2 '+fmt(z.premium)+' 元（分項見下表）', 'gold'],
       ['累計已繳保費', fmt(c.premium*Math.min(kk,c.term))+' 元', '20 年共 '+fmt(c.premium*20)+' 元'],
       ['目前 重度重大疾病合計', fmtW(sev(kk))+' 萬元', 'HDD '+fmtW(h.series[0].fn(kk))+' ＋ ZDDR2 '+fmtW(z.series[0].fn(kk))+' 萬', 'statN'],
       ['輕度重大疾病合計', fmtW(mild(kk))+' 萬元', 'HDD '+fmtW(h.series[1].fn(kk))+' ＋ ZDDR2 '+fmtW(z.series[1].fn(kk))+' 萬'],
@@ -485,6 +498,25 @@ const COMBO = {
       return ['paying','繳費中：合計已繳 '+fmt(c.premium*k)+' 元（第 '+k+'／'+c.term+' 年），目前重度合計 '+fmtW(sev(k))+' 萬'];
     };
   }
+};
+COMBO.afterRender = c => {
+  const el = document.getElementById('splitTable'); if(!el) return;
+  const h = c.h, z = c.z, k = Math.max(state.policyYear, 1), a2 = z.amount;
+  const W = v => fmtW(v) + ' 萬', Y = v => fmt(v) + ' 元', NA = '<span class="na">—</span>';
+  const zon = a2 > 0;
+  const rows = [
+    ['保險金額', W(h.amount), zon ? W(a2) : NA, '—', ''],
+    ['年繳保費', Y(h.premium), zon ? Y(z.premium) : NA, Y(c.premium), 'prem'],
+    ['月繳估算（年繳÷12）', Y(h.premium/12), zon ? Y(z.premium/12) : NA, Y(c.premium/12), ''],
+    ['20 年總繳', Y(h.premium*20), zon ? Y(z.premium*20) : NA, Y(c.premium*20), ''],
+    ['重度重大疾病', W(h.series[0].fn(k)), zon ? W(z.series[0].fn(k)) : NA, W(h.series[0].fn(k) + (zon ? z.series[0].fn(k) : 0)), ''],
+    ['輕度重大疾病', W(h.series[1].fn(k)) + '<br><small class="na">10%×係數</small>', zon ? W(z.series[1].fn(k)) + '<br><small class="na">20%</small>' : NA, W(h.series[1].fn(k) + (zon ? z.series[1].fn(k) : 0)), ''],
+    ['初期癌症', W(h.series[2].fn(k)), NA, W(h.series[2].fn(k)), ''],
+    ['95 歲滿期保險金', W(h.maturity), NA, W(h.maturity), '']
+  ];
+  el.innerHTML = '<thead><tr><th>項目</th><th>HDD 主約</th><th>ZDDR2 附約</th><th>合計</th></tr></thead><tbody>' +
+    rows.map(r => `<tr class="${r[4]}"><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td class="tot">${r[3]}</td></tr>`).join('') + '</tbody>';
+  setText('splitWhen', '（第 ' + k + ' 保單年度的保障金額）');
 };
 const PRODUCTS = { HDD:PRODUCT, ZDDR2:ZDDR2, COMBO:COMBO };
 let P = PRODUCT;
@@ -761,8 +793,7 @@ function rateTable(){
 }
 rateTable();
 
-if(P.init) P.init();
-render();
+setProduct('COMBO');
 
 </script>
 </body>
