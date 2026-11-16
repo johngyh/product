@@ -170,6 +170,19 @@
   .res-card:hover{border-color:var(--ns-blue-500); box-shadow:0 16px 34px -16px rgba(11,46,92,.4); transform:translateY(-2px);}
   .res-top{display:flex; align-items:center; justify-content:space-between;}
   .res-icon{font-size:26px;}
+  .res-card.hero{grid-column:1/-1; text-decoration:none; background:linear-gradient(135deg,var(--ns-blue-900),var(--ns-blue-700)); border-color:var(--ns-blue-900); position:relative; overflow:hidden;}
+  .res-card.hero::after{content:''; position:absolute; right:-40px; top:-50px; width:170px; height:170px; border-radius:50%; background:radial-gradient(circle,rgba(227,166,53,.35),transparent 70%);}
+  .res-card.hero .res-name{color:#fff; font-size:19px;}
+  .res-card.hero .res-desc{color:#c9d9ef; font-size:13.5px; line-height:1.6; position:relative; z-index:1;}
+  .res-card.hero .res-link{color:var(--ns-gold-400);}
+  .res-card.hero .res-tag.tool{background:var(--ns-gold-400); color:var(--ns-blue-900); border-color:var(--ns-gold-400);}
+  .cat-tabs{display:flex; gap:8px; overflow-x:auto; padding:2px 2px 6px; margin:4px 0 18px; scrollbar-width:none; -webkit-overflow-scrolling:touch;}
+  .cat-tabs::-webkit-scrollbar{display:none;}
+  .cat-tab{flex:0 0 auto; border:1.5px solid var(--line); background:#fff; color:var(--ink-600); border-radius:22px; padding:9px 16px; font-family:'Noto Sans TC',sans-serif; font-size:14.5px; font-weight:500; cursor:pointer; transition:.15s;}
+  .cat-tab b{font-family:'DM Mono',monospace; font-size:12px; color:var(--ink-400); margin-left:4px; font-weight:500;}
+  .cat-tab.on{background:var(--ns-blue-900); border-color:var(--ns-blue-900); color:#fff;}
+  .cat-tab.on b{color:var(--ns-gold-400);}
+  .cat-panel[hidden]{display:none;}
   .res-tag{
     font-family:'DM Mono', monospace; font-size:10px; letter-spacing:0.05em;
     padding:3px 9px; border-radius:20px; font-weight:500;
@@ -265,95 +278,124 @@
 <section class="wrap reveal" id="resources">
   <div class="section-eyebrow">Resources</div>
   <h2>我的實戰武器庫</h2>
-
-  <h3 class="sub-label">🧮 互動試算工具</h3>
-  <div class="grid reveal-stagger">
-    <div class="res-card">
-      <div class="res-top"><div class="res-icon">📈</div><div class="res-tag tool">互動工具</div></div>
-      <div class="res-name">TED系列商品試算</div>
-      <a class="res-link" href="./ted-calculator.html">開啟工具 →</a>
-    </div>
-    <div class="res-card">
-      <div class="res-top"><div class="res-icon">🧮</div><div class="res-tag tool">互動工具</div></div>
-      <div class="res-name">BVA轉換試算</div>
-      <a class="res-link" href="./bva-calculator.html">開啟工具 →</a>
-    </div>
-    <div class="res-card">
-      <div class="res-top"><div class="res-icon">🏨</div><div class="res-tag tool">互動工具</div></div>
-      <div class="res-name">WEHS方案比較</div>
-      <a class="res-link" href="./wehs-comparison.html">開啟工具 →</a>
-    </div>
-    <div class="res-card">
-      <div class="res-top"><div class="res-icon">👵</div><div class="res-tag tool">互動工具</div></div>
-      <div class="res-name">長照商品比較</div>
-      <a class="res-link" href="./ltc-comparison.html">開啟工具 →</a>
-    </div>
-    <div class="res-card">
-      <div class="res-top"><div class="res-icon">🎗️</div><div class="res-tag tool">互動工具</div></div>
-      <div class="res-name">癌症保障商品比較</div>
-      <a class="res-link" href="./cancer-comparison.html">開啟工具 →</a>
-    </div>
-    <div class="res-card">
-      <div class="res-top"><div class="res-icon">🦴</div><div class="res-tag tool">互動工具</div></div>
-      <div class="res-name">SUPA樂齡終身意外險試算</div>
-      <a class="res-link" href="./supa-calculator.html">開啟工具 →</a>
-    </div>
-    <div class="res-card">
-      <div class="res-top"><div class="res-icon">💳</div><div class="res-tag tool">互動工具</div></div>
-      <div class="res-name">NCIC重大傷病卡試算</div>
-      <a class="res-link" href="./ncic-calculator.html">開啟工具 →</a>
-    </div>
-    <div class="res-card">
-      <div class="res-top"><div class="res-icon">🎗️</div><div class="res-tag tool">互動工具</div></div>
-      <div class="res-name">HC心滿溢足癌症險試算</div>
-      <a class="res-link" href="./hc-calculator.html">開啟工具 →</a>
-    </div>
-    <div class="res-card">
-      <div class="res-top"><div class="res-icon">🌿</div><div class="res-tag tool">互動工具</div></div>
-      <div class="res-name">SC長青滿溢癌症險試算</div>
-      <a class="res-link" href="./sc-calculator.html">開啟工具 →</a>
-    </div>
-    <div class="res-card">
-      <div class="res-top"><div class="res-icon">🧠</div><div class="res-tag tool">互動工具</div></div>
-      <div class="res-name">10TSDD特定重大傷病險試算</div>
-      <a class="res-link" href="./tsdd-calculator.html">開啟工具 →</a>
-    </div>
-    <div class="res-card">
-      <div class="res-top"><div class="res-icon">❤️‍🩹</div><div class="res-tag tool">互動工具</div></div>
-      <div class="res-name">10TDD樂健康祥定期健康險試算</div>
-      <a class="res-link" href="./tdd-calculator.html">開啟工具 →</a>
-    </div>
-    <div class="res-card">
-      <div class="res-top"><div class="res-icon">🩺</div><div class="res-tag tool">互動工具</div></div>
-      <div class="res-name">HDD活力洋溢3重大疾病險試算</div>
-      <a class="res-link" href="./hdd-calculator.html">開啟工具 →</a>
+  <div class="cat-tabs" role="tablist">
+    <button class="cat-tab on" role="tab" data-cat="ci">🎗️ 重大疾病・癌症<b>9</b></button>
+    <button class="cat-tab" role="tab" data-cat="med">🏥 醫療・意外<b>2</b></button>
+    <button class="cat-tab" role="tab" data-cat="ltc">🧓 長期照顧<b>2</b></button>
+    <button class="cat-tab" role="tab" data-cat="sav">💰 儲蓄・投資理財<b>3</b></button>
+  </div>
+  <div class="cat-panel" id="cat-ci" role="tabpanel">
+    <div class="grid">
+      <a class="res-card hero" href="./cancer-comparison.html">
+        <div class="res-top"><div class="res-icon">🎗️</div><div class="res-tag tool">比較工具</div></div>
+        <div class="res-name">癌症保障商品比較</div>
+        <div class="res-desc">8 張重大疾病、癌症商品一次比較：保費、癌症給付、保障範圍</div>
+        <span class="res-link">開啟比較 →</span>
+      </a>
+      <div class="res-card">
+        <div class="res-top"><div class="res-icon">💳</div><div class="res-tag tool">互動工具</div></div>
+        <div class="res-name">NCIC重大傷病卡試算</div>
+        <a class="res-link" href="./ncic-calculator.html">開啟工具 →</a>
+      </div>
+      <div class="res-card">
+        <div class="res-top"><div class="res-icon">📈</div><div class="res-tag tool">互動工具</div></div>
+        <div class="res-name">TED系列商品試算</div>
+        <a class="res-link" href="./ted-calculator.html">開啟工具 →</a>
+      </div>
+      <div class="res-card">
+        <div class="res-top"><div class="res-icon">🩺</div><div class="res-tag tool">互動工具</div></div>
+        <div class="res-name">HDD活力洋溢3重大疾病險試算</div>
+        <a class="res-link" href="./hdd-calculator.html">開啟工具 →</a>
+      </div>
+      <div class="res-card">
+        <div class="res-top"><div class="res-icon">🧠</div><div class="res-tag tool">互動工具</div></div>
+        <div class="res-name">10TSDD特定重大傷病險試算</div>
+        <a class="res-link" href="./tsdd-calculator.html">開啟工具 →</a>
+      </div>
+      <div class="res-card">
+        <div class="res-top"><div class="res-icon">❤️‍🩹</div><div class="res-tag tool">互動工具</div></div>
+        <div class="res-name">10TDD樂健康祥定期健康險試算</div>
+        <a class="res-link" href="./tdd-calculator.html">開啟工具 →</a>
+      </div>
+      <div class="res-card">
+        <div class="res-top"><div class="res-icon">🎗️</div><div class="res-tag tool">互動工具</div></div>
+        <div class="res-name">HC心滿溢足癌症險試算</div>
+        <a class="res-link" href="./hc-calculator.html">開啟工具 →</a>
+      </div>
+      <div class="res-card">
+        <div class="res-top"><div class="res-icon">🌿</div><div class="res-tag tool">互動工具</div></div>
+        <div class="res-name">SC長青滿溢癌症險試算</div>
+        <a class="res-link" href="./sc-calculator.html">開啟工具 →</a>
+      </div>
+      <div class="res-card">
+        <div class="res-top"><div class="res-icon">🛡️</div><div class="res-tag pdf">PDF下載</div></div>
+        <div class="res-name">重大傷病推銷夾</div>
+        <a class="res-link" href="https://johngyh.github.io/product/critical_illness.pdf">立即下載 →</a>
+      </div>
     </div>
   </div>
-
-  <h3 class="sub-label">📄 推銷夾下載</h3>
-  <div class="grid reveal-stagger">
-    <div class="res-card">
-      <div class="res-top"><div class="res-icon">🏥</div><div class="res-tag pdf">PDF下載</div></div>
-      <div class="res-name">長照險推銷夾</div>
-      <a class="res-link" href="https://johngyh.github.io/product/long_term_care.pdf">立即下載 →</a>
+  <div class="cat-panel" id="cat-med" role="tabpanel" hidden>
+    <div class="grid">
+      <a class="res-card hero" href="./wehs-comparison.html">
+        <div class="res-top"><div class="res-icon">🏨</div><div class="res-tag tool">比較工具</div></div>
+        <div class="res-name">WEHS方案比較</div>
+        <div class="res-desc">實健溢百 終身醫療實支實付：各方案保費與保障比較</div>
+        <span class="res-link">開啟比較 →</span>
+      </a>
+      <div class="res-card">
+        <div class="res-top"><div class="res-icon">🦴</div><div class="res-tag tool">互動工具</div></div>
+        <div class="res-name">SUPA樂齡終身意外險試算</div>
+        <a class="res-link" href="./supa-calculator.html">開啟工具 →</a>
+      </div>
     </div>
-    <div class="res-card">
-      <div class="res-top"><div class="res-icon">⚖️</div><div class="res-tag pdf">PDF下載</div></div>
-      <div class="res-name">稅務簡單說</div>
-      <a class="res-link" href="https://johngyh.github.io/product/tax_guide.pdf">立即下載 →</a>
+  </div>
+  <div class="cat-panel" id="cat-ltc" role="tabpanel" hidden>
+    <div class="grid">
+      <a class="res-card hero" href="./ltc-comparison.html">
+        <div class="res-top"><div class="res-icon">👵</div><div class="res-tag tool">比較工具</div></div>
+        <div class="res-name">長照商品比較</div>
+        <div class="res-desc">長照商品並排比較：保費、失能給付、累計最高給付</div>
+        <span class="res-link">開啟比較 →</span>
+      </a>
+      <div class="res-card">
+        <div class="res-top"><div class="res-icon">🏥</div><div class="res-tag pdf">PDF下載</div></div>
+        <div class="res-name">長照險推銷夾</div>
+        <a class="res-link" href="https://johngyh.github.io/product/long_term_care.pdf">立即下載 →</a>
+      </div>
     </div>
-    <div class="res-card">
-      <div class="res-top"><div class="res-icon">💰</div><div class="res-tag pdf">PDF下載</div></div>
-      <div class="res-name">儲蓄險推銷夾</div>
-      <a class="res-link" href="https://johngyh.github.io/product/savings_plan.pdf">立即下載 →</a>
-    </div>
-    <div class="res-card">
-      <div class="res-top"><div class="res-icon">🛡️</div><div class="res-tag pdf">PDF下載</div></div>
-      <div class="res-name">重大傷病推銷夾</div>
-      <a class="res-link" href="https://johngyh.github.io/product/critical_illness.pdf">立即下載 →</a>
+  </div>
+  <div class="cat-panel" id="cat-sav" role="tabpanel" hidden>
+    <div class="grid">
+      <a class="res-card hero" href="./bva-calculator.html">
+        <div class="res-top"><div class="res-icon">🧮</div><div class="res-tag tool">比較工具</div></div>
+        <div class="res-name">BVA轉換試算</div>
+        <div class="res-desc">投資型保單 BVA→BVA3 轉換試算</div>
+        <span class="res-link">開啟比較 →</span>
+      </a>
+      <div class="res-card">
+        <div class="res-top"><div class="res-icon">💰</div><div class="res-tag pdf">PDF下載</div></div>
+        <div class="res-name">儲蓄險推銷夾</div>
+        <a class="res-link" href="https://johngyh.github.io/product/savings_plan.pdf">立即下載 →</a>
+      </div>
+      <div class="res-card">
+        <div class="res-top"><div class="res-icon">⚖️</div><div class="res-tag pdf">PDF下載</div></div>
+        <div class="res-name">稅務簡單說</div>
+        <a class="res-link" href="https://johngyh.github.io/product/tax_guide.pdf">立即下載 →</a>
+      </div>
     </div>
   </div>
 </section>
+<script>
+(function(){
+  const tabs = document.querySelectorAll('.cat-tab');
+  function show(k){ tabs.forEach(t => t.classList.toggle('on', t.dataset.cat === k));
+    document.querySelectorAll('.cat-panel').forEach(p => p.hidden = p.id !== 'cat-'+k);
+    try{ localStorage.setItem('libCat', k); }catch(e){} }
+  tabs.forEach(t => t.addEventListener('click', () => show(t.dataset.cat)));
+  try{ const k = localStorage.getItem('libCat'); if(k && document.getElementById('cat-'+k)) show(k); }catch(e){}
+})();
+</script>
+
 
 <section class="wrap reveal" id="talk">
   <div class="section-eyebrow">Talking Points</div>
