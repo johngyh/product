@@ -222,8 +222,8 @@
 <body>
 <header>
   <div class="eyebrow">Nan Shan Life &nbsp;·&nbsp; 順可通訊處</div>
-  <h1>HDD　活力洋溢3重大疾病保險<br>保單結構試算</h1>
-  <p>繳費 20 年・保至 95 歲｜癌症（初期）、重大疾病分級給付｜身故、完全失能與滿期保險金</p>
+  <h1 id="pTitle">HDD　活力洋溢3重大疾病保險<br>保單結構試算</h1>
+  <p id="pSub">繳費 20 年・保至 95 歲｜癌症（初期）、重大疾病分級給付｜身故、完全失能與滿期保險金</p>
 </header>
 
 <div class="wrap">
@@ -231,9 +231,13 @@
     <div class="card">
       <h2>投保條件</h2>
       <div class="field">
+        <label>險種</label>
+        <div class="toggle-group" id="prodToggle"><button data-v="HDD" class="active">HDD 活力洋溢3</button><button data-v="ZDDR2">ZDDR2 至尊康祥附約</button></div>
+      </div>
+      <div class="field">
         <label>投保年齡（保險年齡）　<span class="val" id="ageVal">35</span> 歲</label>
         <input type="range" id="age" min="0" max="70" value="35">
-        <div class="hint">投保年齡 0～55 歲；繳費 20 年，保障至保險年齡 95 歲保單年度末。<br><b>請輸入「保險年齡」</b>：投保時以足歲計算，未滿一歲的零數超過 6 個月者加算一歲，以後每經過一個保單年度加算一歲。</div>
+        <div class="hint"><span id="ageHint">投保年齡 0～55 歲</span>；繳費 20 年，保障至保險年齡 95 歲保單年度末。<br><b>請輸入「保險年齡」</b>：投保時以足歲計算，未滿一歲的零數超過 6 個月者加算一歲，以後每經過一個保單年度加算一歲。</div>
       </div>
       <div class="field">
         <label>性別</label>
@@ -246,10 +250,10 @@
       <div class="field">
         <label>投保金額（萬元）</label>
         <input type="number" id="amount" value="2000" min="0" step="10">
-        <div class="hint">最低：0～30 歲 30 萬、31～55 歲 20 萬；累計最高：0～7 歲 500 萬、8～15 歲 750 萬、16 歲以上 2,000 萬。<b>留空或輸入 0 代表不試算</b>。</div>
+        <div class="hint"><span id="minHint">最低：0～30 歲 30 萬、31～55 歲 20 萬</span>；累計最高：0～7 歲 500 萬、8～15 歲 750 萬、16 歲以上 2,000 萬。<b>留空或輸入 0 代表不試算</b>。</div>
         <div class="warn" id="amountWarn"></div>
       </div>
-      <div class="field">
+      <div class="field" id="clsField">
         <label>健檢體位（投保年齡 16 歲以上、第 3 保單年度起適用）</label>
         <div class="toggle-group" id="clsToggle"><button data-v="A" class="active">A 級 ×1</button><button data-v="S">S 級 ×1.05</button></div>
         <div class="hint">未滿 16 歲投保者不適用健康促進係數。</div>
@@ -274,7 +278,7 @@
     </div>
   </div>
 
-  <details open>
+  <details data-only="HDD" open>
     <summary>▸ HDD 給付項目（DM 第4頁｜單位：新台幣元）</summary>
 <div class="table-scroll" style="max-height:none;"><table class="bt"><thead><tr><th class="left">保障項目</th><th class="left">投保年齡未達 16 歲</th><th class="left">投保年齡達 16 歲（含）以上</th></tr></thead><tbody><tr><td>初期癌症保險金<br><span style="font-weight:400;color:var(--muted);font-size:11.5px;">以 1 次為限</span></td><td>保險金額×5%</td><td>保險金額×5%×健康促進係數</td></tr><tr><td>輕度重大疾病保險金<br><span style="font-weight:400;color:var(--muted);font-size:11.5px;">以 1 次為限</span></td><td>保險金額×10%</td><td>保險金額×10%×健康促進係數</td></tr><tr><td>重度重大疾病保險金<br><span style="font-weight:400;color:var(--muted);font-size:11.5px;">給付後契約終止</span></td><td>三者擇高：①保險金額 ②保單價值準備金 ③年繳保險費總和×1.06</td><td>三者擇高（同左）×健康促進係數</td></tr><tr><td>所繳保險費加計利息的退還或身故保險金或喪葬費用保險金<br><span style="font-weight:400;color:var(--muted);font-size:11.5px;">給付後契約終止</span></td><td>滿 15 足歲前身故：退還所繳保險費加計利息；滿 15 足歲後且保險年齡未達 16 歲前：壽險當年度保險金額；其後：保單價值準備金、壽險當年度保險金額二者擇高</td><td>保單價值準備金、壽險當年度保險金額二者擇高</td></tr><tr><td>完全失能保險金<br><span style="font-weight:400;color:var(--muted);font-size:11.5px;">給付後契約終止</span></td><td>保險年齡達 16 歲前：壽險當年度保險金額；達 16 歲（含）後：保單價值準備金、壽險當年度保險金額二者擇高</td><td>保單價值準備金、壽險當年度保險金額二者擇高</td></tr><tr><td>滿期保險金<br><span style="font-weight:400;color:var(--muted);font-size:11.5px;">保險年齡達 95 歲之保單年度末</span></td><td>壽險當年度保險金額</td><td>壽險當年度保險金額</td></tr></tbody></table></div><div class="note">
     <b>壽險當年度保險金額</b>：(一) 被保險人保險年齡達 16 歲前：所繳保險費加計利息（以所繳保險費為基礎，年利率 1.75%）；(二) 保險年齡達 16 歲（含）以上：「年繳保險費總和」的 1.06 倍。<br>
@@ -283,24 +287,48 @@
     健康促進係數：僅限投保當時保險年齡 16 歲（含）以上適用；被保險人於第 2 保單年度第 8 個月起須於通知單期間內完成健檢，自第 3 保單年度起適用對應體位之係數（S 級 1.05、A 級 1）；逾期未完成者適用 A 級；投保生效日起至第 2 保單年度末適用 A 級。
   </div>
   </details>
-  <details>
+  <details data-only="HDD">
     <summary>▸ 健康檢查與體位類型（S 級須①至⑦皆符合）</summary>
 <div class="table-scroll" style="max-height:none;"><table class="bt"><thead><tr><th class="left">項目</th><th class="left">保險年齡≦39 歲</th><th class="left">保險年齡≧40 歲</th></tr></thead><tbody><tr><td>① 身體質量指數 BMI</td><td>男 18～27.9；女 18～25.9</td><td>18～29.9</td></tr><tr><td>② 血壓</td><td>收縮壓 90～125 mmHg；舒張壓 56～80 mmHg</td><td>收縮壓 90～135 mmHg；舒張壓 56～85 mmHg</td></tr><tr><td>③ 總膽固醇</td><td>≦199.9 mg/dl</td><td>≦214.9 mg/dl</td></tr><tr><td>④ 高密度膽固醇</td><td>≧45 mg/dl</td><td>≧45 mg/dl</td></tr><tr><td>⑤ 腰圍</td><td>男＜90 公分；女＜80 公分</td><td>男＜90 公分；女＜80 公分</td></tr><tr><td>⑥ 空腹血糖</td><td>＜100 mg/dl</td><td>＜100 mg/dl</td></tr><tr><td>⑦ 三酸甘油酯</td><td>＜150 mg/dl</td><td>＜150 mg/dl</td></tr><tr><td>體位／健康促進係數</td><td>S 級 1.05；不符合 S 級者為 A 級 1</td><td>同左</td></tr></tbody></table></div><div class="note">本險之健康促進係數僅限投保當時保險年齡達 16 歲（含）以上者適用；您須提供 1 次健檢報告，供判斷自第 3 保單年度起適用之健康促進係數。</div>
   </details>
-  <details>
+  <details data-only="HDD">
     <summary>▸ 名詞定義（DM 第5頁）</summary>
 <div class="table-scroll" style="max-height:none;"><table class="bt"><thead><tr><th class="left">名詞</th><th class="left">定義</th></tr></thead><tbody><tr><td>癌症（初期）</td><td>自本契約生效日起持續有效第 91 日開始（或復效日起），經醫師診斷確定符合條款約定之原位癌或零期癌、第一期惡性類癌、第二期（含）以下且非惡性黑色素瘤之皮膚癌（包括皮膚附屬器癌及皮纖維肉瘤）。</td></tr><tr><td>輕度重大疾病</td><td>自本契約生效日起持續有效第 31 日開始（癌症者為第 91 日開始），經醫師診斷確定符合條款約定之急性心肌梗塞(輕度)、腦中風後障礙(輕度)、癌症(輕度)、癱瘓(輕度)。</td></tr><tr><td>重度重大疾病</td><td>自本契約生效日起持續有效第 31 日開始（癌症者為第 91 日開始），經醫師診斷確定符合條款約定之急性心肌梗塞(重度)、冠狀動脈繞道手術、末期腎病變、腦中風後障礙(重度)、癌症(重度)、癱瘓(重度)、重大器官移植或造血幹細胞移植。</td></tr></tbody></table></div>
   </details>
-  <details>
+  <details data-only="HDD">
     <summary>▸ 初期／輕度／重度與除外項目（條款第2、22～26條）</summary>
 <div class="table-scroll" style="max-height:none;"><table class="bt"><thead><tr><th class="left">等級</th><th class="left">包含的項目</th><th class="left">給付</th></tr></thead><tbody><tr><td><b>初期癌症</b></td><td>① 原位癌或零期癌<br>② 第一期惡性類癌<br>③ 第二期（含）以下、非惡性黑色素瘤的皮膚癌（含皮膚附屬器癌、皮纖維肉瘤）</td><td>保額×5%×健康促進係數，1 次</td></tr><tr><td><b>輕度重大疾病</b>（4 項）</td><td>① 急性心肌梗塞（輕度）：冠狀動脈阻塞致部分心肌壞死，具備典型胸痛、心電圖變化、心肌酶／肌鈣蛋白升高至少兩項<br>② 腦中風後障礙（輕度）：6 個月後一肢主要關節永久運動障礙（肌力 3 分）<br>③ 癌症（輕度）：<br>① 慢性淋巴性白血病第一期及第二期（Rai 氏分期）<br>② 10 公分（含）以下的第一期何杰金氏病<br>③ 第一期前列腺癌<br>④ 第一期膀胱乳頭狀癌<br>⑤ 甲狀腺微乳頭狀癌（甲狀腺內 1 公分（含）以下）<br>⑥ 邊緣性卵巢癌<br>⑦ 第一期黑色素瘤<br>⑧ 第一期乳癌<br>⑨ 第一期子宮頸癌<br>⑩ 第一期大腸直腸癌<br>④ 癱瘓（輕度）：肢體機能障礙 6 個月仍無法改善，符合條款所列關節或肌力標準</td><td>保額×10%×健康促進係數，1 次</td></tr><tr><td><b>重度重大疾病</b>（7 項）</td><td>① 急性心肌梗塞（重度）（發病滿 90 日後左心室射出分率 50% 以下，並具備至少兩項條件）<br>② 冠狀動脈繞道手術<br>③ 末期腎病變（已長期規則透析）<br>④ 腦中風後障礙（重度）（植物人、肢體機能喪失、無法自理、喪失言語或咀嚼機能）<br>⑤ 癌症（重度）：初期、輕度以外之癌症<br>⑥ 癱瘓（重度）<br>⑦ 重大器官移植或造血幹細胞移植</td><td>MAX(保額、保價金準備金、總繳保費×1.06)×係數，1 次</td></tr></tbody></table></div><div class="note">須於生效日起滿 31 日（癌症 91 日）後經醫師診斷確定；意外傷害所致不受 31 日限制；出生時即診斷為新生兒先天性代謝異常疾病者不受等待期限制。</div><div class="sectitle">除外項目（責任免除，條款第26條）</div><div class="table-scroll" style="max-height:none;"><table class="bt"><thead><tr><th class="left">給付項目</th><th class="left">不給付的情形</th></tr></thead><tbody><tr><td>重度及輕度重大疾病保險金</td><td>被保險人之故意行為（含自殺、自殺未遂）；犯罪行為；非法施用毒品</td></tr><tr><td>身故／喪葬費用／完全失能保險金</td><td>要保人故意致被保險人於死；被保險人故意自殺或故意自傷致完全失能（訂約或復效滿 2 年後自殺致死仍給付身故保險金）；因犯罪被處死、拒捕或越獄致死或完全失能</td></tr></tbody></table></div><div class="note">整理自南山人壽公開條款，文字為摘要；實際認定以保單條款與病理報告為準。</div>
   </details>
-  <details>
+  <details data-only="HDD">
     <summary>▸ 投保規範與重要提醒</summary>
 <div class="table-scroll" style="max-height:none;"><table class="bt"><thead><tr><th class="left">項目</th><th class="left">內容</th></tr></thead><tbody><tr><td>繳費年期／投保年齡</td><td>20 年期；0～55 歲；保障至保險年齡 95 歲保單年度末</td></tr><tr><td>最低投保金額</td><td>0～30 歲 30 萬；31～55 歲 20 萬</td></tr><tr><td>累計最高投保金額</td><td>0～7 歲 500 萬；8～15 歲 750 萬；16 歲以上 2,000 萬（須同時符合累計重大疾病給付保額相關規範）</td></tr><tr><td>等待期</td><td>重大疾病（不含癌症）30 日；癌症 90 日</td></tr><tr><td>解約金</td><td>本保險為不分紅保險單，無紅利給付項目；健康險部分因費率計算考慮脫退率，無解約金。DM 揭露各保單年度末解約金與累計生存保險金總和占應繳保險費總和之比例，投保後提早解約對保戶是不利的。</td></tr><tr><td>繳費管道與折扣</td><td>金融機構自動轉帳／南山人壽聯名卡／信用卡／自行繳費；自動轉帳／聯名卡享 1% 折扣；集體投保 5 人（含）以上另有集體投保彙繳費率（約 2% 折扣）。範例：30 歲 100 萬年繳 29,700 元（含自動轉帳折扣 1%）。</td></tr><tr><td>預定附加費用率</td><td>最高 42.50%、最低 11.71%。</td></tr><tr><td>備查資訊</td><td>112 年 2 月 11 日南壽研字第1120000100號函備查；113 年 12 月 21 日依金管保壽字第1130427324號函修正（PA-01-439／2026年1月版）；受保險安定基金保障，非存款項目。</td></tr></tbody></table></div><div class="note">投保後解約或不繼續繳費可能不利消費者，請慎選符合需求之保險商品。本內容僅供參考，詳細內容請參閱保單條款之規定；南山人壽保留最終承保與否之權利。</div>
   </details>
 
 
+  <details open data-only="ZDDR2" hidden>
+    <summary>▸ ZDDR2 給付項目（商品簡介 PA-01-446｜2023年10月版）</summary>
+<div class="table-scroll" style="max-height:none;"><table class="bt"><thead><tr><th class="left">保障項目</th><th class="left">給付內容</th></tr></thead><tbody>
+<tr><td>輕度重大疾病保險金<br><span style="font-weight:400;color:var(--muted);font-size:11.5px;">給付以 1 次為限</span></td><td>按診斷確定當時「保險金額」× <b>20%</b></td></tr>
+<tr><td>重度重大疾病保險金<br><span style="font-weight:400;color:var(--muted);font-size:11.5px;">給付以 1 次為限，給付後附約終止</span></td><td><b>未申領</b>輕度：MAX(保險金額, 年繳保險費總和×1.05)<br><b>已申領</b>輕度：MAX(保險金額, 年繳保險費總和×1.05)，再扣除已申領之輕度重大疾病保險金</td></tr>
+<tr><td>輕度重大疾病（4 項）</td><td>急性心肌梗塞（輕度）、腦中風後障礙（輕度）、癌症（輕度）、癱瘓（輕度）<br><span style="color:var(--muted);font-size:12px;">癌症（輕度）除外：原位癌或零期癌、第一期惡性類癌、第二期（含）以下且非惡性黑色素瘤之皮膚癌（含皮膚附屬器癌及皮纖維肉瘤）</span></td></tr>
+<tr><td>重度重大疾病（7 項）</td><td>急性心肌梗塞（重度）、冠狀動脈繞道手術、腦中風後障礙（重度）、末期腎病變、癱瘓（重度）、癌症（重度）、重大器官移植或造血幹細胞移植</td></tr>
+<tr><td>等待期</td><td>疾病（不含癌症）30 日；癌症 90 日（自生效日起持續有效第 31／91 日開始，或復效日起）</td></tr>
+<tr><td>身故／滿期</td><td>無身故保險金、無滿期保險金；本保險因費率計算考慮脫退率，<b>無解約金</b></td></tr>
+</tbody></table></div>
+    <div class="note">ZDDR2 無健康促進係數、無初期癌症給付；與 HDD 相比，輕度給付較高（20% vs 10%），重度擇高倍數為 1.05（HDD 為 1.06×係數）。</div>
+  </details>
+  <details data-only="ZDDR2" hidden>
+    <summary>▸ ZDDR2 投保規範與重要提醒</summary>
+<div class="table-scroll" style="max-height:none;"><table class="bt"><tbody>
+<tr><td>繳費年期／投保年齡</td><td>20 年期；0～65 歲；保障至被保險人保險年齡達 95 歲之保單年度末</td></tr>
+<tr><td>最低投保金額</td><td>10 萬</td></tr>
+<tr><td>累計保額</td><td>0～7 歲 500 萬；8～15 歲 750 萬；16 歲以上 2,000 萬</td></tr>
+<tr><td>繳費管道與折扣</td><td>金融機構自動轉帳／南山人壽聯名卡／信用卡／自行繳費；自動轉帳／聯名卡享 1% 折扣；集體投保另有彙繳費率</td></tr>
+<tr><td>預定附加費用率</td><td>最高 23.98%、最低 10.39%</td></tr>
+<tr><td>備查資訊</td><td>中華民國 112 年 3 月 11 日南壽研字第1120000111號函備查（PA-01-446／2023年10月版）；受保險安定基金保障，非存款項目</td></tr>
+</tbody></table></div>
+    <div class="note">投保後解約或不繼續繳費可能不利消費者，請慎選符合需求之保險商品。本內容僅供參考，詳細內容請參閱保單條款之規定；南山人壽保留最終承保與否之權利。</div>
+  </details>
   <details>
     <summary>▸ 年繳費率表（每萬元保險金額｜單位：新台幣元）</summary>
     <div class="table-scroll"><table id="rateTable"></table></div>
@@ -308,7 +336,7 @@
   </details>
 </div>
 
-<footer>南山人壽 HDD 活力洋溢3重大疾病保險 試算 · 內部試算工具，僅供業務員參考說明使用，不得作為正式要保文件<br>本資料由 順可通訊處 吳約翰主任 製作</footer>
+<footer><span id="pFoot">南山人壽 HDD 活力洋溢3重大疾病保險</span> 試算 · 內部試算工具，僅供業務員參考說明使用，不得作為正式要保文件<br>本資料由 順可通訊處 吳約翰主任 製作</footer>
 
 <script>
 const RATES = {"male": {"0": 160, "1": 161, "2": 165, "3": 166, "4": 171, "5": 174, "6": 176, "7": 180, "8": 183, "9": 187, "10": 190, "11": 197, "12": 201, "13": 205, "14": 212, "15": 216, "16": 220, "17": 223, "18": 229, "19": 233, "20": 235, "21": 238, "22": 244, "23": 250, "24": 255, "25": 262, "26": 269, "27": 277, "28": 284, "29": 291, "30": 300, "31": 309, "32": 318, "33": 326, "34": 331, "35": 340, "36": 348, "37": 355, "38": 362, "39": 369, "40": 385, "41": 392, "42": 399, "43": 419, "44": 438, "45": 461, "46": 495, "47": 526, "48": 564, "49": 606, "50": 645, "51": 704, "52": 759, "53": 813, "54": 863, "55": 910}, "female": {"0": 150, "1": 153, "2": 155, "3": 158, "4": 159, "5": 162, "6": 166, "7": 170, "8": 173, "9": 176, "10": 180, "11": 185, "12": 189, "13": 195, "14": 199, "15": 204, "16": 208, "17": 213, "18": 216, "19": 223, "20": 225, "21": 228, "22": 232, "23": 236, "24": 238, "25": 243, "26": 247, "27": 252, "28": 257, "29": 261, "30": 275, "31": 282, "32": 287, "33": 292, "34": 296, "35": 301, "36": 307, "37": 312, "38": 317, "39": 323, "40": 360, "41": 344, "42": 352, "43": 362, "44": 371, "45": 394, "46": 422, "47": 449, "48": 477, "49": 496, "50": 510, "51": 546, "52": 579, "53": 610, "54": 639, "55": 665}};
@@ -369,7 +397,47 @@ function setHTML(id, h){ const el = document.getElementById(id); if(el) el.inner
 function setText(id, t){ const el = document.getElementById(id); if(el) el.textContent = t; }
 function textW(str, cjk, other){ let w = 0; for(const ch of str){ w += /[　-鿿＀-￯]/.test(ch) ? cjk : other; } return w; }
 
-const P = PRODUCT;
+const ZRATES = {"male":{"0":131,"1":134,"2":136,"3":139,"4":141,"5":144,"6":146,"7":149,"8":151,"9":154,"10":156,"11":159,"12":162,"13":166,"14":169,"15":172,"16":175,"17":178,"18":182,"19":185,"20":188,"21":193,"22":197,"23":202,"24":206,"25":211,"26":215,"27":220,"28":224,"29":229,"30":233,"31":240,"32":247,"33":254,"34":261,"35":268,"36":275,"37":282,"38":289,"39":296,"40":303,"41":310,"42":317,"43":323,"44":331,"45":338,"46":344,"47":351,"48":358,"49":365,"50":372,"51":383,"52":394,"53":404,"54":415,"55":426,"56":436,"57":448,"58":458,"59":469,"60":480,"61":498,"62":516,"63":534,"64":552,"65":570},"female":{"0":130,"1":133,"2":135,"3":138,"4":140,"5":143,"6":145,"7":148,"8":150,"9":153,"10":155,"11":158,"12":161,"13":165,"14":168,"15":171,"16":174,"17":177,"18":181,"19":184,"20":187,"21":192,"22":196,"23":201,"24":205,"25":210,"26":214,"27":219,"28":223,"29":228,"30":232,"31":239,"32":246,"33":253,"34":260,"35":267,"36":274,"37":281,"38":288,"39":295,"40":302,"41":306,"42":310,"43":314,"44":318,"45":323,"46":327,"47":331,"48":335,"49":339,"50":343,"51":348,"52":353,"53":358,"54":363,"55":369,"56":374,"57":379,"58":384,"59":389,"60":394,"61":403,"62":412,"63":420,"64":429,"65":438}};
+const ZDDR2 = {
+  key:'ZDDR2', title:'ZDDR2　至尊康祥重大疾病健康保險附約(乙型)<br>保單結構試算',
+  sub:'繳費 20 年・保至 95 歲｜輕度重大疾病 20%、重度重大疾病擇高給付｜無身故、滿期保險金',
+  foot:'南山人壽 ZDDR2 至尊康祥重大疾病健康保險附約(乙型)', ageHint:'投保年齡 0～65 歲', minHint:'最低 10 萬',
+  defAge:30, defAmount:2000, terms:[20], ageMax:{20:65}, ageMin:0,
+  rateByTerm:false, rateMul:1, rates:ZRATES, premTag:'累積保費線', premTagBelow:true,
+  rateCols:[{label:'男',g:'male'},{label:'女',g:'female'}],
+  stages:true, span:(age,term)=>96-age,
+  amountWarn:s=> { const mx = s.age <= 7 ? 500 : (s.age <= 15 ? 750 : 2000);
+    return s.amount>0 && s.amount<10 ? '低於最低投保金額 10 萬，以下仍依輸入值試算。' : (s.amount>mx ? '超過累計保額 '+mx+' 萬（依投保年齡），以下仍依輸入值試算。' : ''); },
+  model(c, st){
+    const sev  = k => Math.max(c.amount, c.cum(k) * 1.05);   // 未申領輕度：MAX(保額, 年繳保險費總和×1.05)
+    const mild = k => c.amount * 0.20;                      // 輕度：保額×20%
+    const after = k => Math.max(0, sev(k) - mild(k));       // 已申領輕度後之重度
+    c.series = [
+      { name:'重度重大疾病保險金（未申領輕度；給付後附約終止）', short:'重度重疾', color:'#c9860f', fn:sev },
+      { name:'輕度重大疾病保險金（保額×20%，以1次為限）', short:'輕度 20%', color:'#2f9e9e', fn:mild, w:2.6 }
+    ];
+    c.endLabel = '保險年齡95歲保單年度末：保障期間屆滿（無滿期保險金）';
+    c.chartHint = '重度重大疾病保險金＝MAX(保額, 年繳保險費總和×1.05)；若已領輕度 20%，重度再扣除已領金額，輕度＋重度合計仍為重度金額。ZDDR2 無健康促進係數、無初期癌症、無身故與滿期保險金。藍色虛線為已繳保費，繳費期滿後不再增加。';
+    c.stats = k => { const kk = Math.max(k,1); return [
+      ['年繳保險費（未扣折扣）', fmt(c.premium)+' 元', '費率 '+c.rate+' 元／萬元保額　20 年共 '+fmt(c.premium*20)+' 元', 'gold'],
+      ['累計已繳保費', fmt(c.premium*Math.min(kk,c.term))+' 元', '繳費 '+c.term+' 年'],
+      ['目前 重度重大疾病保險金', fmtW(sev(kk))+' 萬元', 'MAX(保額, 總繳×1.05)；給付後附約終止', 'statN'],
+      ['輕度重大疾病保險金', fmtW(mild(kk))+' 萬元', '保額×20%；以1次為限'],
+      ['已領輕度後 重度再給付', fmtW(after(kk))+' 萬元', '重度金額扣除已領輕度 '+fmtW(mild(kk))+' 萬'],
+      ['身故／滿期', '無', '附約無身故、滿期保險金，亦無解約金']
+    ]; };
+    c.chip = k => {
+      if(k <= 0) return ['paying','保單剛生效：重大疾病（不含癌症）等待期 30 日、癌症 90 日'];
+      if(k >= c.span) return ['mature','保險年齡 95 歲保單年度末：保障期間屆滿（無滿期保險金）'];
+      if(k >= c.term) return ['paidup','繳費完成，累計已繳 '+fmt(c.premium*c.term)+' 元；保障持續至 95 歲保單年度末（目前重度 '+fmtW(sev(k))+' 萬）'];
+      return ['paying','繳費中：累計已繳 '+fmt(c.premium*k)+' 元（第 '+k+'／'+c.term+' 年），目前重度 '+fmtW(sev(k))+' 萬'];
+    };
+  }
+};
+Object.assign(PRODUCT, { key:'HDD', title:document.getElementById('pTitle').innerHTML, sub:document.getElementById('pSub').textContent,
+  foot:document.getElementById('pFoot').textContent, ageHint:document.getElementById('ageHint').textContent, minHint:document.getElementById('minHint').textContent });
+const PRODUCTS = { HDD:PRODUCT, ZDDR2:ZDDR2 };
+let P = PRODUCT;
 let state = Object.assign({ age:P.defAge, gender:'male', term:P.terms[P.terms.length-1], amount:P.defAmount, cls:P.classes ? P.classes[0].v : null, opt:false, policyYear:0 }, P.defState || {});
 let playTimer = null;
 { const fb = document.querySelector('#clsToggle button'); if(fb) state.cls = fb.dataset.v; }
@@ -594,6 +662,21 @@ document.getElementById('policyYear').addEventListener('input', e => { state.pol
 toggleGroup('genderToggle', v => { state.gender = v; render(); });
 toggleGroup('termToggle', v => { state.term = parseInt(v, 10); render(); });
 toggleGroup('clsToggle', v => { state.cls = v; render(); });
+function setProduct(k){
+  P = PRODUCTS[k];
+  document.getElementById('pTitle').innerHTML = P.title;
+  document.getElementById('pSub').textContent = P.sub;
+  document.getElementById('pFoot').textContent = P.foot;
+  document.getElementById('ageHint').textContent = P.ageHint;
+  document.getElementById('minHint').textContent = P.minHint;
+  document.getElementById('clsField').style.display = k === 'HDD' ? '' : 'none';
+  document.querySelectorAll('details[data-only]').forEach(d => d.hidden = d.dataset.only !== k);
+  document.title = P.foot + ' 試算系統';
+  state.amount = P.defAmount; document.getElementById('amount').value = P.defAmount;
+  state.policyYear = 0;
+  rateTable(); render();
+}
+toggleGroup('prodToggle', setProduct);
 const optEl = document.getElementById('optBox');
 if(optEl) optEl.addEventListener('change', e => { state.opt = e.target.checked; render(); });
 document.getElementById('playBtn').addEventListener('click', () => {
@@ -610,7 +693,7 @@ document.getElementById('playBtn').addEventListener('click', () => {
 });
 
 // 年繳費率表
-(function rateTable(){
+function rateTable(){
   const el = document.getElementById('rateTable'); if(!el) return;
   const cols = P.rateCols;            // [{label, g, term}]
   const ages = new Set();
@@ -621,7 +704,8 @@ document.getElementById('playBtn').addEventListener('click', () => {
     h += `<tr><td>${a}</td>` + cols.map(c => { const t = P.rateByTerm ? P.rates[c.g][c.term] : P.rates[c.g]; return `<td>${t[a] !== undefined ? t[a].toLocaleString('en-US') : '—'}</td>`; }).join('') + '</tr>';
   }
   el.innerHTML = h + '</tbody>';
-})();
+}
+rateTable();
 
 if(P.init) P.init();
 render();
