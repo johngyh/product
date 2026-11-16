@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#0b2e5c">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>【預覽B】吳約翰｜保險實戰工具箱</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;600;700;900&family=Noto+Sans+TC:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* 配色同 SUPA 試算工具：南山 CI 藍為主色，黃（溫暖）、綠（活力）為輔助色 */
+    --ns-blue-900:#0b2e5c;
+    --ns-blue-700:#134a8c;
+    --ns-blue-500:#1c63b3;
+    --ns-blue-100:#e7f0fb;
+    --ns-gold-600:#c9860f;
+    --ns-gold-400:#e3a635;
+    --ns-gold-100:#fdf1dc;
+    --ns-green-600:#1f7a4d;
+    --ns-green-400:#3f9e6d;
+    --ns-green-100:#e6f6ee;
+    --ink-900:#101826;
+    --ink-600:#3d4a5f;
+    --ink-400:#71809a;
+    --line:#d8e0ec;
+    --bg:#f3f6fb;
+    --card:#ffffff;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth; background:var(--bg); color-scheme:light;}
+  body{
+    background-color:var(--bg);
+    background-image:
+      radial-gradient(ellipse 90% 40% at 50% 0%, rgba(19,74,140,.35), transparent 75%),
+      linear-gradient(180deg, #c9dbf3 0%, #e6eef9 35%, #f3f6fb 60%, #e8eef8 100%);
+    background-attachment:fixed;
+    color:var(--ink-900);
+    font-family:'Noto Sans TC', sans-serif;
+    font-weight:300;
+    line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  .wrap{max-width:920px; margin:0 auto; padding:0 28px;}
+
+  /* ---- Scroll reveal ---- */
+  .reveal{opacity:0; transform:translateY(22px); transition:opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1);}
+  .reveal.in{opacity:1; transform:translateY(0);}
+  .reveal-stagger > *{opacity:0; transform:translateY(18px); transition:opacity .6s cubic-bezier(.2,.7,.2,1), transform .6s cubic-bezier(.2,.7,.2,1);}
+  .reveal-stagger.in > *{opacity:1; transform:translateY(0);}
+  .reveal-stagger.in > *:nth-child(1){transition-delay:.03s;}
+  .reveal-stagger.in > *:nth-child(2){transition-delay:.11s;}
+  .reveal-stagger.in > *:nth-child(3){transition-delay:.19s;}
+  .reveal-stagger.in > *:nth-child(4){transition-delay:.27s;}
+  .reveal-stagger.in > *:nth-child(5){transition-delay:.35s;}
+  .reveal-stagger.in > *:nth-child(6){transition-delay:.43s;}
+  .reveal-stagger.in > *:nth-child(7){transition-delay:.51s;}
+
+  @media (prefers-reduced-motion: reduce){
+    .reveal, .reveal-stagger > *{opacity:1 !important; transform:none !important; transition:none !important;}
+    .hero-in *{animation:none !important;}
+  }
+
+  /* ---- Header ---- */
+  .portrait{width:168px; height:168px; margin:0 auto 26px; border-radius:50%; padding:4px;
+    background:conic-gradient(from 200deg,var(--ns-blue-500),var(--ns-gold-400) 40%,var(--ns-green-400) 70%,var(--ns-blue-500));
+    box-shadow:0 12px 34px rgba(0,0,0,.35); position:relative; z-index:1;}
+  .portrait img{width:100%; height:100%; border-radius:50%; object-fit:cover; object-position:50% 18%; display:block;}
+  @media (max-width:480px){.portrait{width:132px; height:132px;}}
+  header.wrap{text-align:center; position:relative; overflow:hidden; margin:24px auto 0; padding:40px 22px 34px;
+    background:linear-gradient(135deg,var(--ns-blue-900),var(--ns-blue-700)); border-radius:18px;}
+  header::after{content:''; position:absolute; right:-40px; top:-40px; width:200px; height:200px; border-radius:50%;
+    background:radial-gradient(circle,rgba(227,166,53,.35),transparent 70%);}
+  header::before{content:''; position:absolute; left:-30px; bottom:-50px; width:180px; height:180px; border-radius:50%;
+    background:radial-gradient(circle,rgba(63,158,109,.3),transparent 70%);}
+  header > *{position:relative; z-index:1;}
+  @media(max-width:968px){header.wrap{margin:16px 16px 0;}}
+  @keyframes heroFade{from{opacity:0; transform:translateY(14px);} to{opacity:1; transform:translateY(0);}}
+  @keyframes lineDraw{from{width:0;} to{width:64px;}}
+  .eyebrow{
+    font-family:'DM Mono', monospace;
+    font-size:12px; letter-spacing:0.35em; text-transform:uppercase;
+    color:var(--ns-gold-400); margin-bottom:20px;
+    animation:heroFade .7s cubic-bezier(.2,.7,.2,1) both;
+  }
+  h1{
+    font-family:'Noto Serif TC', serif; font-weight:700;
+    font-size:clamp(26px,5vw,42px);
+    letter-spacing:0.02em;
+    color:#fff;
+    margin-bottom:10px;
+    animation:heroFade .8s cubic-bezier(.2,.7,.2,1) .12s both;
+  }
+  h1 .quarter{
+    display:inline-block; color:var(--ns-gold-400); font-weight:900;
+    position:relative; padding:0 4px;
+  }
+  .subtitle-line{
+    width:64px; height:3px; border-radius:2px; background:linear-gradient(90deg,#5b9bd5 0 33%,var(--ns-gold-400) 33% 66%,var(--ns-green-400) 66%); margin:24px auto 22px;
+    animation:lineDraw .9s cubic-bezier(.2,.7,.2,1) .32s both;
+  }
+  .members{
+    font-size:13.5px; color:#c9d9ef; letter-spacing:0.03em;
+    animation:heroFade .8s cubic-bezier(.2,.7,.2,1) .46s both;
+  }
+  @media (prefers-reduced-motion: reduce){
+    .eyebrow, h1, .subtitle-line, .members{animation:none !important;}
+  }
+
+  /* ---- Section shell ---- */
+  section.wrap{padding-top:44px; padding-bottom:40px;}
+  .section-eyebrow{
+    font-family:'DM Mono', monospace; font-size:11px; letter-spacing:0.3em;
+    text-transform:uppercase; color:var(--ns-gold-600); margin-bottom:14px;
+  }
+  h2{
+    font-family:'Noto Serif TC', serif; font-weight:600;
+    font-size:clamp(21px,3.4vw,28px);
+    color:var(--ns-blue-900); margin-bottom:26px;
+  }
+  h3.sub-label{
+    font-family:'DM Mono', monospace; font-weight:500; font-size:12px; letter-spacing:0.2em;
+    color:var(--ns-blue-700); margin:30px 0 16px; text-transform:uppercase;
+  }
+  h3.sub-label:first-of-type{margin-top:0;}
+
+  /* ---- Strategy cards ---- */
+  .pair{display:grid; grid-template-columns:1fr 1fr; gap:20px;}
+  @media(max-width:680px){.pair{grid-template-columns:1fr;}}
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:16px; box-shadow:0 12px 30px -18px rgba(11,46,92,.25);
+    padding:26px 24px;
+  }
+  .card-label{
+    font-family:'DM Mono', monospace; font-size:11px; letter-spacing:0.2em;
+    color:var(--ns-blue-700); text-transform:uppercase; margin-bottom:12px; font-weight:500;
+  }
+  .card p{font-size:15px; color:var(--ink-600); font-weight:400;}
+
+  /* ---- Process (晨會通關機制) ---- */
+  .process{display:flex; flex-direction:column; gap:0;}
+  .step{
+    display:grid; grid-template-columns:56px 1fr; gap:22px;
+    padding:22px 0; border-top:1px solid var(--line);
+  }
+  .step:first-child{border-top:none;}
+  .step-num{
+    font-family:'DM Mono', monospace; font-size:22px; color:var(--ns-green-600);
+    font-weight:500;
+  }
+  .step-title{
+    font-family:'Noto Serif TC', serif; font-weight:600; font-size:17px;
+    color:var(--ns-blue-900); margin-bottom:6px;
+  }
+  .step-desc{font-size:14.5px; color:var(--ink-600); font-weight:400;}
+
+  /* ---- Resource cards ---- */
+  .grid{display:grid; grid-template-columns:repeat(2,1fr); gap:18px;}
+  @media(max-width:680px){.grid{grid-template-columns:1fr;}}
+  .res-card{
+    background:var(--card); border:1px solid var(--line); border-radius:16px; box-shadow:0 12px 30px -18px rgba(11,46,92,.25);
+    padding:24px; display:flex; flex-direction:column; gap:12px;
+    transition:border-color .2s ease, transform .2s ease;
+  }
+  .res-card:hover{border-color:var(--ns-blue-500); box-shadow:0 16px 34px -16px rgba(11,46,92,.4); transform:translateY(-2px);}
+  .res-top{display:flex; align-items:center; justify-content:space-between;}
+  .res-icon{font-size:26px;}
+  .res-card.hero{grid-column:1/-1; text-decoration:none; background:linear-gradient(135deg,var(--ns-blue-900),var(--ns-blue-700)); border-color:var(--ns-blue-900); position:relative; overflow:hidden;}
+  .res-card.hero::after{content:''; position:absolute; right:-40px; top:-50px; width:170px; height:170px; border-radius:50%; background:radial-gradient(circle,rgba(227,166,53,.35),transparent 70%);}
+  .res-card.hero .res-name{color:#fff; font-size:19px;}
+  .res-card.hero .res-desc{color:#c9d9ef; font-size:13.5px; line-height:1.6; position:relative; z-index:1;}
+  .res-card.hero .res-link{color:var(--ns-gold-400);}
+  .res-card.hero .res-tag.tool{background:var(--ns-gold-400); color:var(--ns-blue-900); border-color:var(--ns-gold-400);}
+  details.cat{background:#fff; border:1px solid var(--line); border-radius:16px; margin-bottom:12px; box-shadow:0 12px 30px -22px rgba(11,46,92,.3);}
+  details.cat > summary{list-style:none; cursor:pointer; padding:16px 18px; display:flex; align-items:center; gap:10px; font-family:'Noto Serif TC',serif; font-weight:600; font-size:17px; color:var(--ns-blue-900);}
+  details.cat > summary::-webkit-details-marker{display:none;}
+  details.cat > summary .cnt{font-family:'DM Mono',monospace; font-size:12px; color:var(--ns-blue-700); background:var(--ns-blue-100); border-radius:12px; padding:2px 9px;}
+  details.cat > summary::after{content:'＋'; margin-left:auto; color:var(--ink-400); font-family:'DM Mono',monospace;}
+  details.cat[open] > summary::after{content:'－';}
+  details.cat > .grid{padding:0 16px 16px;}
+  .res-tag{
+    font-family:'DM Mono', monospace; font-size:10px; letter-spacing:0.05em;
+    padding:3px 9px; border-radius:20px; font-weight:500;
+  }
+  .res-tag.pdf{background:var(--ns-green-100); color:var(--ns-green-600); border:1px solid rgba(31,122,77,.3);}
+  .res-tag.tool{background:var(--ns-blue-900); color:var(--ns-gold-400); border:1px solid var(--ns-blue-900);}
+  .res-name{font-family:'Noto Serif TC', serif; font-weight:600; font-size:16px; color:var(--ns-blue-900);}
+  .res-link{
+    font-family:'DM Mono', monospace; font-size:12px; letter-spacing:0.05em;
+    color:var(--ns-blue-500); font-weight:500; text-decoration:none; border-bottom:1px solid transparent;
+  }
+  .res-link:hover{border-color:var(--ns-blue-500);}
+
+  /* ---- Talk points ---- */
+  .talk{display:flex; flex-direction:column; gap:0;}
+  .talk-item{
+    display:grid; grid-template-columns:44px 1fr; gap:18px;
+    padding:20px 0; border-top:1px solid var(--line);
+  }
+  .talk-item:first-child{border-top:none;}
+  .talk-num{font-family:'DM Mono', monospace; color:var(--ns-green-600); font-size:14px; font-weight:500;}
+  .talk-text{font-size:15px; color:var(--ink-600);}
+  .talk-text b{color:var(--ns-blue-900); font-weight:700;}
+
+  /* ---- Outlook ---- */
+  .outlook-grid{display:grid; grid-template-columns:1fr 1fr; gap:20px;}
+  @media(max-width:680px){.outlook-grid{grid-template-columns:1fr;}}
+  .outlook-card{padding:24px 0;}
+  .outlook-icon{font-size:24px; margin-bottom:10px;}
+  .outlook-title{font-family:'Noto Serif TC', serif; font-weight:600; font-size:16px; color:var(--ns-gold-600); margin-bottom:8px;}
+  .outlook-desc{font-size:14.5px; color:var(--ink-600);}
+
+  /* ---- Team ---- */
+  .team-photo{width:100%; border-radius:4px; border:1px solid var(--line); display:block; margin-bottom:18px;}
+  .team-caption{text-align:center; font-family:'DM Mono', monospace; font-size:12px; letter-spacing:0.15em; color:var(--ink-400); text-transform:uppercase;}
+
+  footer{padding:30px 20px 60px; text-align:center; font-size:12px; color:var(--ink-400);}
+</style>
+</head>
+<body>
+
+<header class="wrap">
+  <div class="portrait"><img src="./john-goh.jpg" alt="吳約翰 John Goh" width="600" height="750"></div>
+  <div class="eyebrow">南山人壽 · 順可通訊處 · 業務主任</div>
+  <h1>吳約翰 <span class="quarter">實戰</span> 工具箱</h1>
+  <div class="subtitle-line"></div>
+  <div class="members">吳約翰 John Goh 自主開發｜我每天實際在用的試算工具 · 推銷夾 · 實戰話術</div>
+</header>
+
+<section class="wrap reveal" id="strategy">
+  <div class="section-eyebrow">Strategy</div>
+  <h2>開發理念：把複雜繁瑣的行銷簡單化</h2>
+  <div class="pair reveal-stagger">
+    <div class="card">
+      <div class="card-label">我看到的痛點</div>
+      <p>工具已陸續產出，但工具與訓練之間出現落差——夥伴知道有工具，卻不一定清楚怎麼用、什麼時候用，好工具的轉換效益因此打了折扣。</p>
+    </div>
+    <div class="card">
+      <div class="card-label">解決方案</div>
+      <p>這裡的每一套行銷工具，都是我在第一線面對客戶時習慣使用、並親手開發製作的。從實戰情境出發設計，拆解操作情境與應用時機，讓工具不只「有」，而是真正「會用、敢用、用出績效」。</p>
+    </div>
+  </div>
+</section>
+
+<section class="wrap reveal" id="process">
+  <div class="section-eyebrow">Mechanism</div>
+  <h2>工具怎麼來的</h2>
+  <div class="process reveal-stagger">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div>
+        <div class="step-title">工具產出</div>
+        <div class="step-desc">從自己跑客戶時遇到的需求出發，親手開發AI賦能工具，確保每套工具都能直接用在客戶面前。</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div>
+        <div class="step-title">實戰使用</div>
+        <div class="step-desc">先在我自己的客戶面談中反覆實際使用，驗證說明流程順不順、客戶看不看得懂。</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div>
+        <div class="step-title">回饋與迭代</div>
+        <div class="step-desc">依每次面談的實際反應持續優化，形成開發—使用—優化的循環。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap reveal" id="resources">
+  <div class="section-eyebrow">Resources</div>
+  <h2>我的實戰武器庫</h2>
+  <details class="cat" open>
+    <summary>🎗️ 重大疾病・癌症 <span class="cnt">9</span></summary>
+    <div class="grid">
+      <a class="res-card hero" href="./cancer-comparison.html">
+        <div class="res-top"><div class="res-icon">🎗️</div><div class="res-tag tool">比較工具</div></div>
+        <div class="res-name">癌症保障商品比較</div>
+        <div class="res-desc">8 張重大疾病、癌症商品一次比較：保費、癌症給付、保障範圍</div>
+        <span class="res-link">開啟比較 →</span>
+      </a>
+      <div class="res-card">
+        <div class="res-top"><div class="res-icon">💳</div><div class="res-tag tool">互動工具</div></div>
+        <div class="res-name">NCIC重大傷病卡試算</div>
+        <a class="res-link" href="./ncic-calculator.html">開啟工具 →</a>
+      </div>
+      <div class="res-card">
+        <div class="res-top"><div class="res-icon">📈</div><div class="res-tag tool">互動工具</div></div>
+        <div class="res-name">TED系列商品試算</div>
+        <a class="res-link" href="./ted-calculator.html">開啟工具 →</a>
+      </div>
+      <div class="res-card">
+        <div class="res-top"><div class="res-icon">🩺</div><div class="res-tag tool">互動工具</div></div>
+        <div class="res-name">HDD活力洋溢3重大疾病險試算</div>
+        <a class="res-link" href="./hdd-calculator.html">開啟工具 →</a>
+      </div>
+      <div class="res-card">
+        <div class="res-top"><div class="res-icon">🧠</div><div class="res-tag tool">互動工具</div></div>
+        <div class="res-name">10TSDD特定重大傷病險試算</div>
+        <a class="res-link" href="./tsdd-calculator.html">開啟工具 →</a>
+      </div>
+      <div class="res-card">
+        <div class="res-top"><div class="res-icon">❤️‍🩹</div><div class="res-tag tool">互動工具</div></div>
+        <div class="res-name">10TDD樂健康祥定期健康險試算</div>
+        <a class="res-link" href="./tdd-calculator.html">開啟工具 →</a>
+      </div>
+      <div class="res-card">
+        <div class="res-top"><div class="res-icon">🎗️</div><div class="res-tag tool">互動工具</div></div>
+        <div class="res-name">HC心滿溢足癌症險試算</div>
+        <a class="res-link" href="./hc-calculator.html">開啟工具 →</a>
+      </div>
+      <div class="res-card">
+        <div class="res-top"><div class="res-icon">🌿</div><div class="res-tag tool">互動工具</div></div>
+        <div class="res-name">SC長青滿溢癌症險試算</div>
+        <a class="res-link" href="./sc-calculator.html">開啟工具 →</a>
+      </div>
+      <div class="res-card">
+        <div class="res-top"><div class="res-icon">🛡️</div><div class="res-tag pdf">PDF下載</div></div>
+        <div class="res-name">重大傷病推銷夾</div>
+        <a class="res-link" href="https://johngyh.github.io/product/critical_illness.pdf">立即下載 →</a>
+      </div>
+    </div>
+  </details>
+  <details class="cat">
+    <summary>🧓 長期照顧 <span class="cnt">2</span></summary>
+    <div class="grid">
+      <a class="res-card hero" href="./ltc-comparison.html">
+        <div class="res-top"><div class="res-icon">👵</div><div class="res-tag tool">比較工具</div></div>
+        <div class="res-name">長照商品比較</div>
+        <div class="res-desc">長照商品並排比較：保費、失能給付、累計最高給付</div>
+        <span class="res-link">開啟比較 →</span>
+      </a>
+      <div class="res-card">
+        <div class="res-top"><div class="res-icon">🏥</div><div class="res-tag pdf">PDF下載</div></div>
+        <div class="res-name">長照險推銷夾</div>
+        <a class="res-link" href="https://johngyh.github.io/product/long_term_care.pdf">立即下載 →</a>
+      </div>
+    </div>
+  </details>
+  <details class="cat">
+    <summary>🦴 意外保障 <span class="cnt">1</span></summary>
+    <div class="grid">
+      <a class="res-card hero" href="./supa-calculator.html">
+        <div class="res-top"><div class="res-icon">🦴</div><div class="res-tag tool">比較工具</div></div>
+        <div class="res-name">SUPA樂齡終身意外險試算</div>
+        <div class="res-desc">樂齡終身意外險：骨折部位人體圖、保費與保障比較</div>
+        <span class="res-link">開啟比較 →</span>
+      </a>
+    </div>
+  </details>
+  <details class="cat">
+    <summary>💰 儲蓄・資產規劃 <span class="cnt">4</span></summary>
+    <div class="grid">
+      <a class="res-card hero" href="./wehs-comparison.html">
+        <div class="res-top"><div class="res-icon">🏨</div><div class="res-tag tool">比較工具</div></div>
+        <div class="res-name">WEHS方案比較</div>
+        <div class="res-desc">WEHS 方案比較</div>
+        <span class="res-link">開啟比較 →</span>
+      </a>
+      <div class="res-card">
+        <div class="res-top"><div class="res-icon">🧮</div><div class="res-tag tool">互動工具</div></div>
+        <div class="res-name">BVA轉換試算</div>
+        <a class="res-link" href="./bva-calculator.html">開啟工具 →</a>
+      </div>
+      <div class="res-card">
+        <div class="res-top"><div class="res-icon">💰</div><div class="res-tag pdf">PDF下載</div></div>
+        <div class="res-name">儲蓄險推銷夾</div>
+        <a class="res-link" href="https://johngyh.github.io/product/savings_plan.pdf">立即下載 →</a>
+      </div>
+      <div class="res-card">
+        <div class="res-top"><div class="res-icon">⚖️</div><div class="res-tag pdf">PDF下載</div></div>
+        <div class="res-name">稅務簡單說</div>
+        <a class="res-link" href="https://johngyh.github.io/product/tax_guide.pdf">立即下載 →</a>
+      </div>
+    </div>
+  </details>
+</section>
+
+
+<section class="wrap reveal" id="talk">
+  <div class="section-eyebrow">Talking Points</div>
+  <h2>💡 約翰貼心話術</h2>
+  <div class="talk reveal-stagger">
+    <div class="talk-item">
+      <div class="talk-num">01</div>
+      <div class="talk-text"><b>工具：</b>不是多一個步驟，是讓客戶秒懂複雜數據的捷徑。</div>
+    </div>
+    <div class="talk-item">
+      <div class="talk-num">02</div>
+      <div class="talk-text"><b>長照：</b>不是在買保險，是在預留未來的尊嚴。</div>
+    </div>
+    <div class="talk-item">
+      <div class="talk-num">03</div>
+      <div class="talk-text"><b>稅務：</b>人壽保險是遺產外的現金，受益人可以立即獲得的一筆資產。</div>
+    </div>
+    <div class="talk-item">
+      <div class="talk-num">04</div>
+      <div class="talk-text"><b>儲蓄：</b>強迫儲蓄不是減少消費，是提早預約財富自由。</div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap reveal" id="outlook">
+  <div class="section-eyebrow">Outlook</div>
+  <h2>接下來：持續進化</h2>
+  <div class="outlook-grid reveal-stagger">
+    <div class="outlook-card">
+      <div class="outlook-icon">📊</div>
+      <div class="outlook-title">使用數據化</div>
+      <div class="outlook-desc">記錄工具在面談中的使用情況，讓每套工具的實際成效看得見。</div>
+    </div>
+    <div class="outlook-card">
+      <div class="outlook-icon">🔄</div>
+      <div class="outlook-title">工具矩陣擴充</div>
+      <div class="outlook-desc">依使用回饋擴充AI工具矩陣，涵蓋更多商品情境與客戶輪廓。</div>
+    </div>
+  </div>
+</section>
+
+
+<footer class="wrap">
+  © 2026 吳約翰 John Goh｜南山人壽 順可通訊處 業務主任 · 開發製作
+</footer>
+
+<script>
+  const revealEls = document.querySelectorAll('.reveal, .reveal-stagger');
+  if('IntersectionObserver' in window){
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        }
+      });
+    }, {threshold:0.12, rootMargin:'0px 0px -40px 0px'});
+    revealEls.forEach(el=>io.observe(el));
+  } else {
+    revealEls.forEach(el=>el.classList.add('in'));
+  }
+</script>
+
+</body>
+</html>
