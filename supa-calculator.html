@@ -173,19 +173,29 @@
   .bodymap svg{display:block;width:100%;min-width:560px;height:auto;}
   .bm-panel{fill:url(#bm-panel-g);}
   .bm-part{cursor:pointer;}
-  .bm-lead{fill:none;stroke:var(--tc);stroke-width:1.3;opacity:.5;}
+  .bm-lead{fill:none;stroke:var(--tc);stroke-width:1.2;opacity:.45;}
+  .bm-lead-end{fill:var(--tc);opacity:.7;}
   .bm-part.back .bm-lead{stroke-dasharray:3 3;}
-  .bm-lab-bg{fill:#fff;stroke:var(--tc);stroke-width:1.3;}
+  .bm-lab-bg{fill:#fff;stroke:#d9e3f1;stroke-width:1;filter:drop-shadow(0 2px 4px rgba(11,46,92,.10));}
+  .bm-lab-bar{fill:var(--tc);}
   .bm-lab-name{font-family:'Noto Sans TC',sans-serif;font-size:12.5px;font-weight:700;fill:var(--ink-900);dominant-baseline:central;}
   .bm-lab-pct-bg{fill:var(--tc);}
   .bm-lab-pct{font-family:'DM Mono',monospace;font-size:11px;font-weight:700;fill:#fff;text-anchor:middle;dominant-baseline:central;}
   .bm-part.hl .bm-lead{opacity:1;stroke-width:2.2;}
-  .bm-part.hl .bm-lab-bg{fill:var(--ns-gold-100);stroke:var(--ns-gold-600);stroke-width:2;}
-  .bm-sil{fill:url(#bm-sil-g);stroke:#a9c0e0;stroke-width:1.6;stroke-linejoin:round;}
-  .bm-sil,#bm-bones-l *,.bm-bone>*{vector-effect:non-scaling-stroke;}
-  .bm-bone{stroke:#8fb0dc;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;opacity:.9;}
+  .bm-part.hl .bm-lab-bg{fill:var(--ns-gold-100);stroke:var(--ns-gold-600);stroke-width:1.6;}
+  .bm-part.hl .bm-lead-end{opacity:1;}
+  .bm-sil{fill:url(#bm-sil-g);stroke:#ffffff;stroke-width:2.2;stroke-linejoin:round;}
+  .bm-body{filter:drop-shadow(0 10px 18px rgba(11,46,92,.18));}
+  .bm-sil,.bm-bone *{vector-effect:non-scaling-stroke;}
+  .bm-bone{stroke-linecap:round;stroke-linejoin:round;fill:none;}
+  .bm-bone.o{stroke:#9cb9e0;stroke-width:7.5;} .bm-bone.i{stroke:#ffffff;stroke-width:4.8;}
+  .bm-bone.o .rib{stroke-width:4.6;} .bm-bone.i .rib{stroke-width:2.4;}
+  .bm-bone.o .thin{stroke-width:4.4;} .bm-bone.i .thin{stroke-width:2.2;}
+  .bm-solid{fill:#ffffff;stroke:#9cb9e0;stroke-width:1.6;vector-effect:non-scaling-stroke;}
+  .bm-socket{fill:#c7d9f1;}
+  .bm-vert{fill:#ffffff;stroke:#9cb9e0;stroke-width:1.3;vector-effect:non-scaling-stroke;}
   .bm-dot{cursor:pointer;outline:none;}
-  .bm-dot .bm-c{fill:var(--tc);stroke:#fff;stroke-width:1.8;filter:drop-shadow(0 1px 1.5px rgba(11,46,92,.35));}
+  .bm-dot .bm-c{fill:var(--tc);stroke:#fff;stroke-width:2.4;filter:drop-shadow(0 2px 3px rgba(11,46,92,.35));}
   .bm-dot text{font-family:'DM Mono',monospace;font-size:9px;font-weight:700;fill:#fff;text-anchor:middle;dominant-baseline:central;pointer-events:none;}
   .bm-dot .bm-halo{fill:none;stroke:var(--ns-gold-400);stroke-width:3.5;opacity:0;}
   .bm-dot.back .bm-c{stroke:var(--ns-blue-900);stroke-dasharray:3 2;}
@@ -320,44 +330,56 @@
       <div class="bodymap">
           <div class="bm-stage" id="bm-stage"><div class="bm-scroll"><svg id="bodymap" viewBox="-8 0 664 632" role="img" aria-label="人體前視示意圖，標示22個骨折部位的名稱、給付比例與序號">
             <defs>
-              <linearGradient id="bm-panel-g" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stop-color="#f7faff"/><stop offset="1" stop-color="#e6eefa"/>
-              </linearGradient>
-              <radialGradient id="bm-glow" cx=".5" cy=".5" r=".5">
-                <stop offset="0" stop-color="#ffffff" stop-opacity=".95"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+              <radialGradient id="bm-panel-g" cx=".5" cy=".42" r=".75">
+                <stop offset="0" stop-color="#ffffff"/><stop offset=".6" stop-color="#eef4fc"/><stop offset="1" stop-color="#dfe9f7"/>
               </radialGradient>
-                            <linearGradient id="bm-sil-g" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stop-color="#eef4fc"/><stop offset="1" stop-color="#d3e2f5"/>
+              <pattern id="bm-dots-p" width="16" height="16" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="#c9d8ee" opacity=".55"/></pattern>
+              <radialGradient id="bm-glow" cx=".5" cy=".5" r=".5">
+                <stop offset="0" stop-color="#ffffff" stop-opacity=".9"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+              </radialGradient>
+              <linearGradient id="bm-sil-g" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#e3eefc"/><stop offset=".55" stop-color="#cfe0f6"/><stop offset="1" stop-color="#b9d0ef"/>
               </linearGradient>
               <g id="bm-bones-l">
-      <path d="M147 108 Q128 106 106 116"/>
-      <path d="M150 136 C140 130 124 134 118 150"/><path d="M150 148 C140 142 124 146 118 162"/><path d="M150 160 C140 154 124 158 118 174"/><path d="M150 172 C140 166 124 170 118 186"/><path d="M150 184 C140 178 124 182 118 198"/>
-      <path d="M101 134 L92 210"/>
-      <path d="M92 218 L74 294"/><path d="M87 219 L68 294"/>
-      <path d="M72 298 L59 344"/><path d="M72 299 L63 364"/><path d="M73 299 L68 368"/><path d="M74 299 L76 350"/>
-      <circle cx="134" cy="298" r="5"/>
-      <path d="M134 301 L123 318 L126 428"/>
-      <ellipse cx="126" cy="432" rx="6.5" ry="7.5"/>
-      <path d="M125 442 L122 556"/><path d="M115 446 L116 552" stroke-width="2.5"/>
-      <path d="M122 560 L110 604"/><path d="M122 560 L116 608"/><path d="M122 560 L122 608"/><path d="M122 560 L128 606"/>
-    </g>
+      <path d="M147 108 Q128 104 106 115"/>
+      <path class="rib" d="M148 134 C138 128 122 132 117 148"/><path class="rib" d="M148 146 C137 140 121 144 116 161"/><path class="rib" d="M148 158 C137 152 121 156 117 173"/><path class="rib" d="M148 170 C138 164 123 168 119 185"/><path class="rib" d="M148 182 C139 177 127 180 124 195"/>
+      <path d="M101 132 L92 210"/>
+      <path class="thin" d="M92 220 L75 293"/><path class="thin" d="M86 220 L68 293"/>
+      <path class="thin" d="M70 300 L59 344"/><path class="thin" d="M71 301 L63 364"/><path class="thin" d="M72 301 L68 368"/><path class="thin" d="M73 301 L76 350"/>
+      <path d="M128 316 L126 424"/>
+      <path d="M125 442 L122 554"/><path class="thin" d="M115 446 L116 552"/>
+      <path class="thin" d="M121 562 L110 603"/><path class="thin" d="M121 562 L116 607"/><path class="thin" d="M121 562 L122 607"/><path class="thin" d="M121 562 L128 605"/>
+              </g>
+              <g id="bm-joints-l">
+      <circle cx="101" cy="130" r="5.2"/><circle cx="90" cy="215" r="5"/><circle cx="72" cy="297" r="4.6"/>
+      <circle cx="129" cy="312" r="5.6"/><circle cx="122" cy="558" r="4.6"/>
+              </g>
             </defs>
             <rect class="bm-panel" x="-8" y="0" width="664" height="632"/>
+            <rect x="-8" y="0" width="664" height="632" fill="url(#bm-dots-p)"/>
             <ellipse cx="324" cy="320" rx="150" ry="320" fill="url(#bm-glow)"/>
             <g id="bm-art" transform="translate(174 0) translate(150 0) scale(1.18 1) translate(-150 0)">
             <ellipse cx="150" cy="620" rx="62" ry="5" fill="#0b2e5c" opacity=".08"/>
-            <path class="bm-sil" d="M139 80 C139 87 139 94 139 100 C126 104 112 106 102 112 C95 116 92 126 94 132 C90 160 84 190 80 212 C75 240 68 270 62 296 C57 310 54 330 55 346 C56 358 58 368 64 370 C70 372 76 364 77 350 C78 334 79 314 79 298 C85 270 92 240 96 216 C100 196 108 170 113 152 C115 180 119 205 118 230 C117 252 107 272 105 298 C103 340 108 395 111 436 C106 466 103 500 111 530 C113 542 114 552 113 562 C108 574 102 590 104 604 C105 614 122 616 133 610 C136 598 134 578 133 562 C133 520 139 470 143 436 C145 400 147 350 149 318 C149 316 150 315 150 314 C150 315 151 316 151 318 C153 350 155 400 157 436 C161 470 167 520 167 562 C166 578 164 598 167 610 C178 616 195 614 196 604 C198 590 192 574 187 562 C186 552 187 542 189 530 C197 500 194 466 189 436 C192 395 197 340 195 298 C193 272 183 252 182 230 C181 205 185 180 187 152 C192 170 200 196 204 216 C208 240 215 270 221 298 C221 314 222 334 223 350 C224 364 230 372 236 370 C242 368 244 358 245 346 C246 330 243 310 238 296 C232 270 225 240 220 212 C216 190 210 160 206 132 C208 126 205 116 198 112 C188 106 174 104 161 100 C161 94 161 87 161 80 Z"/>
+            <g class="bm-body"><path class="bm-sil" d="M139 80 C139 87 139 94 139 100 C126 104 112 106 102 112 C95 116 92 126 94 132 C90 160 84 190 80 212 C75 240 68 270 62 296 C57 310 54 330 55 346 C56 358 58 368 64 370 C70 372 76 364 77 350 C78 334 79 314 79 298 C85 270 92 240 96 216 C100 196 108 170 113 152 C115 180 119 205 118 230 C117 252 107 272 105 298 C103 340 108 395 111 436 C106 466 103 500 111 530 C113 542 114 552 113 562 C108 574 102 590 104 604 C105 614 122 616 133 610 C136 598 134 578 133 562 C133 520 139 470 143 436 C145 400 147 350 149 318 C149 316 150 315 150 314 C150 315 151 316 151 318 C153 350 155 400 157 436 C161 470 167 520 167 562 C166 578 164 598 167 610 C178 616 195 614 196 604 C198 590 192 574 187 562 C186 552 187 542 189 530 C197 500 194 466 189 436 C192 395 197 340 195 298 C193 272 183 252 182 230 C181 205 185 180 187 152 C192 170 200 196 204 216 C208 240 215 270 221 298 C221 314 222 334 223 350 C224 364 230 372 236 370 C242 368 244 358 245 346 C246 330 243 310 238 296 C232 270 225 240 220 212 C216 190 210 160 206 132 C208 126 205 116 198 112 C188 106 174 104 161 100 C161 94 161 87 161 80 Z"/>
             <ellipse class="bm-sil" cx="124" cy="52" rx="4" ry="8"/>
             <ellipse class="bm-sil" cx="176" cy="52" rx="4" ry="8"/>
-            <ellipse class="bm-sil" cx="150" cy="50" rx="25" ry="31"/>
-            <g class="bm-bone" fill="none">
-              <use href="#bm-bones-l"/>
-              <use href="#bm-bones-l" transform="translate(300 0) scale(-1 1)"/>
-              <path d="M150 102 L150 266" stroke-dasharray="5 3.5" stroke-width="4"/>
-              <path d="M150 268 C130 262 108 270 106 292 C106 304 118 312 134 310 C144 306 148 296 150 288 C152 296 156 306 166 310 C182 312 194 304 194 292 C192 270 170 262 150 268 Z"/>
-              <ellipse cx="150" cy="47" rx="19" ry="24"/>
-              <circle cx="143" cy="46" r="3.5"/><circle cx="157" cy="46" r="3.5"/>
-              <path d="M134 62 C136 80 164 80 166 62"/>
+            <ellipse class="bm-sil" cx="150" cy="50" rx="25" ry="31"/></g>
+            <g class="bm-bone o">
+              <use href="#bm-bones-l"/><use href="#bm-bones-l" transform="translate(300 0) scale(-1 1)"/>
+            </g>
+            <g class="bm-bone i">
+              <use href="#bm-bones-l"/><use href="#bm-bones-l" transform="translate(300 0) scale(-1 1)"/>
+            </g>
+            <g class="bm-solid">
+              <use href="#bm-joints-l"/><use href="#bm-joints-l" transform="translate(300 0) scale(-1 1)"/>
+              <path d="M150 266 C128 260 106 268 104 291 C104 305 117 314 133 312 C143 308 147 298 150 290 C153 298 157 308 167 312 C183 314 196 305 196 291 C194 268 172 260 150 266 Z"/>
+              <ellipse cx="126" cy="432" rx="7" ry="8"/><ellipse cx="174" cy="432" rx="7" ry="8"/>
+              <path d="M150 22 C136 22 129 33 129 47 C129 58 134 66 139 70 L141 77 L159 77 L161 70 C166 66 171 58 171 47 C171 33 164 22 150 22 Z"/>
+            </g>
+            <ellipse class="bm-socket" cx="143" cy="47" rx="4.2" ry="3.6"/><ellipse class="bm-socket" cx="157" cy="47" rx="4.2" ry="3.6"/>
+            <path class="bm-socket" d="M148 55 L150 60 L152 55 Z"/>
+            <g><rect class="bm-vert" x="146.5" y="104" width="7" height="6.4" rx="2"/><rect class="bm-vert" x="146.5" y="113" width="7" height="6.4" rx="2"/><rect class="bm-vert" x="146.5" y="122" width="7" height="6.4" rx="2"/><rect class="bm-vert" x="146.5" y="131" width="7" height="6.4" rx="2"/><rect class="bm-vert" x="146.5" y="140" width="7" height="6.4" rx="2"/><rect class="bm-vert" x="146.5" y="149" width="7" height="6.4" rx="2"/><rect class="bm-vert" x="146.5" y="158" width="7" height="6.4" rx="2"/><rect class="bm-vert" x="146.5" y="167" width="7" height="6.4" rx="2"/><rect class="bm-vert" x="146.5" y="176" width="7" height="6.4" rx="2"/><rect class="bm-vert" x="146.5" y="185" width="7" height="6.4" rx="2"/><rect class="bm-vert" x="146.5" y="194" width="7" height="6.4" rx="2"/><rect class="bm-vert" x="146.5" y="203" width="7" height="6.4" rx="2"/><rect class="bm-vert" x="146.5" y="212" width="7" height="6.4" rx="2"/><rect class="bm-vert" x="146.5" y="221" width="7" height="6.4" rx="2"/><rect class="bm-vert" x="146.5" y="230" width="7" height="6.4" rx="2"/><rect class="bm-vert" x="146.5" y="239" width="7" height="6.4" rx="2"/><rect class="bm-vert" x="146.5" y="248" width="7" height="6.4" rx="2"/><rect class="bm-vert" x="146.5" y="257" width="7" height="6.4" rx="2"/></g>
+            <circle class="bm-socket" cx="138" cy="290" r="3.6"/><circle class="bm-socket" cx="162" cy="290" r="3.6"/>
             </g>
             </g>
             <g id="bm-parts"></g>
@@ -629,9 +651,11 @@ function partsSvg(){
     const ex = side === 'L' ? 198 : 450;
     const edge = side === 'L' ? lx + W : lx;
     return `<g class="bm-part t${tier(f.pct)}${f.back?' back':''}" data-id="${f.id}"><title>${f.id} ${f.name}｜${f.pct}%</title>`
-         + `<path class="bm-lead" d="M${edge} ${ly} L${ex} ${ly} L${dx} ${dy}"/>`
-         + `<g transform="translate(${lx} ${ly - H/2})"><rect class="bm-lab-bg" width="${W}" height="${H}" rx="13"/>`
-         + `<text class="bm-lab-name" x="12" y="${H/2 + .5}">${short}</text>`
+         + `<path class="bm-lead" d="M${edge} ${ly} C${side==='L'?edge+46:edge-46} ${ly} ${side==='L'?dx-34:dx+34} ${dy} ${dx} ${dy}"/>`
+         + `<circle class="bm-lead-end" cx="${edge}" cy="${ly}" r="2.4"/>`
+         + `<g transform="translate(${lx} ${ly - H/2})"><rect class="bm-lab-bg" width="${W}" height="${H}" rx="9"/>`
+         + `<rect class="bm-lab-bar" x="0" y="5" width="3.5" height="${H-10}" rx="1.75"/>`
+         + `<text class="bm-lab-name" x="13" y="${H/2 + .5}">${short}</text>`
          + `<rect class="bm-lab-pct-bg" x="${W-46}" y="3" width="43" height="20" rx="10"/>`
          + `<text class="bm-lab-pct" x="${W-24.5}" y="${H/2 + .5}">${f.pct}%</text></g></g>`;
   }).join('');
