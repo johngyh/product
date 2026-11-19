@@ -76,6 +76,8 @@
   .seg button.on{background:var(--ns-blue-700);color:#fff;font-weight:700;}
 
   .multi{display:flex;gap:8px;flex-wrap:wrap;}
+  .amt-row input[type=number]{font-size:20px !important;}
+  .amt-warn{color:#c23b3b;font-size:12px;margin-top:4px;min-height:0;}
   .multi button{
     padding:9px 16px;border-radius:20px;border:1.5px solid var(--line);
     background:#fff;color:var(--ink-400);font-family:'Noto Sans TC';font-size:13.5px;font-weight:500;cursor:pointer;transition:.15s;
@@ -228,7 +230,7 @@
   <header>
     <div class="eyebrow">Nan Shan Life · 順可通訊處</div>
     <h1>南山人壽長享平安終身傷害保險（SUPA）</h1>
-    <div class="sub" style="margin-top:6px;color:var(--ns-gold-400);font-weight:700;">⚠ 保險金額累計最高100萬（10年期＋20年期合計）</div>
+    <div class="sub" style="margin-top:6px;color:var(--ns-gold-400);font-weight:700;">⚠ 保險金額累計最高300萬（10年期＋20年期合計）</div>
   </header>
 
   <div class="card">
@@ -259,14 +261,18 @@
         </div>
       </div>
       <div class="field">
-        <label>選擇保險金額(可複選)</label>
+        <label>保險金額（萬元，最高 300 萬）</label>
+        <div class="age-row amt-row">
+          <input type="number" id="amt-input" min="10" max="300" step="10" value="300" inputmode="numeric" style="width:100%;text-align:left;">
+          <span class="unit">萬</span>
+        </div>
+        <div class="amt-warn" id="amt-warn"></div>
+        <label style="margin-top:12px;">加入其他保額比較（可複選）</label>
         <div class="multi" id="amount-multi">
-          <button data-v="50">50萬</button>
-          <button data-v="60">60萬</button>
-          <button data-v="70">70萬</button>
-          <button data-v="80">80萬</button>
-          <button data-v="90">90萬</button>
-          <button data-v="100" class="on">100萬</button>
+          <button data-v="100">100萬</button>
+          <button data-v="150">150萬</button>
+          <button data-v="200">200萬</button>
+          <button data-v="250">250萬</button>
         </div>
       </div>
     </div>
@@ -402,7 +408,7 @@ function ratePerWan(period, gender, age){
 }
 
 // ---------- STATE ----------
-const state = { gender:'male', age:60, periods:['20'], amounts:['100'] };
+const state = { gender:'male', age:60, periods:['20'], amounts:[], custom:300 };
 
 document.querySelectorAll('#gender-seg button').forEach(b=>{
   b.addEventListener('click',()=>{
@@ -433,7 +439,7 @@ function multiSetup(id, key){
       const arr = state[key];
       const idx = arr.indexOf(v);
       if(idx>-1){
-        if(arr.length===1) return; // 至少保留一個
+        if(arr.length===1 && key!=='amounts') return; // 至少保留一個（保額另有自行輸入值）
         arr.splice(idx,1);
         b.classList.remove('on');
       } else {
@@ -448,7 +454,17 @@ multiSetup('period-multi','periods');
 multiSetup('amount-multi','amounts');
 
 function sortedPeriods(){ return ['10','20'].filter(p=>state.periods.includes(p)); }
-function sortedAmounts(){ return state.amounts.map(Number).sort((a,b)=>a-b); }
+function sortedAmounts(){ return [...new Set([state.custom].concat(state.amounts.map(Number)))].filter(v=>v>0).sort((a,b)=>a-b); }
+document.getElementById('amt-input').addEventListener('input', e=>{
+  let v = parseFloat(e.target.value);
+  const w = document.getElementById('amt-warn');
+  if(isNaN(v) || v <= 0){ w.textContent = '請輸入保險金額'; return; }
+  if(v > 300){ w.textContent = '超過累計最高 300 萬，以 300 萬試算'; v = 300; }
+  else if(v < 10){ w.textContent = '保險金額過低，請確認'; }
+  else w.textContent = '';
+  state.custom = Math.round(v*10)/10;
+  render();
+});
 
 // ---------- 保費比較表 ----------
 function renderPremium(){
