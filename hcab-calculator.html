@@ -251,8 +251,8 @@ select{width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius
   </div>
   <div class="field-row">
     <div class="field">
-      <label>投保單位（1 單位＝200 萬醫療總帳戶）</label>
-      <select id="u1"><option value="1">1 單位｜200 萬帳戶</option><option value="2">2 單位｜400 萬帳戶</option><option value="3">3 單位｜600 萬帳戶</option><option value="4">4 單位｜800 萬帳戶</option><option value="5" selected>5 單位｜1,000 萬帳戶</option></select>
+      <label>投保單位（每 1 單位＝200 萬醫療總帳戶，主附約各自一個）</label>
+      <select id="u1"><option value="1">1 單位｜各 200 萬帳戶</option><option value="2">2 單位｜各 400 萬帳戶</option><option value="3">3 單位｜各 600 萬帳戶</option><option value="4">4 單位｜各 800 萬帳戶</option><option value="5" selected>5 單位｜各 1,000 萬帳戶</option></select>
       <div class="input-hint">繳費 20 年・保障至 95 歲；最高 5 單位（含 CAB、HCAB 等累計≦10 單位）</div>
     </div>
     <div class="field">
@@ -261,7 +261,7 @@ select{width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius
         <input type="radio" name="rider2" id="r2-y" value="1" checked><label for="r2-y">附加 HCAR2</label>
         <input type="radio" name="rider2" id="r2-n" value="0"><label for="r2-n">只買 HCAB2</label>
       </div>
-      <div class="input-hint">HCAR2 補上手術、移植、重建等給付</div>
+      <div class="input-hint">HCAR2 另有一個獨立的醫療總帳戶，補上手術、移植、重建等給付</div>
     </div>
   </div>
   <div class="field-row">
@@ -296,7 +296,7 @@ select{width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius
 
 <div class="section-label">保障內容（依投保單位換算）</div>
 <div class="summary-table-wrap"><table class="summary-table ben-table" id="ben-table"></table></div>
-<div class="note-line">1 單位＝200 萬醫療總帳戶：HCAB2、HCAR2 各項癌症給付由帳戶支出，累積給付達上限時契（附）約終止。罹患重度癌症翌日起豁免 HCAB2、HCAR2 後續保費。癌症等待期 90 日。</div>
+<div class="note-line">每 1 單位＝200 萬醫療總帳戶，<b>HCAB2 主約、HCAR2 附約各自獨立計算</b>（例：各 5 單位＝主約 1,000 萬＋附約 1,000 萬，合計 2,000 萬）。各項癌症給付由各自帳戶支出，任一帳戶累積給付達上限時，該契（附）約終止，另一份不受影響。罹患重度癌症翌日起豁免 HCAB2、HCAR2 後續保費。癌症等待期 90 日。</div>
 
 <div class="section-label">罹癌療程情境試算</div>
 <div class="input-card">
@@ -417,7 +417,7 @@ drawScenInputs();
 
 function calc(){
   const g = val('gender'), age = Math.max(0, Math.min(70, parseInt($('age').value) || 0));
-  const u1 = +$('u1').value, u2 = +val('rider2') ? u1 : 0, ACC = 2000000 * u1, coef = age >= 16 ? +val('health') : 1, disc = +val('disc');
+  const u1 = +$('u1').value, u2 = +val('rider2') ? u1 : 0, ACC_B = 2000000 * u1, ACC_R = 2000000 * u2, ACC = ACC_B + ACC_R, coef = age >= 16 ? +val('health') : 1, disc = +val('disc');
   const p1 = HC.HCAB2[g][age] * u1, p2 = HC.HCAR2[g][age] * u2;
   const rOK = age >= 30 && age <= 70;
   $('rider-age-note').textContent = rOK ? '' : '⚠ 附加條款限 30～70 歲投保，目前年齡不適用，以下不計入。';
@@ -462,7 +462,7 @@ function calc(){
   if(act.length){ b += '<tr class="grp"><td colspan="5">癌症精準治療附加條款（一次給付，給付後該附加條款終止）</td></tr>';
     act.forEach(r => b += `<tr><td class="row-label">${r.k} ${r.ben}</td><td>—</td><td colspan="2"><span class="sm">附加條款</span></td><td class="tot">${fmt(riderAmt(r)*10000)}</td></tr>`); }
   b += `<tr class="grp"><td colspan="5">豁免保險費：罹患重度癌症翌日起豁免 HCAB2、HCAR2 後續保費（附加條款不在此列）</td></tr>`;
-  b += `<tr class="total-row"><td class="row-label">💰 醫療總帳戶（HCAB2＋HCAR2 共用）</td><td>200 萬／單位</td><td colspan="2">${u1} 單位</td><td>${W(ACC)}</td></tr>`;
+  b += `<tr class="total-row"><td class="row-label">💰 醫療總帳戶（主附約各自獨立）</td><td>200 萬／單位</td><td>${W(ACC_B)}</td><td>${u2?W(ACC_R):'<span class="na">—</span>'}</td><td>${W(ACC)}</td></tr>`;
   $('ben-table').innerHTML = b;
 
   // 情境
@@ -478,9 +478,12 @@ function calc(){
     const vB = inB ? amt*u1*c*qq : 0, vR = inR && u2 ? amt*u2*c*qq : 0;
     if(vB + vR === 0) return;
     sB += vB; sR += vR;
-    lines.push([n, (isFirst ? '' : q + (unit.replace('/','')||'次') + ' × ') + fmt(amt*c*(isFirst?1:1)) + ' × ' + (inB&&inR&&u2 ? (u1+u2) : inB ? u1 : u2) + ' 單位', vB + vR, inB ? (inR && u2 ? '主約＋附約' : 'HCAB2') : 'HCAR2']);
+    lines.push([n, (isFirst ? '' : q + (unit.replace('/','')||'次') + ' × ') + fmt(amt*c) + ' × ' + (inB&&inR&&u2 ? (u1+u2) : inB ? u1 : u2) + ' 單位', vB + vR, inB ? (inR && u2 ? '主約＋附約' : 'HCAB2') : 'HCAR2']);
   });
-  const raw = sB + sR, used = Math.min(raw, ACC); sB = used; sR = 0;
+  const rawB = sB, rawR = sR; sB = Math.min(rawB, ACC_B); sR = Math.min(rawR, ACC_R); const used = sB + sR;
+  const accBox = (nm, A, u, raw) => `<div class="acc"><div class="acc-top"><span>💰 ${nm} 醫療總帳戶 ${W(A)}</span><span>已用 <b>${W(u)}</b>｜剩餘 <b>${W(A-u)}</b></span></div>
+      <div class="acc-bar"><i style="width:${Math.min(100, u/A*100).toFixed(1)}%"></i></div>
+      <div class="sm">此情境用掉 ${(u/A*100).toFixed(1)}%${raw > A ? '，已達上限（超出 '+fmt(raw-A)+' 元不給付）' : ''}；剩餘額度可繼續支付日後復發、轉移的療程費用。</div></div>`;
   let sX = 0;
   act.forEach(r => { if(scen['r'+r.k]){ const v = riderAmt(r)*10000; sX += v; lines.push([r.k + ' ' + r.ben, '一次給付', v, '附加條款']); } });
   const total = sB + sR + sX;
@@ -488,11 +491,9 @@ function calc(){
   $('scen-result').innerHTML = `
     <div class="sr-head"><div><div class="sr-lab">此情境可領</div><div class="sr-num">${W(total)}</div></div>
       <div class="sr-side"><div>首年保費 ${fmt(y1p)} 元</div><div>約為首年保費的 <b>${(total/Math.max(y1p,1)).toFixed(1)}</b> 倍</div></div></div>
-    <div class="acc"><div class="acc-top"><span>💰 醫療總帳戶 ${W(ACC)}</span><span>已用 <b>${W(used)}</b>｜剩餘 <b>${W(ACC-used)}</b></span></div>
-      <div class="acc-bar"><i style="width:${Math.min(100, used/ACC*100).toFixed(1)}%"></i></div>
-      <div class="sm">此情境用掉帳戶 ${(used/ACC*100).toFixed(1)}%；剩餘額度可繼續支付日後復發、轉移的療程費用，用完為止。</div></div>
+    ${accBox('HCAB2 主約', ACC_B, sB, rawB)}${u2 ? accBox('HCAR2 附約', ACC_R, sR, rawR) : ''}
     <table class="sr-table">${lines.map(l => `<tr><td>${l[0]}<br><span class="sm">${l[1]}｜${l[3]}</span></td><td>${fmt(l[2])} 元</td></tr>`).join('')}
-    <tr class="sr-sum"><td>HCAB2＋HCAR2 小計（由醫療總帳戶支出）${raw > ACC ? '<br><span class="sm">已達帳戶上限，超出 '+fmt(raw-ACC)+' 元不給付</span>' : ''}</td><td>${fmt(used)} 元</td></tr>
+    <tr class="sr-sum"><td>HCAB2 主約小計（由主約帳戶支出）</td><td>${fmt(sB)} 元</td></tr>${u2 ? `<tr class="sr-sum"><td>HCAR2 附約小計（由附約帳戶支出）</td><td>${fmt(sR)} 元</td></tr>` : ''}
     <tr class="sr-sum"><td>附加條款小計</td><td>${fmt(sX)} 元</td></tr></table>
     <div class="sm" style="margin-top:8px">首次罹患癌症保險金以 ${age>=16?'所選健康促進係數':'×1（未滿16歲）'}計；門診每年最多 120 次。實際以保單條款與理賠審核為準。</div>`;
 }
