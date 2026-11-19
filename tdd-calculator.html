@@ -138,6 +138,15 @@
   th{ background:var(--navy); color:var(--gold-hi); font-family:"Noto Sans TC",sans-serif; font-weight:500; position:sticky; top:0; }
   tr.current-row td{background:#fff0d0;font-weight:700;}
   .grid > .card{min-width:0;}
+  .ps-title{font-family:"Noto Serif TC",serif;font-weight:700;font-size:14.5px;color:var(--navy);margin:-4px 0 8px;padding-left:10px;border-left:4px solid var(--gold);}
+  .period-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:8px;margin-bottom:18px;}
+  .ps{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px;transition:.2s;}
+  .ps .ps-age{font-size:12px;color:#71809a;}
+  .ps .ps-prem{font-family:"DM Mono",monospace;font-size:18px;font-weight:600;color:var(--navy);margin-top:2px;}
+  .ps .ps-sub{font-size:11px;color:#8a97ad;margin-top:2px;}
+  .ps.now{background:#fff6da;border-color:var(--gold);box-shadow:0 6px 16px -10px rgba(201,134,15,.6);}
+  .ps.now .ps-prem{color:#a8710c;}
+  .ps.done{opacity:.6;}
   @keyframes pvgrow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
   .pvg{transform-box:fill-box;transform-origin:50% 100%;animation:pvgrow .6s cubic-bezier(.3,.8,.3,1);}
   .pv{margin:18px 0 6px;padding:18px 16px 14px;border:1px solid var(--line);border-radius:14px;background:#fff;}
@@ -310,6 +319,8 @@
     <div class="card">
       <h2>保單結構試算</h2>
       <div class="results" id="statsGrid"></div>
+      <div class="ps-title">每 10 年年繳保費（未扣折扣・依現行費率估算）</div>
+      <div class="period-strip" id="periodStrip"></div>
       <div class="scrubber">
         <div class="scrubber-top">
           <div class="ttl">拖曳查看保單進度 ▸</div>
@@ -480,6 +491,11 @@ function premViz(c){
 }
 
 function renewTable(c){
+  const strip = document.getElementById('periodStrip');
+  if(strip && c.periods){
+    const py = state.policyYear, cur = Math.min(c.periods.length-1, Math.floor(Math.max(py-1,0)/10));
+    strip.innerHTML = c.has ? c.periods.map((p,n) => `<div class="ps ${n===cur?'now':(n<cur?'done':'')}"><div class="ps-age">${n===0?'首期':'第 '+n+' 次續保'}｜${p.age}～${p.age+9} 歲</div><div class="ps-prem">${fmt(p.prem)}</div><div class="ps-sub">元／年・月繳約 ${fmt(p.prem/12)}</div></div>`).join('') : '';
+  }
   const el = document.getElementById('renewBox'); if(!el || !c.periods) return;
   const py = state.policyYear;
   const cur = Math.min(c.periods.length-1, Math.floor(Math.max(py-1,0)/10));
