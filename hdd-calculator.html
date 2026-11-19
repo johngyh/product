@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>南山人壽 活力洋溢3重大疾病保險 HDD 試算系統</title>
+<title>南山人壽 活力洋溢3重大疾病保險 HDD 試算系統｜7項重大疾病</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -229,6 +229,7 @@
   .mnote{ font-size:12px; color:var(--muted); line-height:1.65; margin-top:10px; }
   .sectitle{ font-family:'Noto Serif TC',serif; color:var(--navy); font-size:15px; margin:18px 0 8px; }
 
+  .item-badge{display:inline-block;margin-top:10px;padding:5px 16px;border-radius:20px;background:rgba(227,166,53,.18);border:1px solid rgba(227,166,53,.55);color:#ffd98a;font-size:14px;font-weight:700;letter-spacing:.05em;}
 </style>
 </head>
 <body>
@@ -236,6 +237,7 @@
   <div class="eyebrow">Nan Shan Life &nbsp;·&nbsp; 順可通訊處</div>
   <h1 id="pTitle">HDD　活力洋溢3重大疾病保險<br>保單結構試算</h1>
   <p id="pSub">繳費 20 年・保至 95 歲｜癌症（初期）、重大疾病分級給付｜身故、完全失能與滿期保險金</p>
+  <div class="item-badge">🛡️ 保障 7 項重大疾病（另含輕度 4 項、初期癌症）</div>
 </header>
 
 <div class="wrap">
@@ -296,6 +298,11 @@
     </div>
   </div>
 
+  <details open>
+    <summary>▸ 保障 5 大類 7 項重大疾病（HDD 主約、ZDDR2 附約共用定義）</summary>
+    <div id="sevenList"></div>
+    <div class="note"><b>重度 7 項</b>：HDD 給付 MAX(保額, 總繳×1.06)×係數；ZDDR2 給付 MAX(保額, 總繳×1.05)。<br><b>輕度 4 項</b>（急性心肌梗塞、腦中風後障礙、癌症、癱瘓之輕度）：HDD 保額×10%×係數、ZDDR2 保額×20%。<b>初期癌症</b>：僅 HDD，保額×5%×係數。詳細定義與除外項目以保單條款為準。</div>
+  </details>
   <details data-only="HDD" open>
     <summary>▸ HDD 給付項目（DM 第4頁｜單位：新台幣元）</summary>
 <div class="table-scroll" style="max-height:none;"><table class="bt"><thead><tr><th class="left">保障項目</th><th class="left">投保年齡未達 16 歲</th><th class="left">投保年齡達 16 歲（含）以上</th></tr></thead><tbody><tr><td>初期癌症保險金<br><span style="font-weight:400;color:var(--muted);font-size:11.5px;">以 1 次為限</span></td><td>保險金額×5%</td><td>保險金額×5%×健康促進係數</td></tr><tr><td>輕度重大疾病保險金<br><span style="font-weight:400;color:var(--muted);font-size:11.5px;">以 1 次為限</span></td><td>保險金額×10%</td><td>保險金額×10%×健康促進係數</td></tr><tr><td>重度重大疾病保險金<br><span style="font-weight:400;color:var(--muted);font-size:11.5px;">給付後契約終止</span></td><td>三者擇高：①保險金額 ②保單價值準備金 ③年繳保險費總和×1.06</td><td>三者擇高（同左）×健康促進係數</td></tr><tr><td>所繳保險費加計利息的退還或身故保險金或喪葬費用保險金<br><span style="font-weight:400;color:var(--muted);font-size:11.5px;">給付後契約終止</span></td><td>滿 15 足歲前身故：退還所繳保險費加計利息；滿 15 足歲後且保險年齡未達 16 歲前：壽險當年度保險金額；其後：保單價值準備金、壽險當年度保險金額二者擇高</td><td>保單價值準備金、壽險當年度保險金額二者擇高</td></tr><tr><td>完全失能保險金<br><span style="font-weight:400;color:var(--muted);font-size:11.5px;">給付後契約終止</span></td><td>保險年齡達 16 歲前：壽險當年度保險金額；達 16 歲（含）後：保單價值準備金、壽險當年度保險金額二者擇高</td><td>保單價值準備金、壽險當年度保險金額二者擇高</td></tr><tr><td>滿期保險金<br><span style="font-weight:400;color:var(--muted);font-size:11.5px;">保險年齡達 95 歲之保單年度末</span></td><td>壽險當年度保險金額</td><td>壽險當年度保險金額</td></tr></tbody></table></div><div class="note">
@@ -756,7 +763,7 @@ function setProduct(k){
   document.getElementById('amt2Field').style.display = k === 'COMBO' ? '' : 'none';
   document.getElementById('amtLabel').textContent = k === 'COMBO' ? 'HDD 主約保額（萬元）' : '投保金額（萬元）';
   if(k === 'COMBO'){ state.amount2 = P.def2; document.getElementById('amount2').value = P.def2; }
-  document.title = P.foot + ' 試算系統';
+  document.title = P.foot + ' 試算系統｜7項重大疾病';
   state.amount = P.defAmount; document.getElementById('amount').value = P.defAmount;
   state.policyYear = 0;
   rateTable(); render();
@@ -795,6 +802,22 @@ rateTable();
 
 setProduct('COMBO');
 
+const SEVEN_CATS = [
+  {name:'1．惡性腫瘤（癌症）', color:'#c23b3b', items:['癌症（重度）']},
+  {name:'2．心腦血管', color:'#1c63b3', items:['急性心肌梗塞（重度）','冠狀動脈繞道手術','腦中風後障礙（重度）']},
+  {name:'3．腎臟疾病', color:'#8b5e3c', items:['末期腎病變']},
+  {name:'4．器官移植', color:'#7c5cbf', items:['重大器官移植或造血幹細胞移植']},
+  {name:'5．癱瘓', color:'#c9860f', items:['癱瘓（重度）']}
+];
+document.getElementById('sevenList').innerHTML = SEVEN_CATS.map(cat => `
+  <div style="margin-top:14px;">
+    <div style="font-weight:700;color:${cat.color};font-size:13px;margin-bottom:6px;display:flex;align-items:center;gap:7px;">
+      <span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${cat.color};"></span>
+      ${cat.name}　<span style="color:var(--muted);font-weight:400;font-size:11.5px;">（${cat.items.length}項）</span>
+    </div>
+    <div class="tag-wrap">${cat.items.map(n=>`<span class="tag" style="--tag-color:${cat.color}">${n}</span>`).join('')}</div>
+  </div>
+`).join('');
 </script>
 </body>
 </html>

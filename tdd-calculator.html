@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>南山人壽 樂健康祥定期健康保險 10TDD 試算系統</title>
+<title>南山人壽 樂健康祥定期健康保險 10TDD 試算系統｜7項重大疾病</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -256,12 +256,14 @@
   .mnote{ font-size:12px; color:var(--muted); line-height:1.65; margin-top:10px; }
   .sectitle{ font-family:'Noto Serif TC',serif; color:var(--navy); font-size:15px; margin:18px 0 8px; }
 
+  .item-badge{display:inline-block;margin-top:10px;padding:5px 16px;border-radius:20px;background:rgba(227,166,53,.18);border:1px solid rgba(227,166,53,.55);color:#ffd98a;font-size:14px;font-weight:700;letter-spacing:.05em;}
 </style>
 </head>
 <body>
 <header>
   <div class="eyebrow">Nan Shan Life &nbsp;·&nbsp; 順可通訊處</div>
   <h1>10TDD　樂健康祥定期健康保險<br>保單結構試算</h1>
+  <div class="item-badge">🛡️ 保障 7 項重大疾病</div>
   <p>10 年定期｜重度重大疾病整筆給付＋豁免保費｜健檢最高 20% 增額保障｜保證續保</p>
 </header>
 
@@ -319,6 +321,11 @@
     </div>
   </div>
 
+  <details open>
+    <summary>▸ 保障 5 大類 7 項重大疾病（重度，給付保險金額×健康促進係數）</summary>
+    <div id="sevenList"></div>
+    <div class="note">7 項皆為「重度」重大疾病，給付以 1 次為限；初期、輕度不在保障範圍。各項定義與除外項目詳見下方「重度重大疾病 7 項定義」及保單條款。</div>
+  </details>
   <details open>
     <summary>▸ 10TDD 給付項目（DM 第3頁）</summary>
 <div class="table-scroll" style="max-height:none;"><table class="bt"><thead><tr><th class="left">保障項目</th><th class="left">給付內容</th></tr></thead><tbody><tr><td>重度重大疾病保險金<br><span style="font-weight:400;color:var(--muted);font-size:11.5px;">以 1 次為限</span></td><td>「保險金額」×「健康促進係數」（1.2、1.15 或 1）</td></tr><tr><td>身故／完全失能保險金<br><span style="font-weight:400;color:var(--muted);font-size:11.5px;">給付後契約終止</span></td><td>壽險當年度保險金額（保險年齡以「年繳應繳保險費」的 10 倍計；曾給付重度重大疾病保險金者，另有加計與按日數比例計算之規定，詳條款）</td></tr><tr><td>重度重大疾病豁免保險費</td><td>經醫師診斷確定罹患重度重大疾病者，豁免保險費，保障持續不中斷</td></tr></tbody></table></div><div class="note"><b>重度重大疾病</b>：自本契約生效日起持續有效第 31 日（癌症為第 91 日）起，經醫師診斷確定符合條款定義之急性心肌梗塞(重度)、冠狀動脈繞道手術、腦中風後障礙(重度)、末期腎病變、癌症(重度)、重大器官移植或造血幹細胞移植。<br>健康促進係數：A++ 級 1.2、A+ 級 1.15、A 級 1。投保生效日起至第 2 保單年度末一律適用 A 級；其後於每個偶數保單年度（第 2、4、6…）第 8 個月起進行健檢，依結果決定次一保單年度起 2 年內適用的係數。</div>
@@ -693,6 +700,22 @@ document.getElementById('playBtn').addEventListener('click', () => {
 if(P.init) P.init();
 render();
 
+const SEVEN_CATS = [
+  {name:'1．惡性腫瘤（癌症）', color:'#c23b3b', items:['癌症（重度）']},
+  {name:'2．心腦血管', color:'#1c63b3', items:['急性心肌梗塞（重度）','冠狀動脈繞道手術','腦中風後障礙（重度）']},
+  {name:'3．腎臟疾病', color:'#8b5e3c', items:['末期腎病變']},
+  {name:'4．器官移植', color:'#7c5cbf', items:['重大器官移植或造血幹細胞移植']},
+  {name:'5．癱瘓', color:'#c9860f', items:['癱瘓（重度）']}
+];
+document.getElementById('sevenList').innerHTML = SEVEN_CATS.map(cat => `
+  <div style="margin-top:14px;">
+    <div style="font-weight:700;color:${cat.color};font-size:13px;margin-bottom:6px;display:flex;align-items:center;gap:7px;">
+      <span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${cat.color};"></span>
+      ${cat.name}　<span style="color:var(--muted);font-weight:400;font-size:11.5px;">（${cat.items.length}項）</span>
+    </div>
+    <div class="tag-wrap">${cat.items.map(n=>`<span class="tag" style="--tag-color:${cat.color}">${n}</span>`).join('')}</div>
+  </div>
+`).join('');
 </script>
 </body>
 </html>
