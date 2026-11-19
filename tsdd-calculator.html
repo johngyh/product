@@ -266,6 +266,24 @@
   .sectitle{ font-family:'Noto Serif TC',serif; color:var(--navy); font-size:15px; margin:18px 0 8px; }
 
   .item-badge{display:inline-block;margin-top:10px;padding:5px 16px;border-radius:20px;background:rgba(227,166,53,.18);border:1px solid rgba(227,166,53,.55);color:#ffd98a;font-size:14px;font-weight:700;letter-spacing:.05em;}
+  .hcard{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 18px 16px;margin:22px 0 6px;box-shadow:0 4px 18px rgba(11,31,58,.06);}
+  .hcard-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px;}
+  .hcard-head h3{font-family:"Noto Serif TC",serif;font-size:17px;color:var(--navy);margin:0;}
+  .hbadge{background:var(--navy);color:var(--gold-hi);font-size:12px;padding:4px 12px;border-radius:20px;font-family:"DM Mono",monospace;}
+  table.health-table{width:100%;border-collapse:collapse;font-size:13px;min-width:620px;}
+  table.health-table th{background:var(--navy);color:var(--gold-hi);font-weight:500;padding:8px 6px;text-align:center;border:1px solid rgba(255,255,255,.12);}
+  table.health-table th.l{text-align:left;}
+  table.health-table td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:center;font-family:"DM Mono","Noto Sans TC",monospace;}
+  table.health-table td:first-child{text-align:left;font-weight:700;color:var(--navy);font-family:"Noto Sans TC",sans-serif;}
+  table.health-table td:nth-child(2){text-align:left;color:#3d4a5f;font-family:"Noto Sans TC",sans-serif;}
+  table.health-table .crit-cell{color:#8a97ad;transition:.15s;}
+  table.health-table .crit-cell.hl{background:#fff6da;color:var(--navy);font-weight:700;box-shadow:inset 0 0 0 2px var(--gold);}
+  table.health-table .gender-label{color:#8a97ad;}
+  table.health-table .gender-label.active{color:#134a8c;font-weight:700;}
+  table.health-table .a-col{color:#8a97ad;vertical-align:middle;font-family:"Noto Sans TC",sans-serif;}
+  table.health-table tr.trow td{background:#fdf1dc;font-weight:700;color:var(--navy);font-family:"Noto Sans TC",sans-serif;}
+  table.health-table td.coef{color:#c0392b;font-size:15px;}
+  .hnote{margin-top:12px;background:#fdf1dc;border:1px solid #e3a635;border-radius:10px;padding:11px 14px;font-size:12.5px;color:#3d4a5f;line-height:1.7;}
 </style>
 </head>
 <body>
@@ -332,17 +350,46 @@
     </div>
   </div>
 
-  <details open>
-    <summary>▸ 10TSDD 給付項目（DM 第5頁｜單位：新台幣元）</summary>
-<div class="table-scroll" style="max-height:none;"><table class="bt"><thead><tr><th class="left">保障項目</th><th class="left">給付內容</th><th class="left">以 100 萬、A 級為例</th></tr></thead><tbody><tr><td>特定重大傷病保險金</td><td>保險金額×健康促進係數</td><td>100 萬</td></tr><tr><td>預備門診醫療保險金</td><td>保險金額×健康促進係數×20%</td><td>20 萬</td></tr><tr><td>預備住院醫療保險金</td><td>保險金額×健康促進係數×20%</td><td>20 萬</td></tr><tr><td>預備居家療養保險金</td><td>保險金額×健康促進係數×20%</td><td>20 萬</td></tr><tr><td>生活照護保險金（僅第一類）</td><td>保險金額×健康促進係數×24%／年，給付期限合計 10 年</td><td>24 萬／年，共 240 萬</td></tr><tr><td>累計最高總給付</td><td>第一類（A／A+／A++）<br>第二類（A／A+／A++）</td><td>400／420／440 萬<br>160／168／176 萬</td></tr></tbody></table></div><div class="note">健康促進係數：A++ 級 1.1、A+ 級 1.05、A 級 1。投保生效日起至第 2 保單年度末一律適用 A 級；其後於每個偶數保單年度（第 2、4、6…）第 8 個月起進行健檢，依結果決定次一保單年度起 2 年內適用的係數。<br>被保險人診斷確定罹患 29 項特定重大傷病之一時，給付第 1～4 項保險金（特定重大傷病、預備門診、預備住院、預備居家），給付後契約同時終止。<br>生活照護保險金：經診斷確定罹患第一類特定重大傷病且至診斷確定之日仍生存者，按特定重大傷病保險金之 24% 給付，其後每年於診斷確定日之相當日再給付，合計 10 年；契約終止後仍繼續給付至期限屆滿；給付期限內身故者，剩餘生活照護保險金按 1.25% 貼現一次給付。</div>
-  </details>
+  <div class="hcard">
+    <div class="hcard-head"><h3>身體健康檢查與體位類型表</h3><span class="hbadge" id="health-badge">—</span></div>
+    <div class="note" style="margin:0 0 12px;">依你目前設定的<b>性別／投保年齡</b>，下表自動標示對應的判定欄位（金色框）。A++、A+ 級皆須<b>①至⑤全部符合</b>；前 2 保單年度一律適用 A 級。<span style="color:#8a97ad;">※詳細內容請參閱保單條款。</span></div>
+    <div class="table-scroll" style="max-height:none;"><table class="health-table">
+      <thead>
+        <tr><th rowspan="2" class="l">身體健康檢查之項目與數值</th><th rowspan="2" class="l">體位類型</th><th colspan="2">A++ 級</th><th colspan="2">A+ 級</th><th rowspan="2">A 級</th></tr>
+        <tr><th>保險年齡≦39歲</th><th>保險年齡≧40歲</th><th>保險年齡≦39歲</th><th>保險年齡≧40歲</th></tr>
+      </thead>
+      <tbody>
+        <tr><td rowspan="2">① 身體質量指數（BMI）</td><td class="gender-label" data-gender="male">男性</td>
+          <td class="crit-cell" data-gender="male" data-col="young">20～24.9</td><td rowspan="2" class="crit-cell" data-col="old">20～26.9</td>
+          <td class="crit-cell" data-gender="male" data-col="young">18～27.9</td><td rowspan="2" class="crit-cell" data-col="old">18～29.9</td>
+          <td rowspan="6" class="a-col">不符合 A++ 級<br>及 A+ 級之數值</td></tr>
+        <tr><td class="gender-label" data-gender="female">女性</td>
+          <td class="crit-cell" data-gender="female" data-col="young">20～22.9</td>
+          <td class="crit-cell" data-gender="female" data-col="young">18～25.9</td></tr>
+        <tr><td rowspan="2">② 血壓</td><td>收縮壓</td>
+          <td class="crit-cell" data-col="young">90～120 mmHg</td><td class="crit-cell" data-col="old">90～120 mmHg</td>
+          <td class="crit-cell" data-col="young">90～125 mmHg</td><td class="crit-cell" data-col="old">90～135 mmHg</td></tr>
+        <tr><td>舒張壓</td>
+          <td class="crit-cell" data-col="young">56～80 mmHg</td><td class="crit-cell" data-col="old">56～80 mmHg</td>
+          <td class="crit-cell" data-col="young">56～80 mmHg</td><td class="crit-cell" data-col="old">56～85 mmHg</td></tr>
+        <tr><td colspan="2">③ 總膽固醇</td>
+          <td class="crit-cell" data-col="young">&lt;190 mg/dl</td><td class="crit-cell" data-col="old">&lt;200 mg/dl</td>
+          <td class="crit-cell" data-col="young">≦199.9 mg/dl</td><td class="crit-cell" data-col="old">≦214.9 mg/dl</td></tr>
+        <tr><td colspan="2">④ 高密度膽固醇</td>
+          <td class="crit-cell" data-col="young">≧50 mg/dl</td><td class="crit-cell" data-col="old">≧50 mg/dl</td>
+          <td class="crit-cell" data-col="young">≧45 mg/dl</td><td class="crit-cell" data-col="old">≧45 mg/dl</td></tr>
+        <tr><td colspan="2">⑤ 尼古丁</td>
+          <td class="crit-cell" data-col="young">陰性</td><td class="crit-cell" data-col="old">陰性</td>
+          <td class="crit-cell" data-col="young">陰性</td><td class="crit-cell" data-col="old">陰性</td><td class="a-col">—</td></tr>
+        <tr class="trow"><td colspan="2">體位類型</td><td colspan="2">A++ 級</td><td colspan="2">A+ 級</td><td>A 級</td></tr>
+        <tr class="trow"><td colspan="2">健康促進係數</td><td colspan="2" class="coef">1.1</td><td colspan="2" class="coef">1.05</td><td class="coef">1</td></tr>
+      </tbody>
+    </table></div>
+    <div class="hnote"><b>說明</b>：您需每 2 年提供 1 次健康檢查報告（於偶數保單年度第 8 個月起），供判斷次一保單年度起二個保單年度之健康促進係數使用；逾期未提供者適用 A 級。在您意思表達同意之前，不會為本契約權利義務以外之利用。</div>
+  </div>
   <details open>
     <summary>▸ 29 項特定重大傷病（DM 第5頁）</summary>
 <div class="note" style="margin:4px 0 8px;"><b>點選任一項目</b>，會跳出該項目的定義與依您目前輸入的保額試算的理賠金額。</div><div style="font-weight:700;color:#c23b3b;font-size:13px;margin:4px 0 6px;">第一類：11 項（提供 10 年生活照護保險金）</div><div class="chips"><button type="button" class="chip sp" data-c="1" data-i="0"><b class="n">1</b>腦中風後障礙(重度)</button><button type="button" class="chip sp" data-c="1" data-i="1"><b class="n">2</b>癱瘓(重度)</button><button type="button" class="chip sp" data-c="1" data-i="2"><b class="n">3</b>急性腦炎併神經障礙後遺症</button><button type="button" class="chip sp" data-c="1" data-i="3"><b class="n">4</b>嚴重阿茲海默氏症</button><button type="button" class="chip sp" data-c="1" data-i="4"><b class="n">5</b>嚴重巴金森氏症</button><button type="button" class="chip sp" data-c="1" data-i="5"><b class="n">6</b>嚴重運動神經元疾病</button><button type="button" class="chip sp" data-c="1" data-i="6"><b class="n">7</b>嚴重肌肉失養症</button><button type="button" class="chip sp" data-c="1" data-i="7"><b class="n">8</b>脊髓灰質炎併神經障礙後遺症</button><button type="button" class="chip sp" data-c="1" data-i="8"><b class="n">9</b>良性腦腫瘤併神經障礙後遺症</button><button type="button" class="chip sp" data-c="1" data-i="9"><b class="n">10</b>嚴重頭部創傷</button><button type="button" class="chip sp" data-c="1" data-i="10"><b class="n">11</b>深度昏迷</button></div><div style="font-weight:700;color:#c9860f;font-size:13px;margin:14px 0 6px;">第二類：18 項</div><div class="chips"><button type="button" class="chip" data-c="2" data-i="0"><b class="n">1</b>急性心肌梗塞(重度)</button><button type="button" class="chip" data-c="2" data-i="1"><b class="n">2</b>冠狀動脈繞道手術</button><button type="button" class="chip" data-c="2" data-i="2"><b class="n">3</b>末期腎病變</button><button type="button" class="chip" data-c="2" data-i="3"><b class="n">4</b>癌症(重度)</button><button type="button" class="chip" data-c="2" data-i="4"><b class="n">5</b>重大器官移植或造血幹細胞移植</button><button type="button" class="chip" data-c="2" data-i="5"><b class="n">6</b>嚴重再生不良性貧血</button><button type="button" class="chip" data-c="2" data-i="6"><b class="n">7</b>腦血管動脈瘤開顱手術</button><button type="button" class="chip" data-c="2" data-i="7"><b class="n">8</b>多發性硬化症</button><button type="button" class="chip" data-c="2" data-i="8"><b class="n">9</b>嚴重原發性肺動脈高血壓</button><button type="button" class="chip" data-c="2" data-i="9"><b class="n">10</b>心臟瓣膜開心手術</button><button type="button" class="chip" data-c="2" data-i="10"><b class="n">11</b>主動脈外科置換手術</button><button type="button" class="chip" data-c="2" data-i="11"><b class="n">12</b>慢性肝病合併肝衰竭</button><button type="button" class="chip" data-c="2" data-i="12"><b class="n">13</b>病毒性猛暴性肝炎合併肝衰竭</button><button type="button" class="chip" data-c="2" data-i="13"><b class="n">14</b>嚴重肝硬化症</button><button type="button" class="chip" data-c="2" data-i="14"><b class="n">15</b>嚴重克隆氏病或潰瘍性結腸炎</button><button type="button" class="chip" data-c="2" data-i="15"><b class="n">16</b>嚴重全身性紅斑性狼瘡腎病變</button><button type="button" class="chip" data-c="2" data-i="16"><b class="n">17</b>嚴重類風濕性關節炎</button><button type="button" class="chip" data-c="2" data-i="17"><b class="n">18</b>嚴重第三度燒燙傷</button></div><div class="note">特定重大傷病自本契約生效日起持續有效第 31 日開始（癌症為第 91 日開始）經診斷確定符合保單條款附表一定義者；因意外傷害事故所致者，不受第 31 日之限制。定義詳條款附表一。</div>
-  </details>
-  <details>
-    <summary>▸ 健康促進係數：體位類型（DM 第4頁）</summary>
-<div class="table-scroll" style="max-height:none;"><table class="bt"><thead><tr><th class="left">體位類型</th><th class="left">健康促進係數</th><th class="left">身體健康檢查條件</th></tr></thead><tbody><tr><td>A++ 級</td><td>1.1</td><td>①至⑤皆須符合：BMI 20～24.9（男）／20～22.9（女）（保險年齡≦39 歲）、20～26.9（保險年齡≧40 歲）；血壓 收縮壓 90～120、舒張壓 56～80 mmHg；膽固醇 ＜190（≦39 歲）／＜200 mg/dl（≧40 歲）；高密度膽固醇 ≧50 mg/dl；尼古丁陰性</td></tr><tr><td>A+ 級</td><td>1.05</td><td>①至⑤皆須符合：BMI 18～27.9（男）／18～25.9（女）（≦39 歲）、18～29.9（≧40 歲）；血壓 收縮壓 90～125（≦39 歲）／90～135（≧40 歲）、舒張壓 56～80／56～85 mmHg；膽固醇 ≦199.9／≦214.9 mg/dl；高密度膽固醇 ≧45 mg/dl；尼古丁陰性</td></tr><tr><td>A 級</td><td>1</td><td>不符合 A++ 級及 A+ 級之數值</td></tr></tbody></table></div><div class="note">您需每 2 年提供 1 次健康檢查報告，供判斷次一保單年度起二個保單年度之健康促進係數使用。</div>
   </details>
   
   <details>
@@ -353,11 +400,6 @@
   <div id="itemModal" class="modal"><div class="modalbox"><button type="button" id="mClose" aria-label="關閉">✕</button><div id="mBody"></div></div></div>
 
 
-  <details>
-    <summary>▸ 年繳費率表（每 10 萬元保險金額｜單位：新台幣元）</summary>
-    <div class="table-scroll"><table id="rateTable"></table></div>
-    <div class="note">費率為未扣除折扣之費率；金融機構自動轉帳／南山人壽聯名卡享 1% 折扣，本計算機之年繳保費與「年繳應繳保險費」皆以未扣折扣之費率計算。</div>
-  </details>
 </div>
 
 <footer>南山人壽 10TSDD 活力洋溢特定重大傷病定期健康保險 試算 · 內部試算工具，僅供業務員參考說明使用，不得作為正式要保文件<br>本資料由 順可通訊處 吳約翰主任 製作</footer>
@@ -668,8 +710,16 @@ function legendHTML(c){
     `<span><span class="dot" style="background:#5b9bd5;border-radius:2px"></span>累計保費長條：每 10 年期滿時已繳保費合計（同一縱軸，未扣折扣）</span>`;
 }
 
+function updateHealthHighlight(){
+  const col = state.age <= 39 ? 'young' : 'old';
+  document.querySelectorAll('.health-table .crit-cell').forEach(td => td.classList.toggle('hl', (!td.dataset.gender || td.dataset.gender === state.gender) && td.dataset.col === col));
+  document.querySelectorAll('.health-table .gender-label').forEach(td => td.classList.toggle('active', td.dataset.gender === state.gender));
+  const b = document.getElementById('health-badge');
+  if(b) b.textContent = `${state.gender==='male'?'男性':'女性'} · ${state.age}歲 → ${col==='young'?'≦39歲':'≧40歲'}級距`;
+}
 function render(){
   clampAge();
+  updateHealthHighlight();
   const c = calc();
   window.__c = c;
   syncPolicyYearMax(c);
