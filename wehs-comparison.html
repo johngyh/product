@@ -159,15 +159,12 @@
   table.health-table .gender-label.active{color:var(--ns-blue-700);font-weight:700;}
 
   ::selection{background:var(--ns-gold-400);color:var(--ink-900);}
-  /* 給付項目分類色 */
-  table.cmp tr.cat-hosp td{background:#e7f0fb!important;}   table.cmp tr.cat-hosp td:first-child{border-left:4px solid #1c63b3;}
-  table.cmp tr.cat-icu td{background:#fdecec!important;}    table.cmp tr.cat-icu td:first-child{border-left:4px solid #c23b3b;}
-  table.cmp tr.cat-cancer td{background:#f1ecfb!important;} table.cmp tr.cat-cancer td:first-child{border-left:4px solid #7a5ad1;}
-  table.cmp tr.cat-surg td{background:#e6f6ee!important;}   table.cmp tr.cat-surg td:first-child{border-left:4px solid #1f7a4d;}
-  table.cmp tr.cat-opd td{background:#e3f5f5!important;}    table.cmp tr.cat-opd td:first-child{border-left:4px solid #2f9e9e;}
-  table.cmp tr.cat-misc td{background:#fdf3df!important;}   table.cmp tr.cat-misc td:first-child{border-left:4px solid #c9860f;}
+  /* 給付項目分類色（3 類） */
+  table.cmp tr.cat-hosp td{background:#eef4fc!important;}   table.cmp tr.cat-hosp td:first-child{border-left:4px solid #1c63b3;}
+  table.cmp tr.cat-surg td{background:#ecf7f1!important;}   table.cmp tr.cat-surg td:first-child{border-left:4px solid #1f7a4d;}
+  table.cmp tr.cat-cancer td{background:#fdf5e4!important;} table.cmp tr.cat-cancer td:first-child{border-left:4px solid #c9860f;}
   .cat-tag{display:inline-block;font-size:11px;font-weight:700;padding:1px 7px;border-radius:9px;margin-right:6px;color:#fff;vertical-align:1px;white-space:nowrap;}
-  tr.cat-hosp .cat-tag{background:#1c63b3;} tr.cat-icu .cat-tag{background:#c23b3b;} tr.cat-cancer .cat-tag{background:#7a5ad1;} tr.cat-surg .cat-tag{background:#1f7a4d;} tr.cat-opd .cat-tag{background:#2f9e9e;} tr.cat-misc .cat-tag{background:#c9860f;}
+  tr.cat-hosp .cat-tag{background:#1c63b3;} tr.cat-surg .cat-tag{background:#1f7a4d;} tr.cat-cancer .cat-tag{background:#c9860f;}
   .cat-legend{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:12px;color:var(--ink-600);margin:6px 0 2px;}
   .cat-legend span::before{content:'';display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px;background:var(--c);}
   .tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%;}
@@ -238,7 +235,7 @@
     <div class="cmp-head" style="margin-top:32px;">
       <h3>保障內容比較（依投保計劃，與年齡／期別無關）</h3>
     </div>
-    <div class="cat-legend"><span style="--c:#1c63b3">住院</span><span style="--c:#c23b3b">加護／燒燙傷</span><span style="--c:#7a5ad1">癌症</span><span style="--c:#1f7a4d">手術</span><span style="--c:#2f9e9e">門診</span><span style="--c:#c9860f">雜費／醫材</span></div>
+    <div class="cat-legend"><span style="--c:#1c63b3">住院（含加護病房、雜費、住院前後門診）</span><span style="--c:#1f7a4d">手術・醫材</span><span style="--c:#c9860f">癌症</span></div>
     <div class="stage-tag">保險年齡達74歲（不含）前 · 定額給付</div>
     <div class="tbl-scroll"><table class="cmp" id="benefit-pre74"></table></div>
     <div class="note left" style="margin-top:6px;margin-bottom:0;">
@@ -569,15 +566,12 @@ function updateHealthHighlight(){
   }
 }
 
-const CAT_NAME = { hosp:'住院', icu:'加護／燒燙傷', cancer:'癌症', surg:'手術', opd:'門診', misc:'雜費／醫材' };
+const CAT_NAME = { hosp:'住院', surg:'手術・醫材', cancer:'癌症' };
 function catOf(l){
   if(l.includes('癌症')) return 'cancer';
-  if(l.includes('加護')) return 'icu';
-  if(l.includes('雜費') || l.includes('醫材')) return 'misc';
-  if(l.includes('手術')) return 'surg';
-  if(l.includes('門診')) return 'opd';
-  if(l.includes('住院') || l.includes('病房')) return 'hosp';
-  return '';
+  if(l.includes('雜費') || l.includes('病房') || l.includes('住院日額') || l.includes('住院前後') || l.includes('住院費用') || l.includes('加護')) return 'hosp';
+  if(l.includes('手術') || l.includes('醫材')) return 'surg';
+  return 'hosp';
 }
 function renderBenefitTable(elId, stage){
   const el = document.getElementById(elId);
