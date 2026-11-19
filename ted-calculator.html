@@ -146,6 +146,15 @@
   .note{ font-size:12px; color:var(--muted); line-height:1.7; margin-top:16px; padding:12px 14px; background:#eef4fc; border-left:3px solid var(--gold); border-radius:4px; }
   footer{text-align:center;color:var(--muted);font-size:11.5px;padding:20px;}
   .item-badge{display:inline-block;margin-top:10px;padding:5px 16px;border-radius:20px;background:rgba(227,166,53,.18);border:1px solid rgba(227,166,53,.55);color:#ffd98a;font-size:14px;font-weight:700;letter-spacing:.05em;}
+  .tagbtn{ cursor:pointer; font-family:inherit; transition:.15s; }
+  .tagbtn:hover{ background:#fff6da; }
+  .tagbtn.on{ background:#fff6da; border-color:var(--tag-color); box-shadow:0 0 0 2px color-mix(in srgb, var(--tag-color) 25%, transparent); }
+  .tagbtn::after{ content:' ⓘ'; color:#a9b4c6; font-size:11px; }
+  .clause{ display:none; margin-top:8px; padding:11px 14px; border-radius:10px; background:#f4f6fb; border:1px solid #e1e6ef; border-left:4px solid var(--tag-color); font-size:13px; color:#33425b; line-height:1.75; }
+  .clause.show{ display:block; animation:clIn .18s ease-out; }
+  @keyframes clIn{ from{opacity:0; transform:translateY(-3px);} to{opacity:1; transform:none;} }
+  .clause b.t{ color:var(--navy); font-size:14px; }
+  .clause .pay{ display:inline-block; margin-top:6px; padding:2px 10px; border-radius:10px; background:#fff; border:1px solid #e1e6ef; font-weight:700; color:var(--navy); font-size:12.5px; }
 </style>
 </head>
 <body>
@@ -268,6 +277,7 @@
 
   <details open>
     <summary>▸ 保障10大類 41項精選傷病（DM第5頁｜TED35、TED 共用條款）</summary>
+    <div class="note" style="margin:4px 0 6px;"><b>點選任一項目</b>，會跳出該項目的條款定義與給付方式。</div>
     <div id="categoryList"></div>
     <div class="note">分類方式參考商品簡介「保障10大類 41項精選傷病」之10大分類名稱整理，個別疾病之類別歸屬如有出入，仍以官方簡介或保單條款為準。「經導管心臟瓣膜置換術」為業界首創納入本類保障之給付項目。TED35 與 TED 之精選傷病項目定義相同，故雙保組合下同一疾病可由兩張保單分別給付。</div>
   </details>
@@ -1151,14 +1161,41 @@ function labelWithBadge(name){
   return name;
 }
 document.getElementById('categoryList').innerHTML = CATEGORIES.map(cat => `
-  <div style="margin-top:14px;">
+  <div class="cat-block" style="margin-top:14px;">
     <div style="font-weight:700;color:${cat.color};font-size:13px;margin-bottom:6px;display:flex;align-items:center;gap:7px;">
       <span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${cat.color};"></span>
       ${cat.name}　<span style="color:var(--muted);font-weight:400;font-size:11.5px;">（${cat.items.length}項）</span>
     </div>
-    <div class="tag-wrap">${cat.items.map(n=>`<span class="tag" style="--tag-color:${cat.color}">${labelWithBadge(n)}</span>`).join('')}</div>
+    <div class="tag-wrap">${cat.items.map(n=>`<button type="button" class="tag tagbtn" data-name="${n}" style="--tag-color:${cat.color}">${labelWithBadge(n)}</button>`).join('')}</div>
+    <div class="clause"></div>
   </div>
 `).join('');
+
+const CLAUSE = {"癌症（初期）": "經病理檢驗確定屬惡性腫瘤或原位癌之下列疾病：① 原位癌或零期癌；② 第一期惡性類癌；③ 第二期（含）以下且非惡性黑色素瘤之皮膚癌（含皮膚附屬器癌及皮纖維肉瘤）。", "癌症（輕度）": "經病理檢驗確定屬惡性腫瘤之下列疾病：① 慢性淋巴性白血病第一期及第二期（Rai 氏分期）；② 10 公分（含）以下之第一期何杰金氏病；③ 第一期前列腺癌；④ 第一期膀胱乳頭狀癌；⑤ 甲狀腺微乳頭狀癌（1 公分（含）以下）；⑥ 邊緣性卵巢癌；⑦ 第一期黑色素瘤；⑧ 第一期乳癌；⑨ 第一期子宮頸癌；⑩ 第一期大腸直腸癌。", "癌症（重度）": "經病理檢驗確定屬惡性腫瘤，且非屬「癌症（初期）」「癌症（輕度）」所列項目之疾病。", "急性心肌梗塞（輕度）": "冠狀動脈阻塞致部分心肌壞死，須同時具備典型胸痛、心電圖異常變化、心肌酶或肌鈣蛋白異常升高中至少兩項。", "急性心肌梗塞（重度）": "發病 90 天（含）後，經心臟影像證實左心室射出分率低於 50%（含），並同時具備典型胸痛、心電圖異常變化、心肌酶或肌鈣蛋白異常升高中至少兩項。", "冠狀動脈繞道手術": "因冠狀動脈疾病致持續性心肌缺氧（心絞痛或心衰竭），接受冠狀動脈繞道手術；其他手術不包括在內。", "心臟瓣膜開心手術": "以體外循環經胸開心施行一個或以上心臟瓣膜置換或矯正手術；單純介入性心導管術除外。", "主動脈外科置換手術": "經胸或腹部切開，對主動脈血管疾病施行切除併修補或置換之外科手術；單純套膜支架或其他介入導管術除外。", "經導管心臟瓣膜置換術": "以導管方式（非傳統開心手術）置換一個或以上心臟瓣膜。", "腦中風後障礙（輕度）": "腦血管突發病變後 6 個月，經專科醫師認定一上肢或一下肢主要關節永久遺存運動障害，且肌力為 3 分。", "腦中風後障礙（重度）": "腦血管突發病變後 6 個月仍遺留永久性神經機能障礙：植物人狀態、一肢三大關節機能完全喪失或肌力 2 分以下、兩肢以上障礙致無法自理日常生活，或喪失言語或咀嚼機能。", "嚴重原發性肺動脈高血壓": "原因不明之肺動脈高壓，經心導管檢查證實肺動脈收縮壓超過 90 mmHg，並由心臟專科醫師確診。", "因呼吸衰竭需長期使用呼吸器": "因呼吸衰竭需連續使用呼吸器達 21 天以上（含侵襲性、非侵襲性陽壓或負壓呼吸器等符合條件之使用方式）。", "病毒性猛暴性肝炎合併肝衰竭": "肝炎病毒感染致肝臟急性壞死及衰竭，經消化系專科醫師確診，並符合肝性腦病變、ALT 達正常值 10 倍以上、總膽紅素 10 mg% 以上、凝血酶原時間延長 3 秒以上四項中至少三項；酒精或藥物所致者除外。", "慢性肝病合併肝衰竭": "慢性肝病同時合併總膽紅素 2 mg% 以上、無法控制之腹水及肝性腦病變三種情況，經消化系專科醫師確診；酒精或藥物所致者除外。", "嚴重肝硬化症": "肝臟瀰漫性纖維化，經消化系專科醫師確診，並符合無法控制之腹水、食道或胃靜脈曲張、肝性腦病變三項中至少兩項；酒精或藥物所致者除外。", "末期腎病變": "腎臟因慢性且不可逆之衰竭，已開始接受長期規則透析治療。", "嚴重克隆氏病或潰瘍性結腸炎": "經病理切片證實，並接受全結腸切除，或於不同住院期間接受兩次以上部分腸道切除手術。", "重大器官移植或造血幹細胞移植": "因器官功能衰竭接受心、肺、肝、胰或腎臟異體移植，或因造血功能損害或造血系統惡性腫瘤接受造血幹細胞異體移植。", "小腸移植": "因小腸功能衰竭接受小腸異體移植（不含幹細胞移植）。", "認知功能障礙初期": "經專科醫師判定持續失智狀態達 3 個月以上，依 CDR 評估為 1 分（非各分項總和），且符合條款附表所列疾病；醫師判定終身無法治癒者不受 3 個月限制。限保險年齡 12 歲（含）以上適用。", "認知功能障礙中重度": "經專科醫師判定持續失智狀態，依 CDR 評估為 2 分以上（非各分項總和），且須於免責期間（90 日）屆滿時仍生存並持續符合。限保險年齡 12 歲（含）以上適用。", "良性腦腫瘤併神經障礙後遺症": "經開顱手術及病理或影像證實之良性腦腫瘤，並合併永久神經機能障礙（植物人狀態、肢體機能喪失、兩肢以上無法自理生活、喪失言語或咀嚼機能）；垂體腺瘤、腦囊腫等特定腫瘤除外。", "急性腦炎併神經障礙後遺症": "病毒、細菌感染或自體免疫致腦部急性發炎，治療 6 個月後仍殘留肢體機能喪失、單眼失明、雙耳聽力喪失、喪失言語，或認知障礙合併六項日常生活能力中三項以上障礙持續 6 個月以上。", "脊髓灰質炎併神經障礙後遺症": "脊髓灰質炎致麻痺，治療 6 個月後仍須長期使用呼吸器，或一肢三大關節機能完全喪失或肌力 2 分以下。", "多發性硬化症": "中樞神經系統內有兩個以上脫髓鞘病灶，並有至少兩次神經缺損發作，經檢查證實並由神經專科醫師確診。", "嚴重巴金森氏症": "藥物治療 1 年以上仍無法控制，達 Hoehn-Yahr 第四級，需輔具或他人協助行走，且六項日常生活能力中三項以上障礙；藥物濫用或毒品所致者除外。", "嚴重運動神經元疾病": "原因不明之運動神經元病變（如肌萎縮性側索硬化症等），經神經專科醫師確認並治療 6 個月以上，仍有進行性且不可恢復之神經損害，且六項日常生活能力中三項以上障礙。", "癱瘓（輕度）": "肢體遺留機能障礙經 6 個月後仍無法改善：兩肢各有一大關節完全無法隨意活動或肌力 2 分以下，或一肢有兩大關節有此情況。", "癱瘓（重度）": "兩上肢、兩下肢或一上肢及一下肢中，各有兩個以上大關節完全無法隨意活動或肌力 2 分以下，經 6 個月後仍無法復原或改善。", "嚴重全身性紅斑性狼瘡腎病變": "全身性紅斑性狼瘡合併腎病變，經腎臟切片符合 WHO 狼瘡性腎炎第三至第六級並合併蛋白尿，由專科醫師確診；其他類型紅斑性狼瘡除外。", "嚴重類風濕性關節炎": "經風濕或免疫專科醫師確診，三個以上重要關節有破壞及嚴重變形致機能喪失，且六項日常生活能力中三項以上障礙。", "嚴重再生不良性貧血": "慢性永久性骨髓造血功能衰竭，經確認並接受造血幹細胞移植；或中性球、血小板、網狀球三項中至少兩項符合條款標準，且經治療 90 天以上仍未改善。", "思覺失調症": "經精神科專科醫師依「美國精神疾病診斷與統計手冊」或「國際疾病分類」診斷判定為思覺失調症。", "重症肌無力症": "慢性自體免疫疾病，因神經肌肉交界處乙醯膽鹼接受器減少致傳導障礙及肌肉無力，經醫院專科醫師確診。", "漢生病": "由麻風分枝桿菌所引起之一種慢性、容易治癒但不容易傳染之疾病。", "嚴重肌肉失養症": "基因變異引起之肌肉變性，經肌電圖、肌肉切片或基因診斷及神經專科醫師確診，且依巴氏量表六項日常生活能力中三項以上障礙。", "深度昏迷": "腦部功能衰竭致意識喪失，使用生命維持系統連續超過 30 天，且格拉斯哥昏迷指數持續在 8 分（含）以下；酒精、藥物或鎮定劑所致者除外。", "嚴重第三度燒燙傷": "因意外傷害事故致第三度燒燙傷面積達全身 20% 以上，並經醫院醫師確診。", "腦血管動脈瘤開顱手術":"以開顱方式進行動脈瘤夾閉、包裹、母血管阻塞或切開修補；單純介入性導管術除外。","嚴重頭部創傷": "意外事故致頭部創傷造成腦部損傷，事故後 6 個月仍遺留永久神經機能缺損（植物人狀態、肢體機能喪失、兩肢以上無法自理生活、喪失言語或咀嚼機能）；酒後駕車超過法定標準所致者除外。"};
+function clauseHtml(name, pay){
+  return `<b class="t">${name}</b><br>${CLAUSE[name] || '詳見保單條款。'}${pay ? `<br><span class="pay">給付：${pay}</span>` : ''}<div style="font-size:11.5px;color:#8a97ad;margin-top:6px;">條款文字為摘要整理，實際認定以保單條款為準。</div>`;
+}
+function bindClauses(rootId, payOf){
+  const root = document.getElementById(rootId); if(!root) return;
+  root.addEventListener('click', e => {
+    const b = e.target.closest('.tagbtn'); if(!b) return;
+    const box = b.closest('.cat-block').querySelector('.clause');
+    const was = b.classList.contains('on');
+    root.querySelectorAll('.tagbtn.on').forEach(x => x.classList.remove('on'));
+    root.querySelectorAll('.clause.show').forEach(x => x.classList.remove('show'));
+    if(was) return;
+    b.classList.add('on');
+    box.style.setProperty('--tag-color', b.style.getPropertyValue('--tag-color'));
+    box.innerHTML = clauseHtml(b.dataset.name, payOf(b.dataset.name, b));
+    box.classList.add('show');
+  });
+}
+
+const TED5 = ['癌症（初期）','思覺失調症'];
+const TED10 = ['急性心肌梗塞（輕度）','癌症（輕度）','認知功能障礙初期','腦中風後障礙（輕度）','癱瘓（輕度）','重症肌無力症','漢生病'];
+bindClauses('categoryList', n => TED5.includes(n) ? '5% 精選傷病保險金＝保額×5%×健康促進係數' :
+  TED10.includes(n) ? '10% 精選傷病保險金＝保額×10%×健康促進係數' :
+  '100% 精選傷病保險金＝MAX(保額, 年繳保險費總和×1.06)×健康促進係數');
 </script>
 </body>
 </html>
