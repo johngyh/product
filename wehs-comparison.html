@@ -159,6 +159,18 @@
   table.health-table .gender-label.active{color:var(--ns-blue-700);font-weight:700;}
 
   ::selection{background:var(--ns-gold-400);color:var(--ink-900);}
+  /* 給付項目分類色 */
+  table.cmp tr.cat-hosp td{background:#e7f0fb!important;}   table.cmp tr.cat-hosp td:first-child{border-left:4px solid #1c63b3;}
+  table.cmp tr.cat-icu td{background:#fdecec!important;}    table.cmp tr.cat-icu td:first-child{border-left:4px solid #c23b3b;}
+  table.cmp tr.cat-cancer td{background:#f1ecfb!important;} table.cmp tr.cat-cancer td:first-child{border-left:4px solid #7a5ad1;}
+  table.cmp tr.cat-surg td{background:#e6f6ee!important;}   table.cmp tr.cat-surg td:first-child{border-left:4px solid #1f7a4d;}
+  table.cmp tr.cat-opd td{background:#e3f5f5!important;}    table.cmp tr.cat-opd td:first-child{border-left:4px solid #2f9e9e;}
+  table.cmp tr.cat-misc td{background:#fdf3df!important;}   table.cmp tr.cat-misc td:first-child{border-left:4px solid #c9860f;}
+  .cat-tag{display:inline-block;font-size:11px;font-weight:700;padding:1px 7px;border-radius:9px;margin-right:6px;color:#fff;vertical-align:1px;white-space:nowrap;}
+  tr.cat-hosp .cat-tag{background:#1c63b3;} tr.cat-icu .cat-tag{background:#c23b3b;} tr.cat-cancer .cat-tag{background:#7a5ad1;} tr.cat-surg .cat-tag{background:#1f7a4d;} tr.cat-opd .cat-tag{background:#2f9e9e;} tr.cat-misc .cat-tag{background:#c9860f;}
+  .cat-legend{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:12px;color:var(--ink-600);margin:6px 0 2px;}
+  .cat-legend span::before{content:'';display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px;background:var(--c);}
+  .tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%;}
 </style>
 </head>
 <body>
@@ -212,13 +224,13 @@
       <h3 id="cmp-title">同齡・保費比較</h3>
       <span class="badge" id="cmp-badge">—</span>
     </div>
-    <table class="cmp">
+    <div class="tbl-scroll"><table class="cmp">
       <thead>
         <tr><th rowspan="2">繳費期間</th><th rowspan="2">投保計劃</th><th colspan="2">年繳保費</th><th colspan="2">總繳保費估算</th></tr>
         <tr><th>一般繳費</th><th>自動扣款<br><small>享1%折扣</small></th><th>一般繳費</th><th>自動扣款<br><small>享1%折扣</small></th></tr>
       </thead>
       <tbody id="cmp-body"></tbody>
-    </table>
+    </table></div>
     <div class="note left" style="margin-top:14px;">
       <span class="cheapest-val">■</span> 年繳保費最低。同一投保計劃下，期別愈短年繳愈高、但總繳愈低。至少選擇一個期別與一個計劃。
     </div>
@@ -226,14 +238,15 @@
     <div class="cmp-head" style="margin-top:32px;">
       <h3>保障內容比較（依投保計劃，與年齡／期別無關）</h3>
     </div>
+    <div class="cat-legend"><span style="--c:#1c63b3">住院</span><span style="--c:#c23b3b">加護／燒燙傷</span><span style="--c:#7a5ad1">癌症</span><span style="--c:#1f7a4d">手術</span><span style="--c:#2f9e9e">門診</span><span style="--c:#c9860f">雜費／醫材</span></div>
     <div class="stage-tag">保險年齡達74歲（不含）前 · 定額給付</div>
-    <table class="cmp" id="benefit-pre74"></table>
+    <div class="tbl-scroll"><table class="cmp" id="benefit-pre74"></table></div>
     <div class="note left" style="margin-top:6px;margin-bottom:0;">
       <b>特殊醫材補助保險金（5項）指定醫材類別</b>：心臟血管支架置放、心律調節器植入、主動脈瓣／二尖瓣／三尖瓣置換、心室輔助裝置植入、腦室腹腔分流手術。實際認定項目與理賠條件以保單條款為準。
     </div>
 
     <div class="stage-tag">保險年齡達74歲（含）以後 · 實支實付型／日額給付型 擇一</div>
-    <table class="cmp" id="benefit-post74"></table>
+    <div class="tbl-scroll"><table class="cmp" id="benefit-post74"></table></div>
 
     <div class="note left" style="margin-top:14px;">
       🏆 所選計劃中<b>最高總給付限額</b>最高者。該排整列以粗體＋淺金底色標示。
@@ -251,7 +264,7 @@
       僅限被保險人投保當時保險年齡達16歲（含）以上者適用。<span style="color:var(--ink-400);">※詳細內容請參閱保單條款第29條。</span>
       <br>依你目前設定的<b>性別／投保年齡</b>，下表自動標示對應的判定欄位（金色框）。
     </div>
-    <table class="cmp health-table">
+    <div class="tbl-scroll"><table class="cmp health-table">
       <thead>
         <tr>
           <th rowspan="2" style="text-align:left;">身體健康檢查之項目與數值</th>
@@ -329,7 +342,7 @@
           <td style="text-align:center;color:#c0392b;font-weight:700;">1</td>
         </tr>
       </tbody>
-    </table>
+    </table></div>
     <div class="note left" style="margin-top:14px;background:var(--ns-gold-100);border:1px solid var(--ns-gold-400);border-radius:10px;padding:12px 16px;">
       <b style="color:var(--ns-blue-900);">說明</b>：您僅須提供1次健康檢查報告，供判斷自第3保單年度起適用之健康促進係數使用，在您意思表達同意之前，不會為本契約權利義務以外之利用。
     </div>
@@ -556,6 +569,16 @@ function updateHealthHighlight(){
   }
 }
 
+const CAT_NAME = { hosp:'住院', icu:'加護／燒燙傷', cancer:'癌症', surg:'手術', opd:'門診', misc:'雜費／醫材' };
+function catOf(l){
+  if(l.includes('癌症')) return 'cancer';
+  if(l.includes('加護')) return 'icu';
+  if(l.includes('雜費') || l.includes('醫材')) return 'misc';
+  if(l.includes('手術')) return 'surg';
+  if(l.includes('門診')) return 'opd';
+  if(l.includes('住院') || l.includes('病房')) return 'hosp';
+  return '';
+}
 function renderBenefitTable(elId, stage){
   const el = document.getElementById(elId);
   const plans = ['10','20','30'].filter(p=>cstate.plans.includes(p));
@@ -576,7 +599,8 @@ function renderBenefitTable(elId, stage){
       else { numericVals.push(v); if(v>maxVal) maxVal = v; }
     });
     const allTied = allNumeric && numericVals.every(v=>v===numericVals[0]);
-    body += `<tr class="${isTotalRow?'total-row':''}"><td>${label}</td>`;
+    const cat = isTotalRow ? '' : catOf(label);
+    body += `<tr class="${isTotalRow?'total-row':(cat?'cat-'+cat:'')}"><td>${cat?'<span class="cat-tag">'+CAT_NAME[cat]+'</span>':''}${label}</td>`;
     plans.forEach(p=>{
       const [,val,flag] = BENEFITS[p][stage][i];
       const isMax = isTotalRow && allNumeric && !allTied && plans.length>1 && typeof val==='number' && val===maxVal;
