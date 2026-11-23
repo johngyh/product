@@ -287,13 +287,13 @@
           <span class="unit">萬</span>
         </div>
         <div class="amt-warn" id="amt-warn"></div>
-        <label style="margin-top:12px;">加入其他保額比較（可複選）</label>
+        <label style="margin-top:12px;">保額比較（可複選，再按一次取消）</label>
         <div class="multi" id="amount-multi">
           <button data-v="100">100萬</button>
           <button data-v="150">150萬</button>
           <button data-v="200">200萬</button>
           <button data-v="250">250萬</button>
-          <button data-v="300">300萬</button>
+          <button data-v="300" class="on">300萬</button>
         </div>
       </div>
     </div>
@@ -473,8 +473,19 @@ function multiSetup(id, key){
       const arr = state[key];
       const idx = arr.indexOf(v);
       if(idx>-1){
-        if(arr.length===1 && key!=='amounts') return; // 至少保留一個（保額另有自行輸入值）
+        if(arr.length===1 && key!=='amounts') return; // 期別至少保留一個
+        if(key==='amounts'){
+          if(sortedAmounts().length===1) return;
+          if(state.custom===+v){ state.custom = null; document.getElementById('amt-input').value=''; }
+        }
         arr.splice(idx,1);
+        b.classList.remove('on');
+      } else if(key==='amounts' && state.custom===+v){
+        // 這個保額來自上方輸入框：再按一次＝取消，但至少保留一種保額
+        if(sortedAmounts().length===1) return;
+        state.custom = null;
+        document.getElementById('amt-input').value = '';
+        document.getElementById('amt-warn').textContent = '';
         b.classList.remove('on');
       } else {
         arr.push(v);
@@ -489,14 +500,25 @@ multiSetup('amount-multi','amounts');
 
 function sortedPeriods(){ return ['10','20'].filter(p=>state.periods.includes(p)); }
 function sortedAmounts(){ return [...new Set([state.custom].concat(state.amounts.map(Number)))].filter(v=>v>0).sort((a,b)=>a-b); }
+function syncAmountChips(){
+  document.querySelectorAll('#amount-multi button').forEach(b=>{
+    const v = +b.dataset.v;
+    b.classList.toggle('on', state.amounts.includes(b.dataset.v) || state.custom===v);
+  });
+}
 document.getElementById('amt-input').addEventListener('input', e=>{
   let v = parseFloat(e.target.value);
   const w = document.getElementById('amt-warn');
-  if(isNaN(v) || v <= 0){ w.textContent = '請輸入保險金額'; return; }
+  if(isNaN(v) || v <= 0){
+    w.textContent = state.amounts.length ? '' : '請輸入保險金額或選擇下方保額';
+    if(state.amounts.length){ state.custom = null; syncAmountChips(); render(); }
+    return;
+  }
   if(v > 300){ w.textContent = '超過累計最高 300 萬，以 300 萬試算'; v = 300; }
   else if(v < 10){ w.textContent = '保險金額過低，請確認'; }
   else w.textContent = '';
   state.custom = Math.round(v*10)/10;
+  syncAmountChips();
   render();
 });
 
